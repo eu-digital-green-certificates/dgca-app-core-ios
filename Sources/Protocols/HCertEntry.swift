@@ -1,6 +1,7 @@
+//
 /*-
  * ---license-start
- * eu-digital-green-certificates / dgca-app-core-ios
+ * eu-digital-green-certificates / dgca-verifier-app-ios
  * ---
  * Copyright (C) 2021 T-Systems International GmbH and all other contributors
  * ---
@@ -18,8 +19,16 @@
  * ---license-end
  */
 //  
-//  ___FILENAME___
-//  ___PACKAGENAME___
+//  HCertEntry.swift
+//  DGCAVerifier
 //  
-//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Created by Yannick Spreen on 4/28/21.
 //  
+        
+
+import Foundation
+
+public protocol HCertEntry {
+  var info: [InfoSection] { get }
+  var isValid: Bool { get }
+}

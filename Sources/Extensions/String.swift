@@ -1,6 +1,6 @@
 /*-
  * ---license-start
- * eu-digital-green-certificates / dgca-app-core-ios
+ * eu-digital-green-certificates / dgca-verifier-app-ios
  * ---
  * Copyright (C) 2021 T-Systems International GmbH and all other contributors
  * ---
@@ -17,9 +17,21 @@
  * limitations under the License.
  * ---license-end
  */
-//  
-//  ___FILENAME___
-//  ___PACKAGENAME___
-//  
-//  Created by ___FULLUSERNAME___ on ___DATE___.
-//  
+//
+//  String.swift
+//  DGCAVerifier
+//
+//  Created by Yannick Spreen on 4/21/21.
+//
+
+import Foundation
+
+extension String {
+  subscript(i: Int) -> String {
+    return String(self[index(startIndex, offsetBy: i)])
+  }
+
+  static var zeroWidthSpace: String {
+    "\u{200B}"
+  }
+}

@@ -1,6 +1,6 @@
 /*-
  * ---license-start
- * eu-digital-green-certificates / dgca-app-core-ios
+ * eu-digital-green-certificates / dgca-verifier-app-ios
  * ---
  * Copyright (C) 2021 T-Systems International GmbH and all other contributors
  * ---
@@ -17,9 +17,24 @@
  * limitations under the License.
  * ---license-end
  */
-//  
-//  ___FILENAME___
-//  ___PACKAGENAME___
-//  
-//  Created by ___FULLUSERNAME___ on ___DATE___.
-//  
+//
+//  X509.swift
+//  DGCAVerifier
+//
+//  Created by Yannick Spreen on 4/17/21.
+//
+
+import Foundation
+
+struct X509 {
+  public static func pubKey(from b64EncodedCert: String) -> SecKey? {
+    guard
+      let encodedCertData = Data(base64Encoded: b64EncodedCert),
+      let cert = SecCertificateCreateWithData(nil, encodedCertData as CFData),
+      let publicKey = SecCertificateCopyKey(cert)
+    else {
+      return nil
+    }
+    return publicKey
+  }
+}

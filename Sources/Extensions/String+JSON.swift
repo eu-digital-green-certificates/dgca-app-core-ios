@@ -1,6 +1,6 @@
 /*-
  * ---license-start
- * eu-digital-green-certificates / dgca-app-core-ios
+ * eu-digital-green-certificates / dgca-verifier-app-ios
  * ---
  * Copyright (C) 2021 T-Systems International GmbH and all other contributors
  * ---
@@ -17,9 +17,25 @@
  * limitations under the License.
  * ---license-end
  */
-//  
-//  ___FILENAME___
-//  ___PACKAGENAME___
-//  
-//  Created by ___FULLUSERNAME___ on ___DATE___.
-//  
+//
+//  File.swift
+//  DGCAVerifier
+//
+//  Created by Yannick Spreen on 4/13/21.
+//
+
+import Foundation
+
+extension String {
+  var asJSONDict: [String: AnyObject] {
+    if let data = data(using: .utf8) {
+      do {
+        let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:AnyObject]
+        return json ?? [:]
+      } catch {
+        return [:]
+      }
+    }
+    return [:]
+  }
+}
