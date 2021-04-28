@@ -17,7 +17,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(url: "https://github.com/unrelentingtech/SwiftCBOR", from: "0.4.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.1"),
-    .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
+    // .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
     // .package(url: "https://github.com/scenee/FloatingPanel", from: "2.3.0"),
     .package(name: "JSONSchema", url: "https://github.com/jnewc/JSONSchema.swift", .branch("master"))
   ],
@@ -29,7 +29,6 @@ let package = Package(
       dependencies: [
         "SwiftCBOR",
         "SwiftyJSON",
-        "Alamofire",
         "JSONSchema"
       ],
       path: "Sources"),

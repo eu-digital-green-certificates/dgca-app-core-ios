@@ -45,14 +45,14 @@ enum AttributeKey: String {
   case recoveryStatements
 }
 
-enum HCertType: String {
+public enum HCertType: String {
   case test = "Test"
   case vaccineOne = "First Vaccine Shot"
   case vaccineTwo = "Last Vaccine Shot"
   case recovery = "Recovery"
 }
 
-enum HCertValidity {
+public enum HCertValidity {
   case valid
   case invalid
 }
@@ -68,25 +68,25 @@ let attributeKeys: [AttributeKey: [String]] = [
   .recoveryStatements: ["r"],
 ]
 
-enum InfoSectionStyle {
+public enum InfoSectionStyle {
   case normal
   case fixedWidthFont
 }
 
-struct InfoSection {
-  var header: String
-  var content: String
-  var style = InfoSectionStyle.normal
+public struct InfoSection {
+  public var header: String
+  public var content: String
+  public var style = InfoSectionStyle.normal
 }
 
-protocol PublicKeyStorageDelegate {
+public protocol PublicKeyStorageDelegate {
   func getEncodedPublicKey(for _: String) -> String?
 }
 
-struct HCert {
-  static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
+public struct HCert {
+  public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
 
-  static let supportedPrefixes = [
+  public static let supportedPrefixes = [
     "HC1:"
   ]
 
@@ -121,7 +121,7 @@ struct HCert {
     return true
   }
 
-  init?(from cborData: Data) {
+  public init?(from cborData: Data) {
     rawData = cborData
     guard
       let headerStr = CBOR.header(from: cborData)?.toString(),
@@ -155,7 +155,7 @@ struct HCert {
     return object
   }
 
-  var info: [InfoSection] {
+  public var info: [InfoSection] {
     var info = [
       InfoSection(
         header: "Certificate Type",
@@ -195,18 +195,18 @@ struct HCert {
     return info + statement.info
   }
 
-  var rawData: Data
-  var kidStr: String
-  var header: JSON
-  var body: JSON
+  public var rawData: Data
+  public var kidStr: String
+  public var header: JSON
+  public var body: JSON
 
-  var fullName: String {
+  public var fullName: String {
     let first = get(.firstName).string ?? ""
     let last = get(.lastName).string ?? ""
     return "\(first) \(last)"
   }
 
-  var dateOfBirth: Date? {
+  public var dateOfBirth: Date? {
     guard let dateString = get(.dateOfBirth).string else {
       return nil
     }
@@ -242,10 +242,10 @@ struct HCert {
   var statements: [HCertEntry] {
     testStatements + vaccineStatements + recoveryStatements
   }
-  var statement: HCertEntry! {
+  public var statement: HCertEntry! {
     statements.last
   }
-  var type: HCertType {
+  public var type: HCertType {
     if let vaccine = statement as? VaccinationEntry {
       if vaccine.doseNumber == vaccine.dosesTotal {
         return .vaccineTwo
@@ -257,10 +257,10 @@ struct HCert {
     }
     return .test
   }
-  var isValid: Bool {
+  public var isValid: Bool {
     cryptographicallyValid && semanticallyValid
   }
-  var cryptographicallyValid: Bool {
+  public var cryptographicallyValid: Bool {
     guard
       let delegate = Self.publicKeyStorageDelegate,
       let key = delegate.getEncodedPublicKey(for: kidStr)
@@ -269,10 +269,10 @@ struct HCert {
     }
     return COSE.verify(rawData, with: key)
   }
-  var semanticallyValid: Bool {
+  public var semanticallyValid: Bool {
     statement.isValid
   }
-  var validity: HCertValidity {
+  public var validity: HCertValidity {
     return isValid ? .valid : .invalid
   }
 }

@@ -28,7 +28,7 @@
 
 import Foundation
 
-protocol HCertEntry {
+public protocol HCertEntry {
   var info: [InfoSection] { get }
   var isValid: Bool { get }
 }

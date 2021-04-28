@@ -32,14 +32,13 @@ import AVFoundation
 import SwiftCBOR
 import LocalAuthentication
 
-protocol ScanVCDelegate {
-  func initializationFinished()
+public protocol ScanVCDelegate {
   func hCertScanned(_:HCert)
 }
 
-class ScanVC: UIViewController {
+open class ScanVC: UIViewController {
   var captureSession = AVCaptureSession()
-  var delegate: ScanVCDelegate?
+  public var delegate: ScanVCDelegate?
 
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
     guard error == nil else {
@@ -49,7 +48,7 @@ class ScanVC: UIViewController {
     self.processClassification(request)
   }
 
-  override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
     #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -59,15 +58,14 @@ class ScanVC: UIViewController {
     checkPermissions()
     setupCameraLiveView()
     #endif
-    delegate?.initializationFinished()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     captureSession.stopRunning()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
+  public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     captureSession.startRunning()
   }
@@ -166,7 +164,7 @@ extension ScanVC {
 
 
 extension ScanVC: AVCaptureVideoDataOutputSampleBufferDelegate {
-  func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+  public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
     let imageRequestHandler = VNImageRequestHandler(

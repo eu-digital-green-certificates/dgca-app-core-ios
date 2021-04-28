@@ -28,9 +28,9 @@
 
 import Foundation
 
-typealias KidBytes = [UInt8]
+public typealias KidBytes = [UInt8]
 
-struct KID {
+public struct KID {
   public static func string(from kidBytes: KidBytes) -> String {
     return Data(kidBytes.prefix(8)).base64EncodedString()
   }

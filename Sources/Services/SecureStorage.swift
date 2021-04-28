@@ -33,10 +33,12 @@ struct SecureDB: Codable {
   let signature: Data
 }
 
-struct SecureStorage<T: Codable> {
+public struct SecureStorage<T: Codable> {
   let documents: URL! = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
   var path: URL! { URL(string: documents.absoluteString + "secure.db") }
   let secureStorageKey = Enclave.loadOrGenerateKey(with: "secureStorageKey")
+
+  public init() {}
 
   /**
    Loads encrypted db and overrides it with an empty one if that fails.
