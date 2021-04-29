@@ -35,6 +35,8 @@ enum TestResult: String {
 }
 
 struct TestEntry: HCertEntry {
+  var typeAddon: String { "" }
+
   var info: [InfoSection] {
     [
       InfoSection(header: "Time of Sampling", content: sampleTime.dateTimeString),

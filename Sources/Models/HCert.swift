@@ -47,8 +47,7 @@ enum AttributeKey: String {
 
 public enum HCertType: String {
   case test = "Test"
-  case vaccineOne = "First Vaccine Shot"
-  case vaccineTwo = "Last Vaccine Shot"
+  case vaccine = "Vaccine Shot"
   case recovery = "Recovery"
 }
 
@@ -159,7 +158,7 @@ public struct HCert {
     var info = [
       InfoSection(
         header: "Certificate Type",
-        content: type.rawValue
+        content: type.rawValue + " \(statement.typeAddon)"
       ),
     ] + personIdentifiers
     if let date = dateOfBirth {
@@ -246,11 +245,8 @@ public struct HCert {
     statements.last
   }
   public var type: HCertType {
-    if let vaccine = statement as? VaccinationEntry {
-      if vaccine.doseNumber == vaccine.dosesTotal {
-        return .vaccineTwo
-      }
-      return .vaccineOne
+    if statement is VaccinationEntry {
+      return .vaccine
     }
     if statement is RecoveryEntry {
       return .recovery

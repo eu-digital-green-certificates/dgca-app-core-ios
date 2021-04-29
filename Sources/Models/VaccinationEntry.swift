@@ -30,6 +30,8 @@ import Foundation
 import SwiftyJSON
 
 struct VaccinationEntry: HCertEntry {
+  var typeAddon: String { "\(doseNumber) of \(dosesTotal)" }
+
   var info: [InfoSection] {
     [
       InfoSection(header: "Date of Vaccination", content: date.dateString)

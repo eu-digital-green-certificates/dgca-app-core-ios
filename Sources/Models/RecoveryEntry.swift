@@ -30,6 +30,8 @@ import Foundation
 import SwiftyJSON
 
 struct RecoveryEntry: HCertEntry {
+  var typeAddon: String { "" }
+
   var info: [InfoSection] {
     [
       InfoSection(header: "Valid Until", content: validUntil.dateString),
