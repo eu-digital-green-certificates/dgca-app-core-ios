@@ -10,7 +10,9 @@ jobs:
   build:
 
     runs-on: macos-latest
-
+    strategy:
+      matrix:
+        target: [ios]
     steps:
     - uses: actions/checkout@v2
     - name: Build
