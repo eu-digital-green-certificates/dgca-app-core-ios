@@ -48,8 +48,21 @@ open class ScanVC: UIViewController {
     self.processClassification(request)
   }
 
+  var camView: UIView!
+
   open override func viewDidLoad() {
     super.viewDidLoad()
+
+    camView = UIView(frame: .zero)
+    camView.translatesAutoresizingMaskIntoConstraints = false
+    camView.isUserInteractionEnabled = false
+    view.addSubview(camView)
+    NSLayoutConstraint.activate([
+      camView.topAnchor.constraint(equalTo: view.topAnchor),
+      camView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      camView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      camView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
     view.backgroundColor = .init(white: 0, alpha: 1)
     #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -120,7 +133,7 @@ extension ScanVC {
     guard let barcodes = request.results else { return }
     DispatchQueue.main.async { [self] in
       if captureSession.isRunning {
-        view.layer.sublayers?.removeSubrange(1...)
+        camView.layer.sublayers?.removeSubrange(1...)
 
         for barcode in barcodes {
           let _ = barcode
@@ -189,7 +202,7 @@ extension ScanVC {
     cameraPreviewLayer.videoGravity = .resizeAspectFill
     cameraPreviewLayer.connection?.videoOrientation = .portrait
     cameraPreviewLayer.frame = view.frame
-    view.layer.insertSublayer(cameraPreviewLayer, at: 0)
+    camView.layer.insertSublayer(cameraPreviewLayer, at: 0)
   }
 
   private func showAlert(withTitle title: String, message: String) {
