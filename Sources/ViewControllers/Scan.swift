@@ -50,6 +50,7 @@ open class ScanVC: UIViewController {
 
   open override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .init(white: 0, alpha: 1)
     #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       self.observationHandler(payloadS: "HC1:NCFOXN%TS3DHZN4HAF*PQFKKGTNA.Q/R8WRU2FCLK94QLZKC6L9..U4:OR$S:LC/GPWBILC9GGBYPLDXI25P-+R2YBV44PZB6H0CJ0%H0%P8. KOKGTM8$M8CNCBMAYL0C KPLIUM45FM4HGK3MGY8-JE6GQ2%KYZPUC5V620FLTCE 69B2A8AM0616DPO25QGMK9EXVSEEWK*R3T3+7A.N88J4R$F/MAITHP+P9R7.5CEESQ1EYBP.SS6QKU%O6QS03L0QIRR97I2HOAXL92L0B-S-*O/Y41FD7Y4L4OVIOE1MA.DI1IM.6%8WBMOT1K$7UIB81FD+.K.78/HL*DD2IHJSN37HMX3.7KO7JDKB:ZJ83BDPSCFTB.SBVTHOJ92KNNSQBJGZIGOJ6NJF0JEYI1DLNCKUCI5OI9YI:8DGCDQTU*GI%XGZFPDJRZBW84Q1ZMDKU TR%VE GMT2REKOT6PF7G8*30VVW*38OBJ3KMQJ4.FG4GMPVOQNC01Y3J$T7-HVISKO9QGOE$ZQ*UGKSJS6OA202-854")
@@ -58,6 +59,7 @@ open class ScanVC: UIViewController {
     checkPermissions()
     setupCameraLiveView()
     #endif
+    SquareViewFinder.create(from: self)
   }
 
   public override func viewWillDisappear(_ animated: Bool) {
