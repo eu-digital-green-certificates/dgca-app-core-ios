@@ -27,6 +27,7 @@
 import Foundation
 import SwiftyJSON
 import JSONSchema
+import UIKit
 
 enum ClaimKey: String {
   case HCERT = "-260"
@@ -84,6 +85,7 @@ public protocol PublicKeyStorageDelegate {
 
 public struct HCert {
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
+  public static var PREFETCH_ALL_CODES = false
 
   public static let supportedPrefixes = [
     "HC1:"
@@ -158,6 +160,9 @@ public struct HCert {
       print("Wrong EU_DGC Version!")
       return nil
     }
+    if Self.PREFETCH_ALL_CODES {
+      prefetchCode()
+    }
   }
 
   func get(_ attribute: AttributeKey) -> JSON {
@@ -208,11 +213,53 @@ public struct HCert {
     return info + statement.info
   }
 
+  var shortPayload: String {
+    return SHA256.digest(
+      input: Data(payloadString.encode()) as NSData
+    ).base64EncodedString()
+  }
   public var payloadString: String
   public var cborData: Data
   public var kidStr: String
   public var header: JSON
   public var body: JSON
+
+  var qrCodeRendered: UIImage? {
+    Self.cachedQrCodes[shortPayload]
+  }
+
+  public var qrCode: UIImage {
+    return qrCodeRendered ?? renderQrCode()
+  }
+
+  func renderQrCode() -> UIImage {
+    let code: UIImage = makeQrCode()
+    Self.cachedQrCodes[shortPayload] = code
+    return code
+  }
+
+  func makeQrCode() -> UIImage! {
+    let data = payloadString.data(using: String.Encoding.ascii)
+
+    if let filter = CIFilter(name: "CIQRCodeGenerator") {
+      filter.setValue(data, forKey: "inputMessage")
+      let transform = CGAffineTransform(scaleX: 3, y: 3)
+
+      if let output = filter.outputImage?.transformed(by: transform) {
+        return UIImage(ciImage: output)
+      }
+    }
+
+    return nil
+  }
+
+  func prefetchCode() {
+    DispatchQueue.global(qos: .background).async {
+      _ = renderQrCode()
+    }
+  }
+
+  static var cachedQrCodes = [String: UIImage]()
 
   public var fullName: String {
     let first = get(.firstName).string ?? ""
