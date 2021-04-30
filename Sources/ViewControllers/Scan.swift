@@ -37,7 +37,7 @@ public protocol ScanVCDelegate {
 }
 
 open class ScanVC: UIViewController {
-  var captureSession = AVCaptureSession()
+  var captureSession: AVCaptureSession?
   public var delegate: ScanVCDelegate?
 
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
@@ -69,6 +69,7 @@ open class ScanVC: UIViewController {
       self.observationHandler(payloadS: "HC1:NCFOXN%TS3DHZN4HAF*PQFKKGTNA.Q/R8WRU2FCLK94QLZKC6L9..U4:OR$S:LC/GPWBILC9GGBYPLDXI25P-+R2YBV44PZB6H0CJ0%H0%P8. KOKGTM8$M8CNCBMAYL0C KPLIUM45FM4HGK3MGY8-JE6GQ2%KYZPUC5V620FLTCE 69B2A8AM0616DPO25QGMK9EXVSEEWK*R3T3+7A.N88J4R$F/MAITHP+P9R7.5CEESQ1EYBP.SS6QKU%O6QS03L0QIRR97I2HOAXL92L0B-S-*O/Y41FD7Y4L4OVIOE1MA.DI1IM.6%8WBMOT1K$7UIB81FD+.K.78/HL*DD2IHJSN37HMX3.7KO7JDKB:ZJ83BDPSCFTB.SBVTHOJ92KNNSQBJGZIGOJ6NJF0JEYI1DLNCKUCI5OI9YI:8DGCDQTU*GI%XGZFPDJRZBW84Q1ZMDKU TR%VE GMT2REKOT6PF7G8*30VVW*38OBJ3KMQJ4.FG4GMPVOQNC01Y3J$T7-HVISKO9QGOE$ZQ*UGKSJS6OA202-854")
     }
     #else
+    captureSession = AVCaptureSession()
     checkPermissions()
     setupCameraLiveView()
     #endif
@@ -77,12 +78,12 @@ open class ScanVC: UIViewController {
 
   public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    captureSession.stopRunning()
+    captureSession?.stopRunning()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    captureSession.startRunning()
+    captureSession?.startRunning()
   }
 }
 
@@ -104,7 +105,7 @@ extension ScanVC {
   }
 
   private func setupCameraLiveView() {
-    captureSession.sessionPreset = .hd1280x720
+    captureSession?.sessionPreset = .hd1280x720
 
     let videoDevice = AVCaptureDevice
       .default(.builtInWideAngleCamera, for: .video, position: .back)
@@ -112,19 +113,20 @@ extension ScanVC {
     guard
       let device = videoDevice,
       let videoDeviceInput = try? AVCaptureDeviceInput(device: device),
-      captureSession.canAddInput(videoDeviceInput) else {
+      captureSession?.canAddInput(videoDeviceInput) == true
+    else {
       showAlert(
         withTitle: "Cannot Find Camera",
         message: "There seems to be a problem with the camera on your device.")
       return
     }
 
-    captureSession.addInput(videoDeviceInput)
+    captureSession?.addInput(videoDeviceInput)
 
     let captureOutput = AVCaptureVideoDataOutput()
     captureOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
     captureOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
-    captureSession.addOutput(captureOutput)
+    captureSession?.addOutput(captureOutput)
 
     configurePreviewLayer()
   }
@@ -132,7 +134,7 @@ extension ScanVC {
   func processClassification(_ request: VNRequest) {
     guard let barcodes = request.results else { return }
     DispatchQueue.main.async { [self] in
-      if captureSession.isRunning {
+      if captureSession?.isRunning == true {
         camView.layer.sublayers?.removeSubrange(1...)
 
         for barcode in barcodes {
@@ -179,6 +181,9 @@ extension ScanVC: AVCaptureVideoDataOutputSampleBufferDelegate {
 
 extension ScanVC {
   private func configurePreviewLayer() {
+    guard let captureSession = captureSession else {
+      return
+    }
     let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     cameraPreviewLayer.videoGravity = .resizeAspectFill
     cameraPreviewLayer.connection?.videoOrientation = .portrait
