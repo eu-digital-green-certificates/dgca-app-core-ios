@@ -233,6 +233,9 @@ public struct HCert {
   }
 
   func renderQrCode() -> UIImage {
+    if let rendered = qrCodeRendered {
+      return rendered
+    }
     let code: UIImage = makeQrCode()
     Self.cachedQrCodes[shortPayload] = code
     return code
@@ -254,6 +257,9 @@ public struct HCert {
   }
 
   func prefetchCode() {
+    guard qrCodeRendered == nil else {
+      return
+    }
     DispatchQueue.global(qos: .background).async {
       _ = renderQrCode()
     }
