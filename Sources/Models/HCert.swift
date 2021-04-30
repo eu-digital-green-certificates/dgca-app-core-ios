@@ -120,8 +120,22 @@ public struct HCert {
     return true
   }
 
-  public init?(from cborData: Data) {
-    rawData = cborData
+  public init?(from payloadString: String) {
+    var payloadString = payloadString
+    for prefix in Self.supportedPrefixes {
+      if payloadString.starts(with: prefix) {
+        payloadString = String(payloadString.dropFirst(prefix.count))
+      }
+    }
+    self.payloadString = payloadString
+
+    guard
+      let compressed = try? payloadString.fromBase45()
+    else {
+      return nil
+    }
+
+    cborData = decompress(compressed)
     guard
       let headerStr = CBOR.header(from: cborData)?.toString(),
       let bodyStr = CBOR.payload(from: cborData)?.toString(),
@@ -194,7 +208,8 @@ public struct HCert {
     return info + statement.info
   }
 
-  public var rawData: Data
+  public var payloadString: String
+  public var cborData: Data
   public var kidStr: String
   public var header: JSON
   public var body: JSON
@@ -263,7 +278,7 @@ public struct HCert {
     else {
       return false
     }
-    return COSE.verify(rawData, with: key)
+    return COSE.verify(cborData, with: key)
   }
   public var semanticallyValid: Bool {
     statement.isValid
