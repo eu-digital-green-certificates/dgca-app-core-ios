@@ -151,26 +151,7 @@ extension ScanVC {
   }
 
   func observationHandler(payloadS: String?) {
-    guard
-      var payloadString = payloadS
-    else {
-      return
-    }
-
-    for prefix in HCert.supportedPrefixes {
-      if payloadString.starts(with: prefix) {
-        payloadString = String(payloadString.dropFirst(prefix.count))
-      }
-    }
-
-    guard
-      let compressed = try? payloadString.fromBase45()
-    else {
-      return
-    }
-
-    let data = decompress(compressed)
-    if let hCert = HCert(from: data) {
+    if let hCert = HCert(from: payloadS ?? "") {
       delegate?.hCertScanned(hCert)
     }
   }
