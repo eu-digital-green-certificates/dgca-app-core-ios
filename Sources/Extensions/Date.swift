@@ -45,13 +45,13 @@ extension Date {
   static let dateFormatter = formatter(for: "yyyy-MM-dd")
   static let dateTimeFormatter = formatter(for: "yyyy-MM-dd HH:mm '(UTC)'")
 
-  var isoString: String {
+  public var isoString: String {
     Date.isoFormatter.string(from: self)
   }
-  var dateString: String {
+  public var dateString: String {
     Date.dateFormatter.string(from: self)
   }
-  var dateTimeString: String {
+  public var dateTimeString: String {
     Date.dateTimeFormatter.string(from: self)
   }
 
@@ -90,7 +90,7 @@ extension Date {
     return nil
   }
 
-  var localDateString: String {
+  public var localDateString: String {
     let formatter = DateFormatter()
     formatter.locale = .current
     formatter.timeStyle = .none

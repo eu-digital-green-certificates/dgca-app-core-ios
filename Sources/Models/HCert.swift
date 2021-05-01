@@ -173,11 +173,15 @@ public struct HCert {
     return object
   }
 
+  public var certTypeString: String {
+    type.rawValue + " \(statement.typeAddon)"
+  }
+
   public var info: [InfoSection] {
     var info = [
       InfoSection(
         header: "Certificate Type",
-        content: type.rawValue + " \(statement.typeAddon)"
+        content: certTypeString
       ),
     ] + personIdentifiers
     if let date = dateOfBirth {
@@ -228,20 +232,25 @@ public struct HCert {
     Self.cachedQrCodes[shortPayload]
   }
 
-  public var qrCode: UIImage {
+  public var qrCode: UIImage? {
     return qrCodeRendered ?? renderQrCode()
   }
 
-  func renderQrCode() -> UIImage {
+  static let qrLock = NSLock()
+  func renderQrCode() -> UIImage? {
     if let rendered = qrCodeRendered {
       return rendered
     }
-    let code: UIImage = makeQrCode()
-    Self.cachedQrCodes[shortPayload] = code
+    let code = makeQrCode()
+    if let value = code {
+      Self.qrLock.lock()
+      Self.cachedQrCodes[shortPayload] = value
+      Self.qrLock.unlock()
+    }
     return code
   }
 
-  func makeQrCode() -> UIImage! {
+  func makeQrCode() -> UIImage? {
     let data = payloadString.data(using: String.Encoding.ascii)
 
     if let filter = CIFilter(name: "CIQRCodeGenerator") {
