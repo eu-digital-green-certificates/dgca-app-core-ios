@@ -34,6 +34,7 @@ let EU_DGC_SCHEMA_V1 = """
   "$id": "https://id.uvci.eu/DGC.combined-schema.json",
   "title": "EU DGC",
   "description": "EU Digital Green Certificate",
+  "$comment": "Schema version 1.0.0",
   "required": [
     "ver",
     "nam",
@@ -59,7 +60,7 @@ let EU_DGC_SCHEMA_V1 = """
       "description": "Date of Birth of the person addressed in the DGC. ISO 8601 date format restricted to range 1900-2099",
       "type": "string",
       "format": "date",
-      "pattern": "[19|20][0-9][0-9]-(0[1-9]|1[0-2])-([0-2][1-9]|3[0|1])",
+      "pattern": "(19|20)\\\\d{2}-\\\\d{2}-\\\\d{2}",
       "examples": [
         "1979-04-14"
       ]
@@ -147,7 +148,6 @@ let EU_DGC_SCHEMA_V1 = """
           "type": "string",
           "pattern": "^[A-Z<]*$",
           "maxLength": 50,
-          "$comment": "SematicSG: ICAO transliterated has max length of?",
           "examples": [
             "JIRINA<MARIA<ALENA"
           ]
@@ -155,7 +155,7 @@ let EU_DGC_SCHEMA_V1 = """
       }
     },
     "certificate_id": {
-      "description": "Certificate Identifier, UVCI",
+      "description": "Certificate Identifier, format as per UVCI: Annex 2 in  https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf",
       "type": "string",
       "maxLength": 50
     },
