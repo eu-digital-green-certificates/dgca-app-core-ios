@@ -30,11 +30,14 @@
 import Foundation
 import CommonCrypto
 
-struct SHA256 {
+public struct SHA256 {
   public static func digest(input: NSData) -> Data {
     let digestLength = Int(CC_SHA256_DIGEST_LENGTH)
     var hash = [UInt8](repeating: 0, count: digestLength)
     CC_SHA256(input.bytes, UInt32(input.length), &hash)
     return Data(NSData(bytes: hash, length: digestLength))
+  }
+  public static func stringDigest(input: Data) -> String {
+    return digest(input: input as NSData).base64EncodedString()
   }
 }
