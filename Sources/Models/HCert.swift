@@ -79,10 +79,6 @@ public struct InfoSection {
   public var style = InfoSectionStyle.normal
 }
 
-public protocol PublicKeyStorageDelegate {
-  func getEncodedPublicKey(for _: String) -> String?
-}
-
 public struct HCert {
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
   public static var PREFETCH_ALL_CODES = false
@@ -347,5 +343,14 @@ public struct HCert {
   }
   public var validity: HCertValidity {
     return isValid ? .valid : .invalid
+  }
+  public var certHash: String {
+    CBOR.hash(from: cborData)
+  }
+  public var uvci: String {
+    statement.uvci
+  }
+  public var keyPair: SecKey! {
+    Enclave.loadOrGenerateKey(with: uvci)
   }
 }

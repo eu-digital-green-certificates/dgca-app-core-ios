@@ -24,7 +24,7 @@
 //  
 //  Created by Yannick Spreen on 4/28/21.
 //  
-        
+
 
 import Foundation
 import SwiftyJSON
@@ -57,6 +57,13 @@ struct VaccinationEntry: HCertEntry {
 
   init?(body: JSON) {
     guard
+      let diseaseTargeted = body[Fields.diseaseTargeted.rawValue].string,
+      let vaccineOrProphylaxis = body[Fields.vaccineOrProphylaxis.rawValue].string,
+      let medicalProduct = body[Fields.medicalProduct.rawValue].string,
+      let manufacturer = body[Fields.manufacturer.rawValue].string,
+      let country = body[Fields.country.rawValue].string,
+      let issuer = body[Fields.issuer.rawValue].string,
+      let uvci = body[Fields.uvci.rawValue].string,
       let doseNumber = body[Fields.doseNumber.rawValue].int,
       let dosesTotal = body[Fields.dosesTotal.rawValue].int,
       let dateStr = body[Fields.date.rawValue].string,
@@ -64,11 +71,25 @@ struct VaccinationEntry: HCertEntry {
     else {
       return nil
     }
+    self.diseaseTargeted = diseaseTargeted
+    self.vaccineOrProphylaxis = vaccineOrProphylaxis
+    self.medicalProduct = medicalProduct
+    self.manufacturer = manufacturer
+    self.country = country
+    self.issuer = issuer
+    self.uvci = uvci
     self.doseNumber = doseNumber
     self.dosesTotal = dosesTotal
     self.date = date
   }
 
+  var diseaseTargeted: String
+  var vaccineOrProphylaxis: String
+  var medicalProduct: String
+  var manufacturer: String
+  var country: String
+  var issuer: String
+  var uvci: String
   var doseNumber: Int
   var dosesTotal: Int
   var date: Date
