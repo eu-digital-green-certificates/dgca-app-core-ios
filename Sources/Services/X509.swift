@@ -26,7 +26,7 @@
 
 import Foundation
 
-struct X509 {
+public struct X509 {
   public static func pubKey(from b64EncodedCert: String) -> SecKey? {
     guard
       let encodedCertData = Data(base64Encoded: b64EncodedCert),
@@ -36,5 +36,23 @@ struct X509 {
       return nil
     }
     return publicKey
+  }
+
+  public static func derPubKey(for secKey: SecKey) -> Data? {
+    var error: Unmanaged<CFError>?
+    guard
+      let pubKey = SecKeyCopyPublicKey(secKey),
+      let publicKeyData = SecKeyCopyExternalRepresentation(pubKey, &error)
+    else {
+      return nil
+    }
+    return exportECPublicKeyToDER(publicKeyData as Data, keyType: kSecAttrKeyTypeEC as String, keySize: 384)
+  }
+
+  static func exportECPublicKeyToDER(_ rawPublicKeyBytes: Data, keyType: String, keySize: Int) -> Data {
+    let curveOIDHeader: [UInt8] = [0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01, 0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07, 0x03, 0x42, 0x00]
+    var data = Data(bytes: curveOIDHeader, count: curveOIDHeader.count)
+    data.append(rawPublicKeyBytes)
+    return data
   }
 }
