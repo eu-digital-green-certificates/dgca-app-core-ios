@@ -29,7 +29,6 @@ import SwiftCBOR
 
 struct CBOR {
   static func unwrap(data: Data) -> (SwiftCBOR.CBOR?, SwiftCBOR.CBOR?) {
-    let COSE_TAG = UInt64(18)
     let decoder = SwiftCBOR.CBORDecoder(input: data.uint)
 
     guard
@@ -78,5 +77,17 @@ struct CBOR {
     default:
       return nil
     }
+  }
+
+  public static func hash(from cborData: Data) -> String {
+    let decoder = SwiftCBOR.CBORDecoder(input: cborData.uint)
+
+    guard
+      let cbor = try? decoder.decodeItem(),
+      let data = COSE.signedPayloadBytes(from: cbor)
+    else {
+      return ""
+    }
+    return SHA256.digest(input: data as NSData).base64EncodedString()
   }
 }

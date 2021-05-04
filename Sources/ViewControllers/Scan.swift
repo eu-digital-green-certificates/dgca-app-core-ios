@@ -30,7 +30,6 @@ import UIKit
 import Vision
 import AVFoundation
 import SwiftCBOR
-import LocalAuthentication
 
 public protocol ScanVCDelegate {
   func hCertScanned(_:HCert)

@@ -27,6 +27,8 @@
 import Foundation
 import SwiftCBOR
 
+let COSE_TAG = UInt64(18)
+
 struct COSE {
   public static func verify(_ cborData: Data, with xHex: String, and yHex: String) -> Bool {
     let decoder = SwiftCBOR.CBORDecoder(input: cborData.uint)
@@ -45,8 +47,6 @@ struct COSE {
     return verify(cbor, with: rsa)
   }
   public static func verify(_ cbor: SwiftCBOR.CBOR, with xHex: String, and yHex: String) -> Bool {
-    let COSE_TAG = UInt64(18)
-
     guard
       case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
       tag.rawValue == COSE_TAG, // SIGN1
@@ -71,16 +71,31 @@ struct COSE {
     }
     return Signature.verify(s, for: d, with: key)
   }
-  public static func verify(_ cbor: SwiftCBOR.CBOR, with derPubKeyB64: String) -> Bool {
-    let COSE_TAG = UInt64(18)
 
+  public static func verify(_ cbor: SwiftCBOR.CBOR, with derPubKeyB64: String) -> Bool {
     guard
       case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
       tag.rawValue == COSE_TAG, // SIGN1
       case let SwiftCBOR.CBOR.array(array) = cborElement,
-      case let SwiftCBOR.CBOR.byteString(signature) = array[3]
+      case let SwiftCBOR.CBOR.byteString(signature) = array[3],
+      let d = signedPayloadBytes(from: cbor)
     else {
       return false
+    }
+    let s = Data(signature)
+    guard let key = X509.pubKey(from: derPubKeyB64) else {
+      return false
+    }
+    return Signature.verify(s, for: d, with: key)
+  }
+
+  public static func signedPayloadBytes(from cbor: SwiftCBOR.CBOR) -> Data? {
+    guard
+      case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
+      tag.rawValue == COSE_TAG, // SIGN1
+      case let SwiftCBOR.CBOR.array(array) = cborElement
+    else {
+      return nil
     }
 
     let signedPayload: [UInt8] = SwiftCBOR.CBOR.encode(
@@ -91,11 +106,6 @@ struct COSE {
         array[2]
       ]
     )
-    let d = Data(signedPayload)
-    let s = Data(signature)
-    guard let key = X509.pubKey(from: derPubKeyB64) else {
-      return false
-    }
-    return Signature.verify(s, for: d, with: key)
+    return Data(signedPayload)
   }
 }

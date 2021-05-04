@@ -45,7 +45,7 @@ struct Enclave {
         SecAccessControlCreateWithFlags(
           kCFAllocatorDefault,
           kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-          [.privateKeyUsage], // , .biometryCurrentSet],
+          [.privateKeyUsage],
           &error
         )
     else {
@@ -159,15 +159,25 @@ struct Enclave {
     return (isValid, err)
   }
 
-  static func sign(data: Data, with key: SecKey, completion: @escaping (Data?, String?) -> Void) {
+  static func sign(
+    data: Data,
+    with key: SecKey,
+    using algorithm: SecKeyAlgorithm? = nil,
+    completion: @escaping (Data?, String?) -> Void
+  ) {
     DispatchQueue.global(qos: .userInitiated).async {
-      let (result, error) = syncSign(data: data, with: key)
+      let (result, error) = syncSign(data: data, with: key, using: algorithm)
       completion(result, error)
     }
   }
 
-  static func syncSign(data: Data, with key: SecKey) -> (Data?, String?) {
-    guard SecKeyIsAlgorithmSupported(key, .sign, signAlg) else {
+  static func syncSign(
+    data: Data,
+    with key: SecKey,
+    using algorithm: SecKeyAlgorithm? = nil
+  ) -> (Data?, String?) {
+    let algorithm = algorithm ?? signAlg
+    guard SecKeyIsAlgorithmSupported(key, .sign, algorithm) else {
       return (nil, "Algorithm not supported.")
     }
     var error: Unmanaged<CFError>?

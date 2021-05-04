@@ -32,4 +32,5 @@ public protocol HCertEntry {
   var info: [InfoSection] { get }
   var isValid: Bool { get }
   var typeAddon: String { get }
+  var uvci: String { get }
 }
