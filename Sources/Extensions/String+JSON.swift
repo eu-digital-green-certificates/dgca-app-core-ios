@@ -1,6 +1,6 @@
 /*-
  * ---license-start
- * eu-digital-green-certificates / dgca-verifier-app-ios
+ * eu-digital-green-certificates / dgca-app-core-ios
  * ---
  * Copyright (C) 2021 T-Systems International GmbH and all other contributors
  * ---
@@ -18,7 +18,7 @@
  * ---license-end
  */
 //
-//  File.swift
+//  String+JSON.swift
 //  DGCAVerifier
 //
 //  Created by Yannick Spreen on 4/13/21.
