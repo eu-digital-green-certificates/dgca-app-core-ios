@@ -84,6 +84,32 @@ open class ScanVC: UIViewController {
     super.viewDidAppear(animated)
     captureSession?.startRunning()
   }
+
+  public func createBackButton() {
+    let button = UIButton(frame: .zero)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.backgroundColor = .clear
+    button.setAttributedTitle(
+      NSAttributedString(
+        string: "Cancel",
+        attributes: [
+          .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
+          .foregroundColor: UIColor.white,
+        ]
+      ), for: .normal
+    )
+    button.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+    view.addSubview(button)
+    NSLayoutConstraint.activate([
+      button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+      button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16.0),
+    ])
+  }
+
+  @IBAction
+  func cancel() {
+    navigationController?.popViewController(animated: true)
+  }
 }
 
 
