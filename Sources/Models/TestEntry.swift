@@ -39,7 +39,7 @@ struct TestEntry: HCertEntry {
 
   var info: [InfoSection] {
     [
-      InfoSection(header: "Time of Sampling", content: sampleTime.dateTimeString),
+      InfoSection(header: "Time of Sampling", content: sampleTime.dateTimeStringUtc),
       InfoSection(header: "Test Result", content: resultNegative ? "Not Detected" : "Detected ⚠️"),
     ]
   }

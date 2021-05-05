@@ -39,10 +39,18 @@ public struct X509 {
   }
 
   public static func derPubKey(for secKey: SecKey) -> Data? {
+    guard
+      let pubKey = SecKeyCopyPublicKey(secKey)
+    else {
+      return nil
+    }
+    return derKey(for: pubKey)
+  }
+
+  public static func derKey(for secKey: SecKey) -> Data? {
     var error: Unmanaged<CFError>?
     guard
-      let pubKey = SecKeyCopyPublicKey(secKey),
-      let publicKeyData = SecKeyCopyExternalRepresentation(pubKey, &error)
+      let publicKeyData = SecKeyCopyExternalRepresentation(secKey, &error)
     else {
       return nil
     }
