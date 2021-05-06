@@ -112,10 +112,6 @@ public struct HCert {
       return false
     }
     #endif
-    print(header)
-    #if DEBUG
-    print(body)
-    #endif
     return true
   }
 
