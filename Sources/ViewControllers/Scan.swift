@@ -41,7 +41,7 @@ open class ScanVC: UIViewController {
 
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
     guard error == nil else {
-      self.showAlert(withTitle: "Barcode error", message: error?.localizedDescription ?? "error")
+      self.showAlert(withTitle: l10n("err.barcdode"), message: error?.localizedDescription ?? l10n("err.misc"))
       return
     }
     self.processClassification(request)
@@ -91,7 +91,7 @@ open class ScanVC: UIViewController {
     button.backgroundColor = .clear
     button.setAttributedTitle(
       NSAttributedString(
-        string: "Cancel",
+        string: l10n("btn.cancel"),
         attributes: [
           .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
           .foregroundColor: UIColor.white,
@@ -141,8 +141,8 @@ extension ScanVC {
       captureSession?.canAddInput(videoDeviceInput) == true
     else {
       showAlert(
-        withTitle: "Cannot Find Camera",
-        message: "There seems to be a problem with the camera on your device.")
+        withTitle: l10n("err.cam"),
+        message: l10n("err.cam.desc"))
       return
     }
 
@@ -226,8 +226,8 @@ extension ScanVC {
 
   private func showPermissionsAlert() {
     showAlert(
-      withTitle: "Camera Permissions",
-      message: "Please open Settings and grant permission for this app to use your camera."
+      withTitle: l10n("err.cam.perm"),
+      message: l10n("err.cam.perm.desc")
     )
   }
 }

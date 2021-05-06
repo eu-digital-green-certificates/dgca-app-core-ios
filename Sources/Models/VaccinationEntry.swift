@@ -30,11 +30,14 @@ import Foundation
 import SwiftyJSON
 
 struct VaccinationEntry: HCertEntry {
-  var typeAddon: String { "\(doseNumber) of \(dosesTotal)" }
+  var typeAddon: String {
+    let format = l10n("vaccine.x-of-x")
+    return .localizedStringWithFormat(format, doseNumber, dosesTotal)
+  }
 
   var info: [InfoSection] {
     [
-      InfoSection(header: "Date of Vaccination", content: date.dateString)
+      InfoSection(header: l10n("vaccine.date"), content: date.dateString)
     ]
   }
 

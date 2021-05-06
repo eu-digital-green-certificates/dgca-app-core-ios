@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "SwiftDGC",
+  defaultLocalization: "en",
   platforms: [.iOS(.v12)],
   products: [
     // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -14,11 +15,8 @@ let package = Package(
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
-    // .package(url: /* package url */, from: "1.0.0"),
     .package(url: "https://github.com/unrelentingtech/SwiftCBOR", from: "0.4.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.1"),
-    // .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
-    // .package(url: "https://github.com/scenee/FloatingPanel", from: "2.3.0"),
     .package(name: "JSONSchema", url: "https://github.com/jnewc/JSONSchema.swift", .branch("master"))
   ],
   targets: [
