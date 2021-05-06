@@ -213,11 +213,6 @@ public struct HCert {
     return info + statement.info
   }
 
-  var shortPayload: String {
-    return SHA256.digest(
-      input: Data(payloadString.encode()) as NSData
-    ).base64EncodedString()
-  }
   public var payloadString: String
   public var cborData: Data
   public var kidStr: String
@@ -225,7 +220,7 @@ public struct HCert {
   public var body: JSON
 
   var qrCodeRendered: UIImage? {
-    Self.cachedQrCodes[shortPayload]
+    Self.cachedQrCodes[uvci]
   }
 
   public var qrCode: UIImage? {
@@ -240,7 +235,7 @@ public struct HCert {
     let code = makeQrCode()
     if let value = code {
       Self.qrLock.lock()
-      Self.cachedQrCodes[shortPayload] = value
+      Self.cachedQrCodes[uvci] = value
       Self.qrLock.unlock()
     }
     return code
