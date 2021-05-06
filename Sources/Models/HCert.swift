@@ -47,12 +47,12 @@ enum AttributeKey: String {
 }
 
 public enum HCertType: String {
-  case test = "Test"
-  case vaccine = "Vaccine Shot"
-  case recovery = "Recovery"
+  case test
+  case vaccine
+  case recovery
 }
 
-public enum HCertValidity {
+public enum HCertValidity: String {
   case valid
   case invalid
 }
@@ -77,6 +77,7 @@ public struct InfoSection {
   public var header: String
   public var content: String
   public var style = InfoSectionStyle.normal
+  public var isPrivate = false
 }
 
 public struct HCert {
@@ -110,10 +111,6 @@ public struct HCert {
     if !validation.valid {
       return false
     }
-    #endif
-    print(header)
-    #if DEBUG
-    print(body)
     #endif
     return true
   }
@@ -170,20 +167,20 @@ public struct HCert {
   }
 
   public var certTypeString: String {
-    type.rawValue + " \(statement.typeAddon)"
+    type.l10n + " \(statement.typeAddon)"
   }
 
   public var info: [InfoSection] {
     var info = [
       InfoSection(
-        header: "Certificate Type",
+        header: l10n("header.cert-type"),
         content: certTypeString
       ),
     ] + personIdentifiers
     if let date = dateOfBirth {
       info += [
         InfoSection(
-          header: "Date of Birth",
+          header: l10n("header.dob"),
           content: date.localDateString
         ),
       ]
@@ -191,7 +188,7 @@ public struct HCert {
     if let last = get(.lastNameStandardized).string {
       info += [
         InfoSection(
-          header: "Standardised Family Name",
+          header: l10n("header.std-fn"),
           content: last.replacingOccurrences(
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
@@ -202,7 +199,7 @@ public struct HCert {
     if let first = get(.firstNameStandardized).string {
       info += [
         InfoSection(
-          header: "Standardised Given Name",
+          header: l10n("header.std-gn"),
           content: first.replacingOccurrences(
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),

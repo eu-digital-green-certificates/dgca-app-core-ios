@@ -34,7 +34,7 @@ struct RecoveryEntry: HCertEntry {
 
   var info: [InfoSection] {
     [
-      InfoSection(header: "Valid Until", content: validUntil.dateString),
+      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.dateString),
     ]
   }
 
