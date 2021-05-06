@@ -27,20 +27,20 @@
 import Foundation
 
 public func l10n(_ string: String, with comment: String? = nil) -> String {
-  let bundleString = NSLocalizedString(string, bundle: .module, comment: comment ?? "No comment provided.")
-  if bundleString != string {
-    return bundleString
+  let text = NSLocalizedString(string, comment: comment ?? "No comment provided.")
+  if text != string {
+    return text
   }
-  return NSLocalizedString(string, comment: comment ?? "No comment provided.")
+  return NSLocalizedString(string, bundle: .module, comment: comment ?? "No comment provided.")
 }
 
 public extension RawRepresentable where RawValue == String {
   var l10n: String {
     let key = "enum.\(String(describing: Self.self)).\(rawValue)"
-    let bundleString = NSLocalizedString(key, bundle: .module, comment: "Automatic enum case.")
-    if bundleString != key {
-      return bundleString
+    let text = NSLocalizedString(key, comment: "Automatic enum case.")
+    if text != key {
+      return text
     }
-    return NSLocalizedString(key, comment: "Automatic enum case.")
+    return NSLocalizedString(key, bundle: .module, comment: "Automatic enum case.")
   }
 }
