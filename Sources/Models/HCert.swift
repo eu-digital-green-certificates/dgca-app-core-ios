@@ -141,6 +141,7 @@ public struct HCert {
     kidStr = KID.string(from: kid)
     header = JSON(parseJSON: headerStr)
     var body = JSON(parseJSON: bodyStr)
+    exp = Date(timeIntervalSince1970: Double(body["4"].int ?? 0))
     if body[ClaimKey.HCERT.rawValue].exists() {
       body = body[ClaimKey.HCERT.rawValue]
     }
@@ -207,7 +208,12 @@ public struct HCert {
         ),
       ]
     }
-    return info + statement.info
+    return info + statement.info + [
+      InfoSection(
+        header: l10n("header.expires-at"),
+        content: exp.dateTimeStringUtc
+      ),
+    ]
   }
 
   public var payloadString: String
@@ -215,6 +221,7 @@ public struct HCert {
   public var kidStr: String
   public var header: JSON
   public var body: JSON
+  public var exp: Date
 
   var qrCodeRendered: UIImage? {
     Self.cachedQrCodes[uvci]
@@ -331,7 +338,7 @@ public struct HCert {
     return COSE.verify(cborData, with: key)
   }
   public var semanticallyValid: Bool {
-    statement.isValid
+    statement.isValid && exp > Date()
   }
   public var validity: HCertValidity {
     return isValid ? .valid : .invalid

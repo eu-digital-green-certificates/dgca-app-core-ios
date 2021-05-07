@@ -34,6 +34,7 @@
 "header.dob" = "Date of Birth";
 "header.std-fn" = "Standardised Family Name";
 "header.std-gn" = "Standardised Given Name";
+"header.expires-at" = "Certificate Expires At";
 "recovery.valid-until" = "Valid Until";
 "test.sample-date-time" = "Time of Sampling";
 "test.test-result" = "Time of Sampling";
