@@ -41,7 +41,7 @@ open class ScanVC: UIViewController {
 
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
     guard error == nil else {
-      self.showAlert(withTitle: l10n("err.barcdode"), message: error?.localizedDescription ?? l10n("err.misc"))
+      self.showAlert(withTitle: l10n("err.barcode"), message: error?.localizedDescription ?? l10n("err.misc"))
       return
     }
     self.processClassification(request)
