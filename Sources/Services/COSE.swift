@@ -29,7 +29,7 @@ import SwiftCBOR
 
 let coseTag = UInt64(18)
 
-struct COSE {
+public struct COSE {
   public static func verify(_ cborData: Data, with xHex: String, and yHex: String) -> Bool {
     let decoder = SwiftCBOR.CBORDecoder(input: cborData.uint)
 

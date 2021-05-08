@@ -33,7 +33,7 @@ struct UnwrappedCBOR {
   let unprotected: [SwiftCBOR.CBOR: SwiftCBOR.CBOR]
 }
 
-struct CBOR {
+public struct CBOR {
   static func unwrap(data: Data) -> UnwrappedCBOR? {
     let decoder = SwiftCBOR.CBORDecoder(input: data.uint)
 
