@@ -32,22 +32,23 @@ import Foundation
 public class ASN1 {
 
   public static func encode(_ data: Data, _ digestLengthInBytes: Int? = nil) -> Data {
+    let data = data.uint
     let digestLengthInBytes = digestLengthInBytes ?? 32 // for ES256
-    let sigR = encodeInt(data.prefix(data.count - digestLengthInBytes))
-    let sigS = encodeInt(data.suffix(digestLengthInBytes))
+    let sigR = encodeInt([UInt8](data.prefix(data.count - digestLengthInBytes)))
+    let sigS = encodeInt([UInt8](data.suffix(digestLengthInBytes)))
     let tagSequence: UInt8 = 0x30
     return Data([tagSequence, UInt8(sigR.count + sigS.count)] + sigR + sigS)
   }
 
-  private static func encodeInt(_ data: Data) -> Data {
+  private static func encodeInt(_ data: [UInt8]) -> [UInt8] {
     let firstBitIsSet: UInt8 = 0b10000000 // would be decoded as a negative number
     let tagInteger: UInt8 = 0x02
     if data[0] >= firstBitIsSet {
-      return Data([tagInteger, UInt8(data.count + 1)] + [0] + data)
+      return [tagInteger, UInt8(data.count + 1)] + [0] + data
     } else if data.first! == 0x00 {
-      return encodeInt(data.dropFirst())
+      return encodeInt([UInt8](data.dropFirst()))
     } else {
-      return Data([tagInteger, UInt8(data.count)] + data)
+      return [tagInteger, UInt8(data.count)] + data
     }
   }
 
