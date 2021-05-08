@@ -26,7 +26,7 @@
 
 import Foundation
 
-extension Data {
+public extension Data {
   init?(hexString: String) {
     let len = hexString.count / 2
     var data = Data(capacity: len)
