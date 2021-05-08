@@ -30,7 +30,7 @@ extension String {
   var asJSONDict: [String: AnyObject] {
     if let data = data(using: .utf8) {
       do {
-        let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:AnyObject]
+        let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: AnyObject]
         return json ?? [:]
       } catch {
         return [:]

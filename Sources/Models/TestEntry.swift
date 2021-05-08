@@ -24,7 +24,6 @@
 //  
 //  Created by Yannick Spreen on 4/28/21.
 //  
-        
 
 import Foundation
 import SwiftyJSON
@@ -40,7 +39,10 @@ struct TestEntry: HCertEntry {
   var info: [InfoSection] {
     [
       InfoSection(header: l10n("test.sample-date-time"), content: sampleTime.dateTimeStringUtc),
-      InfoSection(header: l10n("test.test-result"), content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")),
+      InfoSection(
+        header: l10n("test.test-result"),
+        content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")
+      )
     ]
   }
 

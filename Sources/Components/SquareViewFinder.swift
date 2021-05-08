@@ -37,8 +37,8 @@ class SquareViewFinder {
     return view
   }
 
-  public static func create(from vc: UIViewController) {
-    guard let view = vc.view else {
+  public static func create(from controller: UIViewController) {
+    guard let view = controller.view else {
       return
     }
     let guide = newView()
@@ -63,7 +63,7 @@ class SquareViewFinder {
       imgBottomLeft.bottomAnchor.constraint(equalTo: square.bottomAnchor),
       imgBottomLeft.leftAnchor.constraint(equalTo: square.leftAnchor),
       imgTopLeft.topAnchor.constraint(equalTo: square.topAnchor),
-      imgTopLeft.leftAnchor.constraint(equalTo: square.leftAnchor),
+      imgTopLeft.leftAnchor.constraint(equalTo: square.leftAnchor)
     ]
     for child in [
       guide,

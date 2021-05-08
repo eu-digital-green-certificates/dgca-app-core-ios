@@ -25,41 +25,40 @@
 
 import Foundation
 
-
-let BASE45_CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
+let b45Charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
 
 extension String {
   enum Base45Error: Error {
-    case Base64InvalidCharacter
-    case Base64InvalidLength
+    case base64InvalidCharacter
+    case base64InvalidLength
   }
 
-  public func fromBase45() throws -> Data  {
-    var d = Data()
-    var o = Data()
+  public func fromBase45() throws -> Data {
+    var dData = Data()
+    var oData = Data()
 
-    for c in self.uppercased() {
-      if let at = BASE45_CHARSET.firstIndex(of: c) {
-        let idx  = BASE45_CHARSET.distance(from: BASE45_CHARSET.startIndex, to: at)
-        d.append(UInt8(idx))
+    for char in self.uppercased() {
+      if let index = b45Charset.firstIndex(of: char) {
+        let idx = b45Charset.distance(from: b45Charset.startIndex, to: index)
+        dData.append(UInt8(idx))
       } else {
-        throw Base45Error.Base64InvalidCharacter
+        throw Base45Error.base64InvalidCharacter
       }
     }
-    for i in stride(from: 0, to: d.count, by: 3) {
-      if (d.count - i < 2) {
-        throw Base45Error.Base64InvalidLength
+    for num in stride(from: 0, to: dData.count, by: 3) {
+      if dData.count - num < 2 {
+        throw Base45Error.base64InvalidLength
       }
-      var x: UInt32 = UInt32(d[i]) + UInt32(d[i + 1]) * 45
-      if (d.count - i >= 3) {
-        x += 45 * 45 * UInt32(d[i + 2])
-        if x >= 256 * 256 {
-          throw Base45Error.Base64InvalidCharacter
+      var xNum: UInt32 = UInt32(dData[num]) + UInt32(dData[num + 1]) * 45
+      if dData.count - num >= 3 {
+        xNum += 45 * 45 * UInt32(dData[num + 2])
+        if xNum >= 256 * 256 {
+          throw Base45Error.base64InvalidCharacter
         }
-        o.append(UInt8(x / 256))
+        oData.append(UInt8(xNum / 256))
       }
-      o.append(UInt8(x % 256))
+      oData.append(UInt8(xNum % 256))
     }
-    return o
+    return oData
   }
 }

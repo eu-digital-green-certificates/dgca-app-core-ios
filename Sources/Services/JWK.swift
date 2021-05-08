@@ -29,15 +29,15 @@
 import Foundation
 
 struct JWK {
-  public static func ecFrom(x: String, y: String) -> SecKey? {
+  public static func ecFrom(x numX: String, y numY: String) -> SecKey? {
     var xBytes: Data?
     var yBytes: Data?
-    if (x + y).count == 128 {
-      xBytes = Data(hexString: x)
-      yBytes = Data(hexString: y)
+    if (numX + numY).count == 128 {
+      xBytes = Data(hexString: numX)
+      yBytes = Data(hexString: numY)
     } else {
-      var xStr = x // Base64 Formatted data
-      var yStr = y
+      var xStr = numX // Base64 Formatted data
+      var yStr = numY
 
       xStr = xStr.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
       while xStr.count % 4 != 0 {

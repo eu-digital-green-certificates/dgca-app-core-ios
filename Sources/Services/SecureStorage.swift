@@ -25,7 +25,6 @@
 //  Created by Yannick Spreen on 4/25/21.
 //  
 
-
 import Foundation
 
 struct SecureDB: Codable {
@@ -34,7 +33,12 @@ struct SecureDB: Codable {
 }
 
 public struct SecureStorage<T: Codable> {
-  let documents: URL! = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+  let documents: URL! = try? FileManager.default.url(
+    for: .documentDirectory,
+    in: .userDomainMask,
+    appropriateFor: nil,
+    create: true
+  )
   var path: URL! { URL(string: documents.absoluteString + "secure.db") }
   let secureStorageKey = Enclave.loadOrGenerateKey(with: "secureStorageKey")
 
@@ -107,7 +111,7 @@ public struct SecureStorage<T: Codable> {
   func write(data: Data, signature: Data) -> Bool {
     guard
       let rawData = try? JSONEncoder().encode(SecureDB(data: data, signature: signature)),
-      let _ = try? rawData.write(to: path)
+      (try? rawData.write(to: path)) != nil
     else {
       return false
     }

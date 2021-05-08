@@ -31,13 +31,13 @@ import Vision
 import AVFoundation
 import SwiftCBOR
 
-public protocol ScanVCDelegate {
+public protocol ScanVCDelegate: AnyObject {
   func hCertScanned(_:HCert)
 }
 
 open class ScanVC: UIViewController {
   var captureSession: AVCaptureSession?
-  public var delegate: ScanVCDelegate?
+  public weak var delegate: ScanVCDelegate?
 
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
     guard error == nil else {
@@ -60,11 +60,12 @@ open class ScanVC: UIViewController {
       camView.topAnchor.constraint(equalTo: view.topAnchor),
       camView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       camView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      camView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      camView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
     view.backgroundColor = .init(white: 0, alpha: 1)
     #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      // swiftlint:disable:next line_length
       self.observationHandler(payloadS: "HC1:6BF870*90T9WTWGSLKC 4159/X621AD%1Q7J-AB3XK4F3C0FY5B2F3:2JT5B1JC X8Y50.FK8ZKO/EZKEZ96446C56..DX%DZJC:.D9Z9*9FW.C5WEMY9 7BI3DXJD7%E7WE/KECEC:.DI3DCWE.Y92OAGY8MY9L+9JPCT3E5JDOA73467463W5RG67:EDOL9WEQDD+Q6TW6FA7C466KCN9E%961A69L6QW6B46.JCP9EJY8L/5M/5546.96VF6.JCBECB1A-:8$96646746L%6KB7FVC*70KQE*70LVC6JD846Y96B463W5307UPC1JCWY8+ED:DCWJC0FD4:473DSDDF+ALG7$X87Y9U09F:6D57EA6*H9:L6HNAE1AF57Y6BWM8YG86:627B0BVMC0ZISGE1RQKM20CPSE/6%JHPE99KN/D7.%29L9AAA%ROUFB6/D3/BZOQ.LJE.IF/9 Y751Q0+MM4ATR1MAJGMA--RSV3R78QHE")
     }
     #else
@@ -94,7 +95,7 @@ open class ScanVC: UIViewController {
         string: l10n("btn.cancel"),
         attributes: [
           .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
-          .foregroundColor: UIColor.white,
+          .foregroundColor: UIColor.white
         ]
       ), for: .normal
     )
@@ -102,7 +103,7 @@ open class ScanVC: UIViewController {
     view.addSubview(button)
     NSLayoutConstraint.activate([
       button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
-      button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16.0),
+      button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16.0)
     ])
   }
 
@@ -111,7 +112,6 @@ open class ScanVC: UIViewController {
     navigationController?.popViewController(animated: true)
   }
 }
-
 
 extension ScanVC {
   private func checkPermissions() {
@@ -163,7 +163,6 @@ extension ScanVC {
         camView.layer.sublayers?.removeSubrange(1...)
 
         for barcode in barcodes {
-          let _ = barcode
           guard
             let potentialQRCode = barcode as? VNBarcodeObservation,
             [.Aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
@@ -185,9 +184,12 @@ extension ScanVC {
 
 }
 
-
 extension ScanVC: AVCaptureVideoDataOutputSampleBufferDelegate {
-  public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+  public func captureOutput(
+    _ output: AVCaptureOutput,
+    didOutput sampleBuffer: CMSampleBuffer,
+    from connection: AVCaptureConnection
+  ) {
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
     let imageRequestHandler = VNImageRequestHandler(
@@ -202,7 +204,6 @@ extension ScanVC: AVCaptureVideoDataOutputSampleBufferDelegate {
     }
   }
 }
-
 
 extension ScanVC {
   private func configurePreviewLayer() {

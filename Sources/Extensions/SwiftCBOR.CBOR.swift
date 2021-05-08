@@ -31,9 +31,7 @@ extension SwiftCBOR.CBOR {
   func toString() -> String {
     switch self {
     case let .byteString(val):
-      let fallBack = "[" + val.map {
-        "\($0)"
-      }.joined(separator: ", ") + "]"
+      let fallBack = "[" + val.map { "\($0)" }.joined(separator: ", ") + "]"
       if
         let child = try? SwiftCBOR.CBOR.decode(val),
         case .map(_) = child
@@ -48,25 +46,23 @@ extension SwiftCBOR.CBOR {
     case let .utf8String(val):
       return "\"\(val)\""
     case let .array(vals):
-      var s = ""
+      var str = ""
       for val in vals {
-        s += (s.isEmpty ? "" : ", ") + val.toString()
+        str += (str.isEmpty ? "" : ", ") + val.toString()
       }
-      return "[\(s)]"
+      return "[\(str)]"
     case let .map(vals):
-      var s = ""
+      var str = ""
       for pair in vals {
         var key = pair.key.toString()
         key = key.trimmingCharacters(in: ["\""])
         key = "\"\(key)\""
-        s += (s.isEmpty ? "" : ", ") + "\(key): \(pair.value.toString())"
+        str += (str.isEmpty ? "" : ", ") + "\(key): \(pair.value.toString())"
       }
-      return "{\(s)}"
+      return "{\(str)}"
     case let .boolean(val):
       return String(describing: val)
-    case .null:
-      return "null"
-    case .undefined:
+    case .null, .undefined:
       return "null"
     case let .float(val):
       return "\(val)"

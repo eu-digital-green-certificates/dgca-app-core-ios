@@ -25,7 +25,6 @@
 //  Created by Yannick Spreen on 4/28/21.
 //  
 
-
 import Foundation
 import SwiftyJSON
 
@@ -34,7 +33,7 @@ struct RecoveryEntry: HCertEntry {
 
   var info: [InfoSection] {
     [
-      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.dateString),
+      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.dateString)
     ]
   }
 
