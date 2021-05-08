@@ -35,7 +35,7 @@ struct Signature {
 
     if SecKeyIsAlgorithmSupported(publicKey, .verify, .ecdsaSignatureMessageX962SHA256) {
       alg = .ecdsaSignatureMessageX962SHA256
-      signature = ASN1.signature(from: signature)
+      signature = ASN1.encode(signature)
     } else if SecKeyIsAlgorithmSupported(publicKey, .verify, .rsaSignatureMessagePSSSHA256) {
       alg = .rsaSignatureMessagePSSSHA256
     } else {
