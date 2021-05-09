@@ -23,6 +23,9 @@
 //
 //  Created by Yannick Spreen on 5/7/21.
 //
+//  Based on ASN1Encoder.swift in ehn-digital-green-development/ValidationCore
+//  by Christian Kollmann
+//
 
 import Foundation
 
