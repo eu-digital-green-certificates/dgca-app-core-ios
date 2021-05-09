@@ -27,18 +27,20 @@
 import Foundation
 import SwiftCBOR
 
-struct CBOR {
-  static func unwrap(data: Data) -> (
-    SwiftCBOR.CBOR?,
-    SwiftCBOR.CBOR?,
-    [SwiftCBOR.CBOR: SwiftCBOR.CBOR]?
-  ) {
+struct UnwrappedCBOR {
+  let payload: SwiftCBOR.CBOR
+  let protected: SwiftCBOR.CBOR
+  let unprotected: [SwiftCBOR.CBOR: SwiftCBOR.CBOR]
+}
+
+public struct CBOR {
+  static func unwrap(data: Data) -> UnwrappedCBOR? {
     let decoder = SwiftCBOR.CBORDecoder(input: data.uint)
 
     guard
       let cbor = try? decoder.decodeItem(),
       case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
-      tag.rawValue == COSE_TAG, // SIGN1
+      tag.rawValue == coseTag, // SIGN1
       case let SwiftCBOR.CBOR.array(array) = cborElement,
       case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
       let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
@@ -46,31 +48,31 @@ struct CBOR {
       case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
       let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
     else {
-      return (nil, nil, nil)
+      return nil
     }
-    return (payload, protected, unprotectedMap)
+    return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
   }
 
   public static func payload(from data: Data) -> SwiftCBOR.CBOR? {
-    return unwrap(data: data).0
+    return unwrap(data: data)?.payload
   }
 
   public static func header(from data: Data) -> SwiftCBOR.CBOR? {
-    return unwrap(data: data).1
+    return unwrap(data: data)?.protected
   }
 
   public static func kid(from data: Data) -> [UInt8]? {
-    let COSE_PHDR_KID = SwiftCBOR.CBOR.unsignedInt(4)
+    let cosePhdrKid = SwiftCBOR.CBOR.unsignedInt(4)
 
     let unwrap = unwrap(data: data)
     guard
-      let protected = unwrap.1,
+      let protected = unwrap?.protected,
       case let SwiftCBOR.CBOR.map(protectedMap) = protected,
-      let unprotected = unwrap.2
+      let unprotected = unwrap?.unprotected
     else {
       return nil
     }
-    let kid = protectedMap[COSE_PHDR_KID] ?? (unprotected[COSE_PHDR_KID] ?? .null)
+    let kid = protectedMap[cosePhdrKid] ?? (unprotected[cosePhdrKid] ?? .null)
     switch kid {
     case let .byteString(uint):
       return uint

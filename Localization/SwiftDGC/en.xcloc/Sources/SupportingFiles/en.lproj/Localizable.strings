@@ -1,0 +1,53 @@
+/*-
+ * ---license-start
+ * eu-digital-green-certificates / dgca-app-core-ios
+ * ---
+ * Copyright (C) 2021 T-Systems International GmbH and all other contributors
+ * ---
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ---license-end
+ */
+/*
+  Localizable.strings
+  DGCAVerifier
+
+  Created by Yannick Spreen on 5/6/21.
+
+*/
+
+"enum.HCertType.test" = "Test Result";
+"enum.HCertType.vaccine" = "Vaccination";
+"enum.HCertType.recovery" = "Recovery";
+"enum.HCertValidity.valid" = "Valid";
+"enum.HCertValidity.invalid" = "Invalid";
+"header.cert-type" = "Certificate Type";
+"header.dob" = "Date of Birth";
+"header.std-fn" = "Standardised Family Name";
+"header.std-gn" = "Standardised Given Name";
+"header.expires-at" = "Certificate Expires At";
+"recovery.valid-until" = "Valid Until";
+"test.sample-date-time" = "Time of Sampling";
+"test.test-result" = "Time of Sampling";
+"test.result.negative" = "Not Detected";
+"test.result.positive" = "Detected ⚠️";
+"vaccine.x-of-x" = "%d of %d";
+"vaccine.date" = "Date of Vaccination";
+"err.alg-not-supported" = "Algorithm not supported.";
+"err.pub-key-irretrievable" = "Cannot retrieve public key.";
+"err.misc" = "Something went wrong.";
+"err.barcode" = "Barcode Error";
+"err.cam" = "Cannot Find Camera";
+"err.cam.desc" = "There seems to be a problem with the camera on your device.";
+"err.cam.perm" = "Camera Permissions";
+"err.cam.perm.desc" = "Please open Settings and grant permission for this app to use your camera.";
+"btn.cancel" = "Cancel";

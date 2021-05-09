@@ -28,7 +28,8 @@
 
 import Foundation
 
-let EU_DGC_SCHEMA_V1 = """
+// swiftlint:disable line_length
+let euDgcSchemaV1 = """
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://id.uvci.eu/DGC.combined-schema.json",
@@ -359,3 +360,4 @@ let EU_DGC_SCHEMA_V1 = """
   }
 }
 """
+// swiftlint:enable line_length

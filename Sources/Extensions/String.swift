@@ -27,8 +27,8 @@
 import Foundation
 
 extension String {
-  subscript(i: Int) -> String {
-    return String(self[index(startIndex, offsetBy: i)])
+  subscript(num: Int) -> String {
+    return String(self[index(startIndex, offsetBy: num)])
   }
 
   static var zeroWidthSpace: String {

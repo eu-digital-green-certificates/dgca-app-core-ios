@@ -26,28 +26,27 @@
 
 import Foundation
 
-
 extension Data {
-  public func toBase45()->String {
-    var o = String()
-    for i in stride(from:0, to:self.count, by: 2) {
-      if (self.count - i > 1) {
-        let x : Int = (Int(self[i])<<8) + Int(self[i+1])
-        let e : Int = x / (45*45)
-        let x2 : Int = x % (45*45)
-        let d : Int = x2 / 45
-        let c : Int = x2 % 45
-        o.append(BASE45_CHARSET[c])
-        o.append(BASE45_CHARSET[d])
-        o.append(BASE45_CHARSET[e])
+  public func toBase45() -> String {
+    var out = String()
+    for num in stride(from: 0, to: count, by: 2) {
+      if self.count - num > 1 {
+        let numX: Int = (Int(self[num]) << 8) + Int(self[num + 1])
+        let numE: Int = numX / (45 * 45)
+        let numY: Int = numX % (45 * 45)
+        let numD: Int = numY / 45
+        let numC: Int = numY % 45
+        out.append(b45Charset[numC])
+        out.append(b45Charset[numD])
+        out.append(b45Charset[numE])
       } else {
-        let x2 : Int = Int(self[i])
-        let d : Int = x2 / 45
-        let c : Int = x2 % 45
-        o.append(BASE45_CHARSET[c])
-        o.append(BASE45_CHARSET[d])
+        let numY: Int = Int(self[num])
+        let numD: Int = numY / 45
+        let numC: Int = numY % 45
+        out.append(b45Charset[numC])
+        out.append(b45Charset[numD])
       }
     }
-    return o
+    return out
   }
 }

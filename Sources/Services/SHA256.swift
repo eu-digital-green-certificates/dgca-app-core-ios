@@ -26,7 +26,7 @@
 //
 //  https://stackoverflow.com/a/38788437/2585092
 //
-        
+
 import Foundation
 import CommonCrypto
 

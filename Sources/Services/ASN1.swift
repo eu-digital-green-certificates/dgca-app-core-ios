@@ -32,22 +32,23 @@ import Foundation
 public class ASN1 {
 
   public static func encode(_ data: Data, _ digestLengthInBytes: Int? = nil) -> Data {
+    let data = data.uint
     let digestLengthInBytes = digestLengthInBytes ?? 32 // for ES256
-    let sigR = encodeInt(data.prefix(data.count - digestLengthInBytes))
-    let sigS = encodeInt(data.suffix(digestLengthInBytes))
+    let sigR = encodeInt([UInt8](data.prefix(data.count - digestLengthInBytes)))
+    let sigS = encodeInt([UInt8](data.suffix(digestLengthInBytes)))
     let tagSequence: UInt8 = 0x30
     return Data([tagSequence, UInt8(sigR.count + sigS.count)] + sigR + sigS)
   }
 
-  private static func encodeInt(_ data: Data) -> Data {
+  private static func encodeInt(_ data: [UInt8]) -> [UInt8] {
     let firstBitIsSet: UInt8 = 0b10000000 // would be decoded as a negative number
     let tagInteger: UInt8 = 0x02
-    if (data[0] >= firstBitIsSet) {
-      return Data([tagInteger, UInt8(data.count + 1)] + [0] + data)
-    } else if (data.first! == 0x00) {
-      return encodeInt(data.dropFirst())
+    if data[0] >= firstBitIsSet {
+      return [tagInteger, UInt8(data.count + 1)] + [0] + data
+    } else if data.first! == 0x00 {
+      return encodeInt([UInt8](data.dropFirst()))
     } else {
-      return Data([tagInteger, UInt8(data.count)] + data)
+      return [tagInteger, UInt8(data.count)] + data
     }
   }
 
@@ -56,13 +57,13 @@ public class ASN1 {
     if data[0] == 0x30 {
       data = data.suffix(data.count - 2)
     }
-    let c = Int(data[1])
-    let r = decodeInt([UInt8](data.prefix(c + 2)))
-    var s = decodeInt([UInt8](data.suffix(data.count - c - 2)))
-    while s.count < 32 { // 32 for ES256
-      s = [UInt8(0)] + s
+    let cNum = Int(data[1])
+    let rNum = decodeInt([UInt8](data.prefix(cNum + 2)))
+    var sNum = decodeInt([UInt8](data.suffix(data.count - cNum - 2)))
+    while sNum.count < 32 { // 32 for ES256
+      sNum = [UInt8(0)] + sNum
     }
-    return Data(r + s)
+    return Data(rNum + sNum)
   }
 
   private static func decodeInt(_ data: [UInt8]) -> [UInt8] {

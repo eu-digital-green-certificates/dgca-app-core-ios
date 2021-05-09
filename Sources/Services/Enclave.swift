@@ -25,7 +25,6 @@
 //  Created by Yannick Spreen on 4/25/21.
 //  
 
-
 import Foundation
 
 public struct Enclave {
@@ -52,12 +51,12 @@ public struct Enclave {
       return (nil, error?.takeRetainedValue().localizedDescription)
     }
     var attributes: [String: Any] = [
-      kSecAttrKeyType as String:          kSecAttrKeyTypeEC,
-      kSecAttrKeySizeInBits as String:    256,
+      kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+      kSecAttrKeySizeInBits as String: 256,
       kSecPrivateKeyAttrs as String: [
-        kSecAttrIsPermanent as String:    true,
+        kSecAttrIsPermanent as String: true,
         kSecAttrApplicationTag as String: tag,
-        kSecAttrAccessControl as String:  access
+        kSecAttrAccessControl as String: access
       ]
     ]
     #if !targetEnvironment(simulator)
@@ -77,20 +76,21 @@ public struct Enclave {
   static func loadKey(with name: String) -> SecKey? {
     let tag = Enclave.tag(for: name)
     let query: [String: Any] = [
-      kSecClass as String                 : kSecClassKey,
-      kSecAttrKeyType as String           : kSecAttrKeyTypeEC,
-      kSecAttrApplicationTag as String    : tag,
-      kSecReturnRef as String             : true
+      kSecClass as String: kSecClassKey,
+      kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+      kSecAttrApplicationTag as String: tag,
+      kSecReturnRef as String: true
     ]
 
     var item: CFTypeRef?
     let status = SecItemCopyMatching(query as CFDictionary, &item)
     guard
-      status == errSecSuccess
+      status == errSecSuccess,
+      case let result as SecKey? = item
     else {
       return nil
     }
-    return (item as! SecKey)
+    return result
   }
 
   static func loadOrGenerateKey(with name: String) -> SecKey? {

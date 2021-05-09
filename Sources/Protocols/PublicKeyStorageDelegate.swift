@@ -25,9 +25,8 @@
 //  Created by Yannick Spreen on 5/3/21.
 //  
 
-
 import Foundation
 
-public protocol PublicKeyStorageDelegate {
+public protocol PublicKeyStorageDelegate: AnyObject {
   func getEncodedPublicKey(for _: String) -> String?
 }

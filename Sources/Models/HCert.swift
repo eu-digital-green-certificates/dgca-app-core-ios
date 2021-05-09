@@ -30,8 +30,8 @@ import JSONSchema
 import UIKit
 
 enum ClaimKey: String {
-  case HCERT = "-260"
-  case EU_DGC_V1 = "1"
+  case hCert = "-260"
+  case euDgcV1 = "1"
 }
 
 enum AttributeKey: String {
@@ -65,7 +65,7 @@ let attributeKeys: [AttributeKey: [String]] = [
   .dateOfBirth: ["dob"],
   .testStatements: ["t"],
   .vaccineStatements: ["v"],
-  .recoveryStatements: ["r"],
+  .recoveryStatements: ["r"]
 ]
 
 public enum InfoSectionStyle {
@@ -82,7 +82,7 @@ public struct InfoSection {
 
 public struct HCert {
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
-  public static var PREFETCH_ALL_CODES = false
+  public static var prefetchAllCodes = false
 
   public static let supportedPrefixes = [
     "HC1:"
@@ -90,7 +90,7 @@ public struct HCert {
 
   mutating func parseBodyV1() -> Bool {
     guard
-      let schema = JSON(parseJSON: EU_DGC_SCHEMA_V1).dictionaryObject,
+      let schema = JSON(parseJSON: euDgcSchemaV1).dictionaryObject,
       let bodyDict = body.dictionaryObject
     else {
       return false
@@ -142,11 +142,11 @@ public struct HCert {
     header = JSON(parseJSON: headerStr)
     var body = JSON(parseJSON: bodyStr)
     exp = Date(timeIntervalSince1970: Double(body["4"].int ?? 0))
-    if body[ClaimKey.HCERT.rawValue].exists() {
-      body = body[ClaimKey.HCERT.rawValue]
+    if body[ClaimKey.hCert.rawValue].exists() {
+      body = body[ClaimKey.hCert.rawValue]
     }
-    if body[ClaimKey.EU_DGC_V1.rawValue].exists() {
-      self.body = body[ClaimKey.EU_DGC_V1.rawValue]
+    if body[ClaimKey.euDgcV1.rawValue].exists() {
+      self.body = body[ClaimKey.euDgcV1.rawValue]
       if !parseBodyV1() {
         return nil
       }
@@ -154,7 +154,7 @@ public struct HCert {
       print("Wrong EU_DGC Version!")
       return nil
     }
-    if Self.PREFETCH_ALL_CODES {
+    if Self.prefetchAllCodes {
       prefetchCode()
     }
   }
@@ -176,14 +176,14 @@ public struct HCert {
       InfoSection(
         header: l10n("header.cert-type"),
         content: certTypeString
-      ),
+      )
     ] + personIdentifiers
     if let date = dateOfBirth {
       info += [
         InfoSection(
           header: l10n("header.dob"),
           content: date.localDateString
-        ),
+        )
       ]
     }
     if let last = get(.lastNameStandardized).string {
@@ -194,7 +194,7 @@ public struct HCert {
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
           style: .fixedWidthFont
-        ),
+        )
       ]
     }
     if let first = get(.firstNameStandardized).string {
@@ -205,14 +205,14 @@ public struct HCert {
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
           style: .fixedWidthFont
-        ),
+        )
       ]
     }
     return info + statement.info + [
       InfoSection(
         header: l10n("header.expires-at"),
         content: exp.dateTimeStringUtc
-      ),
+      )
     ]
   }
 
@@ -285,7 +285,7 @@ public struct HCert {
   }
 
   var personIdentifiers: [InfoSection] {
-    /// Note from author: Identifiers were previously planned, but got removed *for now*.
+    // Note from author: Identifiers were previously planned, but got removed *for now*.
     []
   }
 
