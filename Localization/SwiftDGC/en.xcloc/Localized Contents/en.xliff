@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="../Sources/SupportingFiles/en.lproj/Localizable.strings" source-language="en" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="12.5" build-num="12E262"/>
+    </header>
+    <body>
+      <trans-unit id="btn.cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="enum.HCertType.recovery" xml:space="preserve">
+        <source>Recovery</source>
+        <target>Recovery</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="enum.HCertType.test" xml:space="preserve">
+        <source>Test Result</source>
+        <target>Test Result</target>
+        <note>Localizable.strings
+  DGCAVerifier
+
+  Created by Yannick Spreen on 5/6/21.</note>
+      </trans-unit>
+      <trans-unit id="enum.HCertType.vaccine" xml:space="preserve">
+        <source>Vaccination</source>
+        <target>Vaccination</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="enum.HCertValidity.invalid" xml:space="preserve">
+        <source>Invalid</source>
+        <target>Invalid</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="enum.HCertValidity.valid" xml:space="preserve">
+        <source>Valid</source>
+        <target>Valid</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.alg-not-supported" xml:space="preserve">
+        <source>Algorithm not supported.</source>
+        <target>Algorithm not supported.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.barcode" xml:space="preserve">
+        <source>Barcode Error</source>
+        <target>Barcode Error</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.cam" xml:space="preserve">
+        <source>Cannot Find Camera</source>
+        <target>Cannot Find Camera</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.cam.desc" xml:space="preserve">
+        <source>There seems to be a problem with the camera on your device.</source>
+        <target>There seems to be a problem with the camera on your device.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.cam.perm" xml:space="preserve">
+        <source>Camera Permissions</source>
+        <target>Camera Permissions</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.cam.perm.desc" xml:space="preserve">
+        <source>Please open Settings and grant permission for this app to use your camera.</source>
+        <target>Please open Settings and grant permission for this app to use your camera.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.misc" xml:space="preserve">
+        <source>Something went wrong.</source>
+        <target>Something went wrong.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="err.pub-key-irretrievable" xml:space="preserve">
+        <source>Cannot retrieve public key.</source>
+        <target>Cannot retrieve public key.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="header.cert-type" xml:space="preserve">
+        <source>Certificate Type</source>
+        <target>Certificate Type</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="header.dob" xml:space="preserve">
+        <source>Date of Birth</source>
+        <target>Date of Birth</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="header.expires-at" xml:space="preserve">
+        <source>Certificate Expires At</source>
+        <target>Certificate Expires At</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="header.std-fn" xml:space="preserve">
+        <source>Standardised Family Name</source>
+        <target>Standardised Family Name</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="header.std-gn" xml:space="preserve">
+        <source>Standardised Given Name</source>
+        <target>Standardised Given Name</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="recovery.valid-until" xml:space="preserve">
+        <source>Valid Until</source>
+        <target>Valid Until</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="test.result.negative" xml:space="preserve">
+        <source>Not Detected</source>
+        <target>Not Detected</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="test.result.positive" xml:space="preserve">
+        <source>Detected ⚠️</source>
+        <target>Detected ⚠️</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="test.sample-date-time" xml:space="preserve">
+        <source>Time of Sampling</source>
+        <target>Time of Sampling</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="test.test-result" xml:space="preserve">
+        <source>Time of Sampling</source>
+        <target>Time of Sampling</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="vaccine.date" xml:space="preserve">
+        <source>Date of Vaccination</source>
+        <target>Date of Vaccination</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="vaccine.x-of-x" xml:space="preserve">
+        <source>%d of %d</source>
+        <target>%d of %d</target>
+        <note/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
