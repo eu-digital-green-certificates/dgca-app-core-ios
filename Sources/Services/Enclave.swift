@@ -183,7 +183,7 @@ public struct Enclave {
     var error: Unmanaged<CFError>?
     let signature = SecKeyCreateSignature(
       key,
-      signAlg,
+      algorithm,
       data as CFData,
       &error
     ) as Data?
