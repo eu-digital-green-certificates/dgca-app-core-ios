@@ -11,7 +11,7 @@ let package = Package(
     // Products define the executables and libraries a package produces, and make them visible to other packages.
     .library(
       name: "SwiftDGC",
-      targets: ["SwiftDGC"]),
+      targets: ["SwiftDGC"])
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -32,6 +32,6 @@ let package = Package(
       path: "Sources"),
     .testTarget(
       name: "SwiftDGCTests",
-      dependencies: ["SwiftDGC"]),
+      dependencies: ["SwiftDGC"])
   ]
 )
