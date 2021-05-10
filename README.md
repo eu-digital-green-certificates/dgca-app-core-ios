@@ -24,6 +24,10 @@ This repository contains the source code of the Digital Green Certificates App C
 
 The app core provides shared functionality for the [verifier](https://github.com/eu-digital-green-certificates/dgca-verifier-app-ios) and [wallet](https://github.com/eu-digital-green-certificates/dgca-wallet-app-ios) apps.
 
+## Translators 💬
+
+You can help the localization of this project by making contributions to the [/Localization folder](Localization/SwiftDGC).
+
 ## Development
 
 ### Prerequisites
