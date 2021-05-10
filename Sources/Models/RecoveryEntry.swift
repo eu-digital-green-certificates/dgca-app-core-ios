@@ -33,18 +33,40 @@ struct RecoveryEntry: HCertEntry {
 
   var info: [InfoSection] {
     [
-      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.dateString)
+      InfoSection(
+        header: l10n("recovery.disease"),
+        content: l10n("disease." + diseaseTargeted, or: l10n("disease.unknown"))
+      ),
+      InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
+      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
+      InfoSection(
+        header: l10n("recovery.country"),
+        content: country(for: countryCode),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("recovery.issuer"),
+        content: issuer,
+        isPrivate: true
+      )
     ]
   }
 
-  var isValid: Bool {
-    validFrom <= Date() && Date() <= validUntil
+  var validityFailures: [String] {
+    var fail = [String]()
+    if validFrom > Date() {
+      fail.append(l10n("hcert.err.rec.future"))
+    }
+    if validUntil < Date() {
+      fail.append(l10n("hcert.err.rec.past"))
+    }
+    return fail
   }
 
   enum Fields: String {
     case diseaseTargeted = "tg"
     case firstPositiveDate = "fr"
-    case country = "co"
+    case countryCode = "co"
     case issuer = "is"
     case validFrom = "df"
     case validUntil = "du"
@@ -55,7 +77,7 @@ struct RecoveryEntry: HCertEntry {
     guard
       let diseaseTargeted = body[Fields.diseaseTargeted.rawValue].string,
       let firstPositiveDate = body[Fields.firstPositiveDate.rawValue].string,
-      let country = body[Fields.country.rawValue].string,
+      let countryCode = body[Fields.countryCode.rawValue].string,
       let issuer = body[Fields.issuer.rawValue].string,
       let validFromStr = body[Fields.validFrom.rawValue].string,
       let validUntilStr = body[Fields.validUntil.rawValue].string,
@@ -67,7 +89,7 @@ struct RecoveryEntry: HCertEntry {
     }
     self.diseaseTargeted = diseaseTargeted
     self.firstPositiveDate = firstPositiveDate
-    self.country = country
+    self.countryCode = countryCode
     self.issuer = issuer
     self.validFrom = validFrom
     self.validUntil = validUntil
@@ -76,7 +98,7 @@ struct RecoveryEntry: HCertEntry {
 
   var diseaseTargeted: String
   var firstPositiveDate: String
-  var country: String
+  var countryCode: String
   var issuer: String
   var validFrom: Date
   var validUntil: Date

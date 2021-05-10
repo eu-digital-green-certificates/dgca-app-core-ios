@@ -80,10 +80,14 @@ public struct InfoSection {
   public var isPrivate = false
 }
 
-public struct HCert {
-  public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
-  public static var prefetchAllCodes = false
+public struct HCertConfig {
+  public var prefetchAllCodes = false
+  public var checkSignatures = true
+}
 
+public struct HCert {
+  public static var config = HCertConfig()
+  public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
   public static let supportedPrefixes = [
     "HC1:"
   ]
@@ -154,25 +158,29 @@ public struct HCert {
       print("Wrong EU_DGC Version!")
       return nil
     }
-    if Self.prefetchAllCodes {
+    findValidity()
+    makeSections()
+    if Self.config.prefetchAllCodes {
       prefetchCode()
     }
   }
 
-  func get(_ attribute: AttributeKey) -> JSON {
-    var object = body
-    for key in attributeKeys[attribute] ?? [] {
-      object = object[key]
+  mutating func findValidity() {
+    validityFailures = []
+    if !cryptographicallyValid {
+      validityFailures.append(l10n("hcert.err.crypto"))
     }
-    return object
+    if exp < Date() {
+      validityFailures.append(l10n("hcert.err.exp"))
+    }
+    validityFailures.append(contentsOf: statement.validityFailures)
   }
 
-  public var certTypeString: String {
-    type.l10n + " \(statement.typeAddon)"
-  }
-
-  public var info: [InfoSection] {
-    var info = [
+  mutating func makeSections() {
+    info = isValid ? [] : [
+      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+    ]
+    info += [
       InfoSection(
         header: l10n("header.cert-type"),
         content: certTypeString
@@ -208,13 +216,33 @@ public struct HCert {
         )
       ]
     }
-    return info + statement.info + [
+    info += statement.info + [
       InfoSection(
         header: l10n("header.expires-at"),
         content: exp.dateTimeStringUtc
+      ),
+      InfoSection(
+        header: l10n("header.uvci"),
+        content: uvci,
+        style: .fixedWidthFont,
+        isPrivate: true
       )
     ]
   }
+
+  func get(_ attribute: AttributeKey) -> JSON {
+    var object = body
+    for key in attributeKeys[attribute] ?? [] {
+      object = object[key]
+    }
+    return object
+  }
+
+  public var certTypeString: String {
+    type.l10n + " \(statement.typeAddon)"
+  }
+
+  public var info = [InfoSection]()
 
   public var payloadString: String
   public var cborData: Data
@@ -325,10 +353,14 @@ public struct HCert {
     }
     return .test
   }
+  public var validityFailures = [String]()
   public var isValid: Bool {
-    cryptographicallyValid && semanticallyValid
+    validityFailures.isEmpty
   }
   public var cryptographicallyValid: Bool {
+    if !Self.config.checkSignatures {
+      return true
+    }
     guard
       let delegate = Self.publicKeyStorageDelegate,
       let key = delegate.getEncodedPublicKey(for: kidStr)
@@ -336,9 +368,6 @@ public struct HCert {
       return false
     }
     return COSE.verify(cborData, with: key)
-  }
-  public var semanticallyValid: Bool {
-    statement.isValid && exp > Date()
   }
   public var validity: HCertValidity {
     return isValid ? .valid : .invalid

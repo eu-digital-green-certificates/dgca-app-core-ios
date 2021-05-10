@@ -42,12 +42,38 @@ struct TestEntry: HCertEntry {
       InfoSection(
         header: l10n("test.test-result"),
         content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")
+      ),
+      InfoSection(
+        header: l10n("test.disease"),
+        content: l10n("disease." + diseaseTargeted, or: l10n("disease.unknown"))
+      ),
+      InfoSection(
+        header: l10n("test.center"),
+        content: testCenter,
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("test.country"),
+        content: country(for: countryCode),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("test.issuer"),
+        content: issuer,
+        isPrivate: true
       )
     ]
   }
 
-  var isValid: Bool {
-    resultNegative && sampleTime < Date()
+  var validityFailures: [String] {
+    var fail = [String]()
+    if !resultNegative {
+      fail.append(l10n("hcert.err.tst.positive"))
+    }
+    if sampleTime > Date() {
+      fail.append(l10n("hcert.err.tst.future"))
+    }
+    return fail
   }
 
   enum Fields: String {
@@ -56,7 +82,7 @@ struct TestEntry: HCertEntry {
     case sampleTime = "sc"
     case result = "tr"
     case testCenter = "tc"
-    case country = "co"
+    case countryCode = "co"
     case issuer = "is"
     case uvci = "ci"
   }
@@ -69,7 +95,7 @@ struct TestEntry: HCertEntry {
       let sampleTime = Date(rfc3339DateTimeString: sampleTimeStr),
       let result = body[Fields.result.rawValue].string,
       let testCenter = body[Fields.testCenter.rawValue].string,
-      let country = body[Fields.country.rawValue].string,
+      let countryCode = body[Fields.countryCode.rawValue].string,
       let issuer = body[Fields.issuer.rawValue].string,
       let uvci = body[Fields.uvci.rawValue].string
     else {
@@ -80,7 +106,7 @@ struct TestEntry: HCertEntry {
     self.sampleTime = sampleTime
     self.resultNegative = (TestResult(rawValue: result) == .notDetected)
     self.testCenter = testCenter
-    self.country = country
+    self.countryCode = countryCode
     self.issuer = issuer
     self.uvci = uvci
   }
@@ -90,7 +116,7 @@ struct TestEntry: HCertEntry {
   var sampleTime: Date
   var resultNegative: Bool
   var testCenter: String
-  var country: String
+  var countryCode: String
   var issuer: String
   var uvci: String
 }

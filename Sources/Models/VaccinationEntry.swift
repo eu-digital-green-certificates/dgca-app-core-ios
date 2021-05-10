@@ -36,12 +36,48 @@ struct VaccinationEntry: HCertEntry {
 
   var info: [InfoSection] {
     [
-      InfoSection(header: l10n("vaccine.date"), content: date.dateString)
+      InfoSection(
+        header: l10n("vaccine.date"),
+        content: date.localDateString
+      ),
+      InfoSection(
+        header: l10n("vaccine.disease"),
+        content: l10n("disease." + diseaseTargeted, or: l10n("disease.unknown"))
+      ),
+      InfoSection(
+        header: l10n("vaccine.manufacturer"),
+        content: l10n("vac.man." + manufacturer, or: l10n("vac.man.unknown")),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("vaccine.product"),
+        content: l10n("vac.product." + medicalProduct, or: l10n("vac.product.unknown")),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("vaccine.type"),
+        content: l10n("vac.type." + vaccineOrProphylaxis, or: l10n("vac.type.unknown")),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("vaccine.country"),
+        content: country(for: countryCode),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("vaccine.issuer"),
+        content: issuer,
+        isPrivate: true
+      )
     ]
   }
 
-  var isValid: Bool {
-    date < Date()
+  var validityFailures: [String] {
+    var fail = [String]()
+    if date > Date() {
+      fail.append(l10n("hcert.err.vac.future"))
+    }
+    return fail
   }
 
   enum Fields: String {
@@ -52,7 +88,7 @@ struct VaccinationEntry: HCertEntry {
     case doseNumber = "dn"
     case dosesTotal = "sd"
     case date = "dt"
-    case country = "co"
+    case countryCode = "co"
     case issuer = "is"
     case uvci = "ci"
   }
@@ -63,7 +99,7 @@ struct VaccinationEntry: HCertEntry {
       let vaccineOrProphylaxis = body[Fields.vaccineOrProphylaxis.rawValue].string,
       let medicalProduct = body[Fields.medicalProduct.rawValue].string,
       let manufacturer = body[Fields.manufacturer.rawValue].string,
-      let country = body[Fields.country.rawValue].string,
+      let country = body[Fields.countryCode.rawValue].string,
       let issuer = body[Fields.issuer.rawValue].string,
       let uvci = body[Fields.uvci.rawValue].string,
       let doseNumber = body[Fields.doseNumber.rawValue].int,
@@ -77,7 +113,7 @@ struct VaccinationEntry: HCertEntry {
     self.vaccineOrProphylaxis = vaccineOrProphylaxis
     self.medicalProduct = medicalProduct
     self.manufacturer = manufacturer
-    self.country = country
+    self.countryCode = country
     self.issuer = issuer
     self.uvci = uvci
     self.doseNumber = doseNumber
@@ -89,7 +125,7 @@ struct VaccinationEntry: HCertEntry {
   var vaccineOrProphylaxis: String
   var medicalProduct: String
   var manufacturer: String
-  var country: String
+  var countryCode: String
   var issuer: String
   var uvci: String
   var doseNumber: Int

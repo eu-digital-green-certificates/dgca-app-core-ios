@@ -26,12 +26,16 @@
 
 import Foundation
 
-public func l10n(_ string: String, with comment: String? = nil) -> String {
-  let text = NSLocalizedString(string, comment: comment ?? "No comment provided.")
+public func l10n(_ string: String, with comment: String? = nil, or fallback: String? = nil) -> String {
+  var text = NSLocalizedString(string, comment: comment ?? "No comment provided.")
   if text != string {
     return text
   }
-  return NSLocalizedString(string, bundle: .module, comment: comment ?? "No comment provided.")
+  text = NSLocalizedString(string, bundle: .module, comment: comment ?? "No comment provided.")
+  if text != string {
+    return text
+  }
+  return fallback ?? string
 }
 
 public extension RawRepresentable where RawValue == String {
@@ -43,4 +47,8 @@ public extension RawRepresentable where RawValue == String {
     }
     return NSLocalizedString(key, bundle: .module, comment: "Automatic enum case.")
   }
+}
+
+public func country(for code: String) -> String {
+  l10n("country." + code, or: code)
 }
