@@ -43,7 +43,6 @@ extension Date {
 
   static let isoFormatter = formatter(for: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   static let dateFormatter = formatter(for: "yyyy-MM-dd")
-  static let dateTimeFormatterUtc = formatter(for: "yyyy-MM-dd HH:mm '(UTC)'")
   static let dateTimeFormatter = formatter(for: "yyyy-MM-dd HH:mm", utcPosix: false)
 
   public var isoString: String {
@@ -51,9 +50,6 @@ extension Date {
   }
   public var dateString: String {
     Date.dateFormatter.string(from: self)
-  }
-  public var dateTimeStringUtc: String {
-    Date.dateTimeFormatterUtc.string(from: self)
   }
   public var dateTimeString: String {
     Date.dateTimeFormatter.string(from: self)
@@ -100,5 +96,13 @@ extension Date {
     formatter.timeStyle = .none
     formatter.dateStyle = .medium
     return formatter.string(from: self)
+  }
+  public var dateTimeStringUtc: String {
+    let formatter = DateFormatter()
+    formatter.locale = .current
+    formatter.timeStyle = .medium
+    formatter.dateStyle = .medium
+    formatter.timeZone = .init(secondsFromGMT: 0)
+    return formatter.string(from: self) + " (UTC)"
   }
 }
