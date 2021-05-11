@@ -36,6 +36,7 @@
 "header.std-gn" = "Standardised Given Name";
 "header.expires-at" = "Certificate Expiration";
 "header.uvci" = "Unique Certificate Identifier";
+"header.validity-errors" = "Reason for Invalidity";
 "recovery.disease" = "Targeted Disease";
 "recovery.valid-from" = "Valid from";
 "recovery.valid-until" = "Valid Until";
