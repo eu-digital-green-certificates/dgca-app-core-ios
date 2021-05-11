@@ -45,7 +45,7 @@ struct TestEntry: HCertEntry {
       ),
       InfoSection(
         header: l10n("test.disease"),
-        content: l10n("disease." + diseaseTargeted, or: l10n("disease.unknown"))
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
       ),
       InfoSection(
         header: l10n("test.center"),

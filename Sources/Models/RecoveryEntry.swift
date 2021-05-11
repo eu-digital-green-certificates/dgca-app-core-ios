@@ -35,7 +35,7 @@ struct RecoveryEntry: HCertEntry {
     [
       InfoSection(
         header: l10n("recovery.disease"),
-        content: l10n("disease." + diseaseTargeted, or: l10n("disease.unknown"))
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
       ),
       InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
       InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),

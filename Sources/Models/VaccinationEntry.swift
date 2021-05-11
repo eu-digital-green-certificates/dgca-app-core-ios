@@ -42,21 +42,21 @@ struct VaccinationEntry: HCertEntry {
       ),
       InfoSection(
         header: l10n("vaccine.disease"),
-        content: l10n("disease." + diseaseTargeted, or: l10n("disease.unknown"))
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
       ),
       InfoSection(
         header: l10n("vaccine.manufacturer"),
-        content: l10n("vac.man." + manufacturer, or: l10n("vac.man.unknown")),
+        content: l10n("vac.man." + manufacturer, or: "\(l10n("vac.man.unknown")): \(manufacturer)"),
         isPrivate: true
       ),
       InfoSection(
         header: l10n("vaccine.product"),
-        content: l10n("vac.product." + medicalProduct, or: l10n("vac.product.unknown")),
+        content: l10n("vac.product." + medicalProduct, or: "\(l10n("vac.product.unknown")): \(medicalProduct)"),
         isPrivate: true
       ),
       InfoSection(
         header: l10n("vaccine.type"),
-        content: l10n("vac.type." + vaccineOrProphylaxis, or: l10n("vac.type.unknown")),
+        content: l10n("vac.type." + vaccineOrProphylaxis, or: "\(l10n("vac.type.unknown")): \(vaccineOrProphylaxis)"),
         isPrivate: true
       ),
       InfoSection(
