@@ -32,17 +32,14 @@ You can help the localization of this project by making contributions to the [/L
 
 ### Prerequisites
 
-- [ ] TODO: Describe prerequisites
+- You need a Mac to run Xcode.
+- Xcode 12.5+ is used for our builds. The OS requirement is macOS 11.0+.
+- To install development apps on physical iPhones, you need an Apple Developer account.
 
 ### Build
 
-Whether you cloned or downloaded the 'zipped' sources you will either find the sources in the chosen checkout-directory or get a zip file with the source code, which you can expand to a folder of your choice.
-
-In either case open a terminal pointing to the directory you put the sources in. The local build process is described afterwards depending on the way you choose.
-
-#### XYZ (Maven, Docker ...) based build
-
-- [ ] TODO: Add instructions for different build types
+Since this is just a requirement module, it is used as a dependency in both the verifier and wallet apps on iOS.
+For that, Xcode builds the module from source in the target app. Because of that, building this module on its own is not supported.
 
 ## Documentation  
 
