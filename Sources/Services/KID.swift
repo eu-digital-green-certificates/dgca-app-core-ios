@@ -31,9 +31,14 @@ public typealias KidBytes = [UInt8]
 
 public struct KID {
   public static func string(from kidBytes: KidBytes) -> String {
-    return Data(kidBytes.prefix(8)).base64EncodedString()
+    Data(kidBytes.prefix(8)).base64EncodedString()
+      .replacingOccurrences(of: "+", with: "-")
+      .replacingOccurrences(of: "/", with: "_")
   }
   public static func from(_ encodedCert: String) -> KidBytes {
+    let encodedCert = encodedCert
+      .replacingOccurrences(of: "-", with: "+")
+      .replacingOccurrences(of: "_", with: "/")
     guard
       let data = Data(base64Encoded: encodedCert)
     else {
