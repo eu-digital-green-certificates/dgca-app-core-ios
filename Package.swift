@@ -17,6 +17,7 @@ let package = Package(
     // Dependencies declare other packages that this package depends on.
     .package(url: "https://github.com/unrelentingtech/SwiftCBOR", from: "0.4.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.1"),
+    .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
     .package(name: "JSONSchema", url: "https://github.com/jnewc/JSONSchema.swift", .branch("master"))
   ],
   targets: [
@@ -27,7 +28,8 @@ let package = Package(
       dependencies: [
         "SwiftCBOR",
         "SwiftyJSON",
-        "JSONSchema"
+        "JSONSchema",
+        "Alamofire"
       ],
       path: "Sources"),
     .testTarget(
