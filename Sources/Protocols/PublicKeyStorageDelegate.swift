@@ -28,5 +28,5 @@
 import Foundation
 
 public protocol PublicKeyStorageDelegate: AnyObject {
-  func getEncodedPublicKey(for _: String) -> String?
+  func getEncodedPublicKeys(for _: String) -> [String]
 }

@@ -362,12 +362,16 @@ public struct HCert {
       return true
     }
     guard
-      let delegate = Self.publicKeyStorageDelegate,
-      let key = delegate.getEncodedPublicKey(for: kidStr)
+      let delegate = Self.publicKeyStorageDelegate
     else {
       return false
     }
-    return COSE.verify(cborData, with: key)
+    for key in delegate.getEncodedPublicKeys(for: kidStr) {
+      if COSE.verify(cborData, with: key) {
+        return true
+      }
+    }
+    return false
   }
   public var validity: HCertValidity {
     return isValid ? .valid : .invalid
