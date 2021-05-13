@@ -24,6 +24,7 @@
 //  Created by Yannick Spreen on 4/29/21.
 //
 
+#if os(iOS)
 import Foundation
 import UIKit
 
@@ -78,3 +79,4 @@ class SquareViewFinder {
     NSLayoutConstraint.activate(constraints)
   }
 }
+#endif

@@ -24,6 +24,7 @@
 //  Created by Yannick Spreen on 4/29/21.
 //
 
+#if os(iOS)
 import UIKit
 
 extension UIImage {
@@ -31,3 +32,4 @@ extension UIImage {
     UIImage(named: name, in: Bundle.module, compatibleWith: nil)
   }
 }
+#endif

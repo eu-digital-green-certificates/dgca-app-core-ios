@@ -19,13 +19,14 @@
  */
 //
 //  ViewController.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/8/21.
 //
 //  https://www.raywenderlich.com/12663654-vision-framework-tutorial-for-ios-scanning-barcodes
 //
 
+#if os(iOS)
 import UIKit
 import Vision
 import AVFoundation
@@ -232,3 +233,4 @@ extension ScanVC {
     )
   }
 }
+#endif

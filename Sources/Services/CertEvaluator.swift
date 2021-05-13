@@ -19,7 +19,7 @@
  */
 //
 //  CertEvaluator.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 5/12/21.
 //
@@ -28,6 +28,7 @@ import Foundation
 import Alamofire
 
 public struct CertEvaluator: ServerTrustEvaluating {
+  class CertError: Error {}
 
   let pubKeys: [String]
 
@@ -49,7 +50,7 @@ public struct CertEvaluator: ServerTrustEvaluating {
       }
     }
     #if !DEBUG || !targetEnvironment(simulator)
-    throw Error()
+    throw Self.CertError()
     #endif
     print("\nFATAL: None of the hashes matched our public keys! These keys were loaded:")
     print(pubKeys.joined(separator: "\n"))

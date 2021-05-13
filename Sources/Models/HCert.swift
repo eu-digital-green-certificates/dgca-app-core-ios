@@ -19,7 +19,7 @@
  */
 //
 //  HCert.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/19/21.
 //
@@ -27,7 +27,6 @@
 import Foundation
 import SwiftyJSON
 import JSONSchema
-import UIKit
 
 enum ClaimKey: String {
   case hCert = "-260"
@@ -160,9 +159,12 @@ public struct HCert {
     }
     findValidity()
     makeSections()
+
+    #if os(iOS)
     if Self.config.prefetchAllCodes {
       prefetchCode()
     }
+    #endif
   }
 
   mutating func findValidity() {
@@ -251,53 +253,7 @@ public struct HCert {
   public var body: JSON
   public var exp: Date
 
-  var qrCodeRendered: UIImage? {
-    Self.cachedQrCodes[uvci]
-  }
-
-  public var qrCode: UIImage? {
-    return qrCodeRendered ?? renderQrCode()
-  }
-
   static let qrLock = NSLock()
-  func renderQrCode() -> UIImage? {
-    if let rendered = qrCodeRendered {
-      return rendered
-    }
-    let code = makeQrCode()
-    if let value = code {
-      Self.qrLock.lock()
-      Self.cachedQrCodes[uvci] = value
-      Self.qrLock.unlock()
-    }
-    return code
-  }
-
-  func makeQrCode() -> UIImage? {
-    let data = payloadString.data(using: String.Encoding.ascii)
-
-    if let filter = CIFilter(name: "CIQRCodeGenerator") {
-      filter.setValue(data, forKey: "inputMessage")
-      let transform = CGAffineTransform(scaleX: 3, y: 3)
-
-      if let output = filter.outputImage?.transformed(by: transform) {
-        return UIImage(ciImage: output)
-      }
-    }
-
-    return nil
-  }
-
-  func prefetchCode() {
-    guard qrCodeRendered == nil else {
-      return
-    }
-    DispatchQueue.global(qos: .background).async {
-      _ = renderQrCode()
-    }
-  }
-
-  static var cachedQrCodes = [String: UIImage]()
 
   public var fullName: String {
     let first = get(.firstName).string ?? ""
