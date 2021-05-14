@@ -35,7 +35,7 @@ public struct CertEvaluator: ServerTrustEvaluating {
   public func evaluate(_ trust: SecTrust, forHost host: String) throws {
     let hashes: [String] = trust.af.publicKeys.compactMap { key in
       guard
-        let der = X509.derKey(for: key)
+        let der = SecKeyCopyExternalRepresentation(key, nil)
       else {
         return nil
       }
