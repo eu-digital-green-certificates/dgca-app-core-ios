@@ -37,7 +37,26 @@ public class ASN1 {
     let sigR = encodeInt([UInt8](data.prefix(data.count - digestLengthInBytes)))
     let sigS = encodeInt([UInt8](data.suffix(digestLengthInBytes)))
     let tagSequence: UInt8 = 0x30
-    return Data([tagSequence, UInt8(sigR.count + sigS.count)] + sigR + sigS)
+    if sigR.count + sigS.count < 128 {
+      return Data([tagSequence, UInt8(sigR.count + sigS.count)] + sigR + sigS)
+    }
+    return Data([tagSequence] + length(sigR.count + sigS.count) + sigR + sigS)
+  }
+
+  static func length(_ num: Int) -> [UInt8] {
+    var bits = 0
+    var numBits = num
+    while numBits > 0 {
+      numBits = numBits >> 1
+      bits += 1
+    }
+    var bytes: [UInt8] = []
+    var num = num
+    while num > 0 {
+      bytes += [UInt8(num & 0b11111111)]
+      num = num >> 8
+    }
+    return [0b10000000 + UInt8((bits - 1) / 8 + 1)] + bytes.reversed()
   }
 
   private static func encodeInt(_ data: [UInt8]) -> [UInt8] {
