@@ -1398,6 +1398,21 @@
         <target>Unique Certificate Identifier</target>
         <note/>
       </trans-unit>
+      <trans-unit id="header.validity-errors" xml:space="preserve">
+        <source>Reason for Invalidity</source>
+        <target>Reason for Invalidity</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="info.outdated" xml:space="preserve">
+        <source>Update Available</source>
+        <target>Update Available</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="info.outdated.body" xml:space="preserve">
+        <source>This application is not up to date. Please open the App Store and download the newest version!</source>
+        <target>This application is not up to date. Please open the App Store and download the newest version!</target>
+        <note/>
+      </trans-unit>
       <trans-unit id="recovery.country" xml:space="preserve">
         <source>Country of Issuance</source>
         <target>Country of Issuance</target>
