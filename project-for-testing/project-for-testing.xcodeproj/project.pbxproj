@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CEA04DDB26501E9D00D4023E /* SwiftDGC in Frameworks */ = {isa = PBXBuildFile; productRef = CEA04DDA26501E9D00D4023E /* SwiftDGC */; };
+		CEBAB369265065BF00572436 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEBAB367265065BF00572436 /* Localizable.strings */; };
+		CEBAB36A265065BF00572436 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEBAB367265065BF00572436 /* Localizable.strings */; };
 		CEF57ED4265011D80026E647 /* project_for_testing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF57ECA265011D80026E647 /* project_for_testing.framework */; };
 		CEF57ED9265011D80026E647 /* project_for_testingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF57ED8265011D80026E647 /* project_for_testingTests.swift */; };
 		CEF57EDB265011D80026E647 /* project_for_testing.h in Headers */ = {isa = PBXBuildFile; fileRef = CEF57ECD265011D80026E647 /* project_for_testing.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEF57EE72650120F0026E647 /* SwiftDGC in Frameworks */ = {isa = PBXBuildFile; productRef = CEF57EE62650120F0026E647 /* SwiftDGC */; };
 		CEF57EEA265013670026E647 /* dgc-testdata in Resources */ = {isa = PBXBuildFile; fileRef = CEF57EE8265013670026E647 /* dgc-testdata */; };
 		CEF57EEB265013670026E647 /* SwiftDGCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF57EE9265013670026E647 /* SwiftDGCTests.swift */; };
 		CEF57EEC265013B60026E647 /* dgc-testdata in Resources */ = {isa = PBXBuildFile; fileRef = CEF57EE8265013670026E647 /* dgc-testdata */; };
@@ -27,13 +29,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CEBAB368265065BF00572436 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../../Sources/SupportingFiles/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CEF3B0A126501DDB0059497A /* SwiftDGC */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftDGC; path = "../../dgca-app-core-ios"; sourceTree = "<group>"; };
 		CEF57ECA265011D80026E647 /* project_for_testing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = project_for_testing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF57ECD265011D80026E647 /* project_for_testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project_for_testing.h; sourceTree = "<group>"; };
 		CEF57ECE265011D80026E647 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEF57ED3265011D80026E647 /* project-for-testingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "project-for-testingTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF57ED8265011D80026E647 /* project_for_testingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = project_for_testingTests.swift; sourceTree = "<group>"; };
 		CEF57EDA265011D80026E647 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CEF57EE5265011FB0026E647 /* dgca-app-core-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "dgca-app-core-ios"; path = ..; sourceTree = "<group>"; };
 		CEF57EE8265013670026E647 /* dgc-testdata */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "dgc-testdata"; path = "../../Tests/SwiftDGCTests/dgc-testdata"; sourceTree = "<group>"; };
 		CEF57EE9265013670026E647 /* SwiftDGCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftDGCTests.swift; path = ../../Tests/SwiftDGCTests/SwiftDGCTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -43,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEF57EE72650120F0026E647 /* SwiftDGC in Frameworks */,
+				CEA04DDB26501E9D00D4023E /* SwiftDGC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +64,7 @@
 		CEF57EC0265011D80026E647 = {
 			isa = PBXGroup;
 			children = (
+				CEF3B0A126501DDB0059497A /* SwiftDGC */,
 				CEF57ECC265011D80026E647 /* project-for-testing */,
 				CEF57ED7265011D80026E647 /* project-for-testingTests */,
 				CEF57ECB265011D80026E647 /* Products */,
@@ -82,6 +86,7 @@
 			children = (
 				CEF57ECD265011D80026E647 /* project_for_testing.h */,
 				CEF57ECE265011D80026E647 /* Info.plist */,
+				CEBAB367265065BF00572436 /* Localizable.strings */,
 			);
 			path = "project-for-testing";
 			sourceTree = "<group>";
@@ -100,7 +105,6 @@
 		CEF57EE4265011FB0026E647 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CEF57EE5265011FB0026E647 /* dgca-app-core-ios */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -134,7 +138,7 @@
 			);
 			name = "project-for-testing";
 			packageProductDependencies = (
-				CEF57EE62650120F0026E647 /* SwiftDGC */,
+				CEA04DDA26501E9D00D4023E /* SwiftDGC */,
 			);
 			productName = "project-for-testing";
 			productReference = CEF57ECA265011D80026E647 /* project_for_testing.framework */;
@@ -200,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEF57EEC265013B60026E647 /* dgc-testdata in Resources */,
+				CEBAB369265065BF00572436 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEF57EEA265013670026E647 /* dgc-testdata in Resources */,
+				CEBAB36A265065BF00572436 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +245,17 @@
 			targetProxy = CEF57ED5265011D80026E647 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CEBAB367265065BF00572436 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEBAB368265065BF00572436 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CEF57EDC265011D80026E647 /* Debug */ = {
@@ -479,7 +496,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CEF57EE62650120F0026E647 /* SwiftDGC */ = {
+		CEA04DDA26501E9D00D4023E /* SwiftDGC */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftDGC;
 		};

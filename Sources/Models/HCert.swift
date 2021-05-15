@@ -175,6 +175,9 @@ public struct HCert {
     if exp < Date() {
       validityFailures.append(l10n("hcert.err.exp"))
     }
+    if statement == nil {
+      return validityFailures.append(l10n("hcert.err.empty"))
+    }
     validityFailures.append(contentsOf: statement.validityFailures)
   }
 
@@ -218,7 +221,8 @@ public struct HCert {
         )
       ]
     }
-    info += statement.info + [
+    info += statement == nil ? [] : statement.info
+    info += [
       InfoSection(
         header: l10n("header.expires-at"),
         content: exp.dateTimeStringUtc
@@ -241,7 +245,7 @@ public struct HCert {
   }
 
   public var certTypeString: String {
-    type.l10n + " \(statement.typeAddon)"
+    type.l10n + (statement == nil ? "" : "\(statement.typeAddon)")
   }
 
   public var info = [InfoSection]()
@@ -336,7 +340,7 @@ public struct HCert {
     CBOR.hash(from: cborData)
   }
   public var uvci: String {
-    statement.uvci
+    statement?.uvci ?? "empty"
   }
   public var keyPair: SecKey! {
     Enclave.loadOrGenerateKey(with: uvci)

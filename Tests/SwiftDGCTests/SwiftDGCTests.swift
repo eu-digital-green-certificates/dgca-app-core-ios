@@ -1,11 +1,19 @@
 import XCTest
-@testable import SwiftDGC
+@testable
+import SwiftDGC
+import SwiftyJSON
 
+var bundle: Bundle!
 #if SWIFT_PACKAGE
 let inPackage = true
+var bundle = Bundle.module
 #else
 let inPackage = false
 #endif
+
+enum ValidationErrors: Error {
+  case invalidHCert
+}
 
 func ls(path: String) -> [String] {
   (try? FileManager.default.contentsOfDirectory(atPath: path)) ?? []
@@ -21,12 +29,13 @@ func isDir(path: String) -> Bool {
 }
 
 final class SwiftDGCTests: XCTestCase {
-  var bundle: Bundle { inPackage ? .module : Bundle(for: type(of: self)) }
-
   func testExample() {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct
     // results.
+
+    bundle = bundle ?? Bundle(for: type(of: self))
+    l10nModule = bundle
 
     guard
       var path = bundle.resourcePath
@@ -49,8 +58,23 @@ final class SwiftDGCTests: XCTestCase {
     }
     for file in ls(path: "\(dir)/2DCode/raw") {
       let path = "\(dir)/2DCode/raw/\(file)"
-      print(path)
+      try? test(jsonFile: path)
     }
+  }
+
+  func test(jsonFile path: String) throws {
+    let url = URL(fileURLWithPath: path)
+    guard
+      let data = try? Data(contentsOf: url),
+      let string = String(data: data, encoding: .utf8)
+    else {
+      fatalError()
+    }
+    let json = JSON(parseJSON: string)
+    guard let hcert = HCert(from: json["PREFIX"].string ?? "") else {
+      throw ValidationErrors.invalidHCert
+    }
+    print(hcert)
   }
 
   static var allTests = [
