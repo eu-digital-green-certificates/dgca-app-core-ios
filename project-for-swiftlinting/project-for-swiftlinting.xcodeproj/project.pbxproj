@@ -7,15 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE855B48264F392C005189ED /* Sources in Resources */ = {isa = PBXBuildFile; fileRef = CE855B46264F392C005189ED /* Sources */; };
+		CE855B49264F392C005189ED /* Tests in Resources */ = {isa = PBXBuildFile; fileRef = CE855B47264F392C005189ED /* Tests */; };
 		CEF91E44264719E60018888D /* project_for_swiftlinting.h in Headers */ = {isa = PBXBuildFile; fileRef = CEF91E42264719E60018888D /* project_for_swiftlinting.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEF91E4B264719FD0018888D /* Sources in Resources */ = {isa = PBXBuildFile; fileRef = CEF91E4A264719FD0018888D /* Sources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE855B46264F392C005189ED /* Sources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sources; path = ../../Sources; sourceTree = "<group>"; };
+		CE855B47264F392C005189ED /* Tests */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Tests; path = ../../Tests; sourceTree = "<group>"; };
 		CEF91E3F264719E60018888D /* project_for_swiftlinting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = project_for_swiftlinting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF91E42264719E60018888D /* project_for_swiftlinting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project_for_swiftlinting.h; sourceTree = "<group>"; };
 		CEF91E43264719E60018888D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CEF91E4A264719FD0018888D /* Sources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sources; path = ../../Sources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,9 +50,10 @@
 		CEF91E41264719E60018888D /* project-for-swiftlinting */ = {
 			isa = PBXGroup;
 			children = (
-				CEF91E4A264719FD0018888D /* Sources */,
 				CEF91E42264719E60018888D /* project_for_swiftlinting.h */,
 				CEF91E43264719E60018888D /* Info.plist */,
+				CE855B46264F392C005189ED /* Sources */,
+				CE855B47264F392C005189ED /* Tests */,
 			);
 			path = "project-for-swiftlinting";
 			sourceTree = "<group>";
@@ -124,7 +127,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEF91E4B264719FD0018888D /* Sources in Resources */,
+				CE855B49264F392C005189ED /* Tests in Resources */,
+				CE855B48264F392C005189ED /* Sources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

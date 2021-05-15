@@ -34,6 +34,12 @@ let package = Package(
       path: "Sources"),
     .testTarget(
       name: "SwiftDGCTests",
-      dependencies: ["SwiftDGC"])
+      dependencies: ["SwiftDGC"],
+      resources: [
+        // Copy Tests/ExampleTests/Resources directories as-is.
+        // Use to retain directory structure.
+        // Will be at top level in bundle.
+        .copy("dgc-testdata"),
+      ])
   ]
 )

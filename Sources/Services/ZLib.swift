@@ -27,6 +27,9 @@ func decompressString(_ data: Data) -> String {
 }
 
 public func decompress(_ data: Data) -> Data {
+  if data.count <= 2 {
+    return .init()
+  }
   let size = 4 * data.count + 8 * 1024
   let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
   let result = data.subdata(in: 2 ..< data.count).withUnsafeBytes {
