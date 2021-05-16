@@ -74,7 +74,7 @@ struct VaccinationEntry: HCertEntry {
 
   var validityFailures: [String] {
     var fail = [String]()
-    if date > Date() {
+    if date > HCert.clock {
       fail.append(l10n("hcert.err.vac.future"))
     }
     return fail

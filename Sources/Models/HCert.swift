@@ -172,7 +172,7 @@ public struct HCert {
     if !cryptographicallyValid {
       validityFailures.append(l10n("hcert.err.crypto"))
     }
-    if exp < Date() {
+    if exp < HCert.clock {
       validityFailures.append(l10n("hcert.err.exp"))
     }
     if statement == nil {
@@ -345,4 +345,9 @@ public struct HCert {
   public var keyPair: SecKey! {
     Enclave.loadOrGenerateKey(with: uvci)
   }
+
+  public static var clock: Date {
+    clockOverride ?? Date()
+  }
+  public static var clockOverride: Date?
 }

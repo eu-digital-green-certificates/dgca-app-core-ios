@@ -34,6 +34,9 @@ public class ASN1 {
   public static func encode(_ data: Data, _ digestLengthInBytes: Int? = nil) -> Data {
     let data = data.uint
     let digestLengthInBytes = digestLengthInBytes ?? 32 // for ES256
+    if data.count <= digestLengthInBytes {
+      return Data()
+    }
     let sigR = encodeInt([UInt8](data.prefix(data.count - digestLengthInBytes)))
     let sigS = encodeInt([UInt8](data.suffix(digestLengthInBytes)))
     let tagSequence: UInt8 = 0x30

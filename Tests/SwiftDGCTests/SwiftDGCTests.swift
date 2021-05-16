@@ -29,14 +29,16 @@ func isDir(path: String) -> Bool {
 }
 
 final class SwiftDGCTests: XCTestCase {
-  func testExample() {
+  func testCases() {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct
     // results.
 
     l10nModule = bundle
 
-    XCTAssert(l10n("btn.cancel") != "btn.cancel", "l10n failed.")
+    XCTAssert(l10n("btn.cancel") != "btn.cancel", "l10n failed")
+
+    HCert.publicKeyStorageDelegate = self
 
     guard
       var path = bundle.resourcePath
@@ -65,20 +67,78 @@ final class SwiftDGCTests: XCTestCase {
 
   func test(jsonFile path: String) throws {
     let url = URL(fileURLWithPath: path)
+    fileName = String(path.split(separator: "/").last ?? "")
     guard
       let data = try? Data(contentsOf: url),
       let string = String(data: data, encoding: .utf8)
     else {
-      fatalError()
+      XCTAssert(false, "cannot decode \(descr)")
+      return
     }
-    let json = JSON(parseJSON: string)
-    guard let hcert = HCert(from: json["PREFIX"].string ?? "") else {
-      throw ValidationErrors.invalidHCert
+    json = JSON(parseJSON: string)
+    HCert.clockOverride = clock
+    guard let hcert = HCert(from: payloadString ?? "") else {
+      return
     }
-    print(hcert)
+//    print(hcert)
+  }
+
+  var json: JSON?
+
+  var payloadString: String? {
+    json?["PREFIX"].string
+  }
+  var context: JSON {
+    json?["TESTCTX"] ?? .null
+  }
+  var certString: String? {
+    context["CERTIFICATE"].string
+  }
+  var fileName: String?
+  var descr: String {
+    context["DESCRIPTION"].string ?? fileName ?? ""
+  }
+  var clock: Date? {
+    Date(rfc3339DateTimeString: context["VALIDATIONCLOCK"].string ?? "")
+  }
+  var expected: JSON {
+    json?["EXPECTEDRESULTS"] ?? .null
+  }
+  var expValidObject: Bool {
+    expected["EXPECTEDVALIDOBJECT"].bool ?? true
+  }
+  var expSchemaValidation: Bool {
+    expected["EXPECTEDSCHEMAVALIDATION"].bool ?? true
+  }
+  var expDecode: Bool {
+    expected["EXPECTEDDECODE"].bool ?? true
+  }
+  var expVerify: Bool {
+    expected["EXPECTEDVERIFY"].bool ?? true
+  }
+  var expUnprefix: Bool {
+    expected["EXPECTEDUNPREFIX"].bool ?? true
+  }
+  var expValidJson: Bool {
+    expected["EXPECTEDVALIDJSON"].bool ?? true
+  }
+  var expCompression: Bool {
+    expected["EXPECTEDCOMPRESSION"].bool ?? true
+  }
+  var expB45decode: Bool {
+    expected["EXPECTEDB45DECODE"].bool ?? true
+  }
+  var expPicturedecode: Bool {
+    expected["EXPECTEDPICTUREDECODE"].bool ?? true
   }
 
   static var allTests = [
-    ("testExample", testExample)
+    ("testCases", testCases)
   ]
+}
+
+extension SwiftDGCTests: PublicKeyStorageDelegate {
+  func getEncodedPublicKeys(for _: String) -> [String] {
+    [certString ?? ""]
+  }
 }
