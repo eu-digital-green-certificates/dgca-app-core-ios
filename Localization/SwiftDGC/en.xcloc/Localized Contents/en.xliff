@@ -1338,6 +1338,11 @@
         <target>Cryptographic signature not valid.</target>
         <note/>
       </trans-unit>
+      <trans-unit id="hcert.err.empty" xml:space="preserve">
+        <source>No entries in the certificate.</source>
+        <target>No entries in the certificate.</target>
+        <note/>
+      </trans-unit>
       <trans-unit id="hcert.err.exp" xml:space="preserve">
         <source>Certificate past expiration date.</source>
         <target>Certificate past expiration date.</target>
