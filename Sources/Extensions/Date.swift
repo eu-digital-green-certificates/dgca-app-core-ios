@@ -68,24 +68,30 @@ extension Date {
     self = date
   }
   init?(rfc3339DateTimeString str: String) {
+    var str = str
     let rfc3339DateTimeFormatter = DateFormatter()
 
-    rfc3339DateTimeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-    if let date = rfc3339DateTimeFormatter.date(from: str) {
-      self = date
-      return
+    if (try? NSRegularExpression(
+      pattern: "\\.[0-9]{6}Z?$", options: []
+    ).matches(
+      in: str, options: [], range: NSRange(
+        str.startIndex..<str.endIndex,
+        in: str
+      )
+    ))?.isEmpty == false {
+      str = str.trimmingCharacters(in: ["Z"])
+      str = String(str.prefix(str.count - 3)) + "Z"
     }
 
-    rfc3339DateTimeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-    if let date = rfc3339DateTimeFormatter.date(from: str) {
-      self = date
-      return
-    }
-
-    rfc3339DateTimeFormatter.dateFormat = "yyyy-MM-dd't'HH:mm:ss.SSS'z'"
-    if let date = rfc3339DateTimeFormatter.date(from: str) {
-      self = date
-      return
+    for fmt in [
+      "yyyy-MM-dd'T'HH:mm:ssZZZZZ", "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ",
+      "yyyy-MM-dd't'HH:mm:ss'z'", "yyyy-MM-dd't'HH:mm:ss.SSS'z'"
+    ] {
+      rfc3339DateTimeFormatter.dateFormat = fmt
+      if let date = rfc3339DateTimeFormatter.date(from: str) {
+        self = date
+        return
+      }
     }
     return nil
   }

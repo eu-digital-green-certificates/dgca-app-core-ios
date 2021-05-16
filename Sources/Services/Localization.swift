@@ -57,6 +57,10 @@ public func country(for code: String) -> String {
 
 class L10N {
   static var bundle: Bundle {
+    #if SWIFT_PACKAGE
+    Bundle.module
+    #else
     Bundle(for: Self.self)
+    #endif
   }
 }

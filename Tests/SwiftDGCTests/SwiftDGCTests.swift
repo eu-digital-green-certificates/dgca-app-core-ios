@@ -114,27 +114,34 @@ final class SwiftDGCTests: XCTestCase {
     for error in errors {
       switch error {
       case .base45:
-        XCTAssert(!expB45decode, "unexpected base45 err for \(descr)")
+        XCTAssert(expB45decode != true, "unexpected base45 err for \(descr)")
       case .prefix:
-        XCTAssert(!expUnprefix, "unexpected prefix err for \(descr)")
+        XCTAssert(expUnprefix != true, "unexpected prefix err for \(descr)")
       case .zlib:
-        XCTAssert(!expCompression, "unexpected zlib err for \(descr)")
+        XCTAssert(expCompression != true, "unexpected zlib err for \(descr)")
       case .cbor:
-        XCTAssert(!expDecode, "unexpected cbor err for \(descr)")
+        XCTAssert(expDecode != true, "unexpected cbor err for \(descr)")
       case .json(error: let error):
-        XCTAssert(!expSchemaValidation, "unexpected schema err for \(descr): \(error)")
+        XCTAssert(expSchemaValidation != true, "unexpected schema err for \(descr): \(error)")
       case .version:
-        XCTAssert(!expSchemaValidation, "unexpected version err for \(descr)")
+        XCTAssert(expSchemaValidation != true, "unexpected version err for \(descr)")
       }
     }
     guard let hcert = hcert else {
       return
     }
+    checkHcert(hcert: hcert)
+  }
+
+  func checkHcert(hcert: HCert) {
+    let kidMatches = hcert.kidStr == KID.string(from: KID.from(certString ?? ""))
+    let valid = kidMatches && hcert.cryptographicallyValid
 
     if expVerify == true {
       XCTAssert(hcert.cryptographicallyValid, "cose signature invalid for \(descr)")
+      XCTAssert(kidMatches, "cose KID mismatch for \(descr)")
     } else if expVerify == false {
-      XCTAssert(!hcert.cryptographicallyValid, "cose signature valid for \(descr)")
+      XCTAssert(!valid, "cose signature valid for \(descr)")
     }
     if expExpired == true {
       XCTAssert(clock != nil, "clock not set for \(descr)")
@@ -147,7 +154,6 @@ final class SwiftDGCTests: XCTestCase {
 
   var json: JSON?
 
-  // TODO: Should probably check for nil values and ignore those errors.
   var payloadString: String? {
     json?["PREFIX"].string
   }
@@ -159,7 +165,10 @@ final class SwiftDGCTests: XCTestCase {
   }
   var fileName: String?
   var descr: String {
-    context["DESCRIPTION"].string ?? fileName ?? ""
+    if let description = context["DESCRIPTION"].string {
+      return "\(fileName ?? "") (\(description))"
+    }
+    return "\(fileName ?? "")"
   }
   var clock: Date? {
     Date(rfc3339DateTimeString: context["VALIDATIONCLOCK"].string ?? "")
@@ -167,32 +176,32 @@ final class SwiftDGCTests: XCTestCase {
   var expected: JSON {
     json?["EXPECTEDRESULTS"] ?? .null
   }
-  var expValidObject: Bool {
-    expected["EXPECTEDVALIDOBJECT"].bool ?? true
+  var expValidObject: Bool? {
+    expected["EXPECTEDVALIDOBJECT"].bool
   }
-  var expSchemaValidation: Bool {
-    expected["EXPECTEDSCHEMAVALIDATION"].bool ?? true
+  var expSchemaValidation: Bool? {
+    expected["EXPECTEDSCHEMAVALIDATION"].bool
   }
-  var expDecode: Bool {
-    expected["EXPECTEDDECODE"].bool ?? true
+  var expDecode: Bool? {
+    expected["EXPECTEDDECODE"].bool
   }
   var expVerify: Bool? {
     expected["EXPECTEDVERIFY"].bool
   }
-  var expUnprefix: Bool {
-    expected["EXPECTEDUNPREFIX"].bool ?? true
+  var expUnprefix: Bool? {
+    expected["EXPECTEDUNPREFIX"].bool
   }
-  var expValidJson: Bool {
-    expected["EXPECTEDVALIDJSON"].bool ?? true
+  var expValidJson: Bool? {
+    expected["EXPECTEDVALIDJSON"].bool
   }
-  var expCompression: Bool {
-    expected["EXPECTEDCOMPRESSION"].bool ?? true
+  var expCompression: Bool? {
+    expected["EXPECTEDCOMPRESSION"].bool
   }
-  var expB45decode: Bool {
-    expected["EXPECTEDB45DECODE"].bool ?? true
+  var expB45decode: Bool? {
+    expected["EXPECTEDB45DECODE"].bool
   }
-  var expPicturedecode: Bool {
-    expected["EXPECTEDPICTUREDECODE"].bool ?? true
+  var expPicturedecode: Bool? {
+    expected["EXPECTEDPICTUREDECODE"].bool
   }
   var expExpired: Bool? {
     expected["EXPECTEDEXPIRATIONCHECK"].bool
