@@ -3,13 +3,13 @@ import XCTest
 import SwiftDGC
 import SwiftyJSON
 
-var bundle: Bundle!
 #if SWIFT_PACKAGE
 let inPackage = true
-var bundle = Bundle.module
 #else
 let inPackage = false
 #endif
+
+let bundle = inPackage ? .module : Bundle(for: SwiftDGCTests.self)
 
 enum ValidationErrors: Error {
   case invalidHCert
@@ -34,8 +34,9 @@ final class SwiftDGCTests: XCTestCase {
     // Use XCTAssert and related functions to verify your tests produce the correct
     // results.
 
-    bundle = bundle ?? Bundle(for: type(of: self))
     l10nModule = bundle
+
+    XCTAssert(l10n("btn.cancel") != "btn.cancel", "l10n failed.")
 
     guard
       var path = bundle.resourcePath
