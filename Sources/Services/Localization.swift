@@ -19,7 +19,7 @@
  */
 //
 //  Localization.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 5/6/21.
 //

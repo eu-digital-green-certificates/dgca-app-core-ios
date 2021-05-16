@@ -19,7 +19,7 @@
  */
 //
 //  ASN1.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 5/7/21.
 //

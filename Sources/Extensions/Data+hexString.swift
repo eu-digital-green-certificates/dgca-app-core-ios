@@ -19,7 +19,7 @@
  */
 //
 //  Data+hexString.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/14/21.
 //
