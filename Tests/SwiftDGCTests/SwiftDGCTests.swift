@@ -131,14 +131,16 @@ final class SwiftDGCTests: XCTestCase {
       return
     }
 
-    if expVerify {
+    if expVerify == true {
       XCTAssert(hcert.cryptographicallyValid, "cose signature invalid for \(descr)")
-    } else {
+    } else if expVerify == false {
       XCTAssert(!hcert.cryptographicallyValid, "cose signature valid for \(descr)")
     }
-    if expExpired {
+    if expExpired == true {
+      XCTAssert(clock != nil, "clock not set for \(descr)")
       XCTAssert(!hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose expired for \(descr)")
-    } else {
+    } else if expExpired == false {
+      XCTAssert(clock != nil, "clock not set for \(descr)")
       XCTAssert(hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose not expired for \(descr)")
     }
   }
@@ -174,8 +176,8 @@ final class SwiftDGCTests: XCTestCase {
   var expDecode: Bool {
     expected["EXPECTEDDECODE"].bool ?? true
   }
-  var expVerify: Bool {
-    expected["EXPECTEDVERIFY"].bool ?? true
+  var expVerify: Bool? {
+    expected["EXPECTEDVERIFY"].bool
   }
   var expUnprefix: Bool {
     expected["EXPECTEDUNPREFIX"].bool ?? true
@@ -192,8 +194,8 @@ final class SwiftDGCTests: XCTestCase {
   var expPicturedecode: Bool {
     expected["EXPECTEDPICTUREDECODE"].bool ?? true
   }
-  var expExpired: Bool {
-    expected["EXPECTEDEXPIRATIONCHECK"].bool ?? true
+  var expExpired: Bool? {
+    expected["EXPECTEDEXPIRATIONCHECK"].bool
   }
 
   static var allTests = [
