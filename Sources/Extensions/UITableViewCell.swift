@@ -18,25 +18,32 @@
  * ---license-end
  */
 //
-//  AppVersionCell.swift
+//  UITableViewCell.swift
 //  
 //
 //  Created by Yannick Spreen on 5/16/21.
 //
 
 #if os(iOS)
-import Foundation
 import UIKit
 
-public class AppVersionCell: UITableViewCell {
-  @IBOutlet weak var versionLabel: UILabel!
+public extension UITableViewCell {
+  func removeSectionSeparator() {
+    for subview in subviews {
+      if
+        subview != contentView,
+        abs(subview.frame.width - frame.width) <= 0.1,
+        subview.frame.height < 2
+      {
+        subview.alpha = 0
+      }
+    }
+  }
+}
 
+public class BorderLessSectionCell: UITableViewCell {
   public override func layoutSubviews() {
     super.layoutSubviews()
-
-    let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-    let format = l10n("app-version")
-    versionLabel.text = String(format: format, version ?? "?")
     removeSectionSeparator()
   }
 }
