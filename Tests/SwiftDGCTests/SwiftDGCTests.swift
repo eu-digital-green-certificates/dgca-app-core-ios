@@ -159,7 +159,10 @@ final class SwiftDGCTests: XCTestCase {
   }
   var fileName: String?
   var descr: String {
-    context["DESCRIPTION"].string ?? fileName ?? ""
+    if let description = context["DESCRIPTION"].string {
+      return "\(fileName ?? "") (\(description))"
+    }
+    return "\(fileName ?? "")"
   }
   var clock: Date? {
     Date(rfc3339DateTimeString: context["VALIDATIONCLOCK"].string ?? "")
