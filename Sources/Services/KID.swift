@@ -20,7 +20,7 @@
  */
 //
 //  KID.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/22/21.
 //

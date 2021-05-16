@@ -41,6 +41,15 @@ You can help the localization of this project by making contributions to the [/L
 Since this is just a requirement module, it is used as a dependency in both the verifier and wallet apps on iOS.
 For that, Xcode builds the module from source in the target app. Because of that, building this module on its own is not supported.
 
+## Testing 🧑‍🔬  
+
+This project uses the [testdata repo](https://github.com/eu-digital-green-certificates/dgc-testdata) for automatic tests. You can run tests in two ways:
+
+1. Either via `./test.sh`,
+2. Or via the Xcode project `project-for-testing/project-for-testing.xcodeproj`.
+
+The second option is good for debugging single test case failures. Run the test script (1.) once, so that the data repo is checked out. Then, open Xcode and run the tests. You can [add automatic test failure breakpoints](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/06-debugging_tests.html#:~:text=Test%20Failure%20Breakpoint,-In%20the%20breakpoint&text=This%20breakpoint%20stops%20the%20test,failure%20in%20the%20test%20code.) for easy debugging.
+
 ## Documentation  
 
 - [ ] TODO: Link to documentation

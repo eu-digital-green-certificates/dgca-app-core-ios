@@ -19,19 +19,21 @@
  */
 //
 //  Localization.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 5/6/21.
 //
 
 import Foundation
 
+public var l10nModule: Bundle?
+
 public func l10n(_ string: String, with comment: String? = nil, or fallback: String? = nil) -> String {
   var text = NSLocalizedString(string, comment: comment ?? "No comment provided.")
   if text != string {
     return text
   }
-  text = NSLocalizedString(string, bundle: .module, comment: comment ?? "No comment provided.")
+  text = NSLocalizedString(string, bundle: l10nModule ?? L10N.bundle, comment: comment ?? "No comment provided.")
   if text != string {
     return text
   }
@@ -45,10 +47,16 @@ public extension RawRepresentable where RawValue == String {
     if text != key {
       return text
     }
-    return NSLocalizedString(key, bundle: .module, comment: "Automatic enum case.")
+    return NSLocalizedString(key, bundle: l10nModule ?? L10N.bundle, comment: "Automatic enum case.")
   }
 }
 
 public func country(for code: String) -> String {
   l10n("country." + code, or: code)
+}
+
+class L10N {
+  static var bundle: Bundle {
+    Bundle(for: Self.self)
+  }
 }

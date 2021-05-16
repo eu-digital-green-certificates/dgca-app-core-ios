@@ -19,7 +19,7 @@
  */
 //
 //  EuDgcSchema.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/20/21.
 //

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
   name: "SwiftDGC",
   defaultLocalization: "en",
-  platforms: [.iOS(.v12)],
+  platforms: [.iOS(.v12), .macOS(.v10_14)],
   products: [
     // Products define the executables and libraries a package produces, and make them visible to other packages.
     .library(
@@ -18,7 +18,11 @@ let package = Package(
     .package(url: "https://github.com/unrelentingtech/SwiftCBOR", from: "0.4.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.1"),
     .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
-    .package(name: "JSONSchema", url: "https://github.com/jnewc/JSONSchema.swift", .branch("master"))
+    .package(
+      name: "JSONSchema",
+      url: "https://github.com/eu-digital-green-certificates/JSONSchema.swift",
+      .branch("master")
+    )
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -34,6 +38,13 @@ let package = Package(
       path: "Sources"),
     .testTarget(
       name: "SwiftDGCTests",
-      dependencies: ["SwiftDGC"])
+      dependencies: ["SwiftDGC"],
+      resources: [
+        // Copy Tests/ExampleTests/Resources directories as-is.
+        // Use to retain directory structure.
+        // Will be at top level in bundle.
+        .copy("dgc-testdata"),
+        .process("en.lproj/Localizable.strings")
+      ])
   ]
 )

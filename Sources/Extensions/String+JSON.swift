@@ -19,7 +19,7 @@
  */
 //
 //  String+JSON.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/13/21.
 //

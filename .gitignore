@@ -218,3 +218,5 @@ xcuserdata/
 
 
 /Pods/
+/.build/
+/Package.resolved

@@ -20,7 +20,7 @@
  */
 //  
 //  TestResult.swift
-//  DGCAVerifier
+//
 //  
 //  Created by Yannick Spreen on 4/28/21.
 //  
@@ -70,7 +70,7 @@ struct TestEntry: HCertEntry {
     if !resultNegative {
       fail.append(l10n("hcert.err.tst.positive"))
     }
-    if sampleTime > Date() {
+    if sampleTime > HCert.clock {
       fail.append(l10n("hcert.err.tst.future"))
     }
     return fail

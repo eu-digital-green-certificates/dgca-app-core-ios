@@ -20,7 +20,7 @@
  */
 //  
 //  HCertEntry.swift
-//  DGCAVerifier
+//
 //  
 //  Created by Yannick Spreen on 4/28/21.
 //  

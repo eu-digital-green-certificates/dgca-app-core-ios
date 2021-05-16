@@ -19,7 +19,7 @@
  */
 //
 //  X509.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/17/21.
 //

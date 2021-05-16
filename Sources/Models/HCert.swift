@@ -19,15 +19,13 @@
  */
 //
 //  HCert.swift
-//  DGCAVerifier
+//
 //
 //  Created by Yannick Spreen on 4/19/21.
 //
 
 import Foundation
 import SwiftyJSON
-import JSONSchema
-import UIKit
 
 enum ClaimKey: String {
   case hCert = "-260"
@@ -86,60 +84,61 @@ public struct HCertConfig {
 }
 
 public struct HCert {
+  public enum ParseError {
+    case base45
+    case prefix
+    case zlib
+    case cbor
+    case json(error: String)
+    case version
+  }
+  public class ParseErrors {
+    var errors: [ParseError] = []
+  }
+
+  public static var debugPrintJsonErrors = true
   public static var config = HCertConfig()
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
   public static let supportedPrefixes = [
     "HC1:"
   ]
 
-  mutating func parseBodyV1() -> Bool {
-    guard
-      let schema = JSON(parseJSON: euDgcSchemaV1).dictionaryObject,
-      let bodyDict = body.dictionaryObject
-    else {
-      return false
-    }
-
-    guard
-      let validation = try? validate(bodyDict, schema: schema)
-    else {
-      return false
-    }
-    #if DEBUG
-    if let errors = validation.errors {
-      for err in errors {
-        print(err.description)
-      }
-    }
-    #else
-    if !validation.valid {
-      return false
-    }
-    #endif
-    return true
-  }
-
-  public init?(from payloadString: String) {
+  static func parsePrefix(_ payloadString: String, errors: ParseErrors?) -> String {
     var payloadString = payloadString
+    var foundPrefix = false
     for prefix in Self.supportedPrefixes {
       if payloadString.starts(with: prefix) {
         payloadString = String(payloadString.dropFirst(prefix.count))
+        foundPrefix = true
+        break
       }
     }
-    self.payloadString = payloadString
+    if !foundPrefix {
+      errors?.errors.append(.prefix)
+    }
+    return payloadString
+  }
+
+  public init?(from payload: String, errors: ParseErrors? = nil) {
+    payloadString = Self.parsePrefix(payload, errors: errors)
 
     guard
       let compressed = try? payloadString.fromBase45()
     else {
+      errors?.errors.append(.base45)
       return nil
     }
 
     cborData = decompress(compressed)
+    if cborData.isEmpty {
+      errors?.errors.append(.zlib)
+    }
     guard
       let headerStr = CBOR.header(from: cborData)?.toString(),
       let bodyStr = CBOR.payload(from: cborData)?.toString(),
       let kid = CBOR.kid(from: cborData)
     else {
+      errors?.errors.append(.cbor)
       return nil
     }
     kidStr = KID.string(from: kid)
@@ -151,18 +150,22 @@ public struct HCert {
     }
     if body[ClaimKey.euDgcV1.rawValue].exists() {
       self.body = body[ClaimKey.euDgcV1.rawValue]
-      if !parseBodyV1() {
+      if !parseBodyV1(errors: errors) {
         return nil
       }
     } else {
       print("Wrong EU_DGC Version!")
+      errors?.errors.append(.version)
       return nil
     }
     findValidity()
     makeSections()
+
+    #if os(iOS)
     if Self.config.prefetchAllCodes {
       prefetchCode()
     }
+    #endif
   }
 
   mutating func findValidity() {
@@ -170,8 +173,11 @@ public struct HCert {
     if !cryptographicallyValid {
       validityFailures.append(l10n("hcert.err.crypto"))
     }
-    if exp < Date() {
+    if exp < HCert.clock {
       validityFailures.append(l10n("hcert.err.exp"))
+    }
+    if statement == nil {
+      return validityFailures.append(l10n("hcert.err.empty"))
     }
     validityFailures.append(contentsOf: statement.validityFailures)
   }
@@ -216,7 +222,8 @@ public struct HCert {
         )
       ]
     }
-    info += statement.info + [
+    info += statement == nil ? [] : statement.info
+    info += [
       InfoSection(
         header: l10n("header.expires-at"),
         content: exp.dateTimeStringUtc
@@ -239,7 +246,7 @@ public struct HCert {
   }
 
   public var certTypeString: String {
-    type.l10n + " \(statement.typeAddon)"
+    type.l10n + (statement == nil ? "" : "\(statement.typeAddon)")
   }
 
   public var info = [InfoSection]()
@@ -251,53 +258,7 @@ public struct HCert {
   public var body: JSON
   public var exp: Date
 
-  var qrCodeRendered: UIImage? {
-    Self.cachedQrCodes[uvci]
-  }
-
-  public var qrCode: UIImage? {
-    return qrCodeRendered ?? renderQrCode()
-  }
-
   static let qrLock = NSLock()
-  func renderQrCode() -> UIImage? {
-    if let rendered = qrCodeRendered {
-      return rendered
-    }
-    let code = makeQrCode()
-    if let value = code {
-      Self.qrLock.lock()
-      Self.cachedQrCodes[uvci] = value
-      Self.qrLock.unlock()
-    }
-    return code
-  }
-
-  func makeQrCode() -> UIImage? {
-    let data = payloadString.data(using: String.Encoding.ascii)
-
-    if let filter = CIFilter(name: "CIQRCodeGenerator") {
-      filter.setValue(data, forKey: "inputMessage")
-      let transform = CGAffineTransform(scaleX: 3, y: 3)
-
-      if let output = filter.outputImage?.transformed(by: transform) {
-        return UIImage(ciImage: output)
-      }
-    }
-
-    return nil
-  }
-
-  func prefetchCode() {
-    guard qrCodeRendered == nil else {
-      return
-    }
-    DispatchQueue.global(qos: .background).async {
-      _ = renderQrCode()
-    }
-  }
-
-  static var cachedQrCodes = [String: UIImage]()
 
   public var fullName: String {
     let first = get(.firstName).string ?? ""
@@ -380,9 +341,14 @@ public struct HCert {
     CBOR.hash(from: cborData)
   }
   public var uvci: String {
-    statement.uvci
+    statement?.uvci ?? "empty"
   }
   public var keyPair: SecKey! {
     Enclave.loadOrGenerateKey(with: uvci)
   }
+
+  public static var clock: Date {
+    clockOverride ?? Date()
+  }
+  public static var clockOverride: Date?
 }

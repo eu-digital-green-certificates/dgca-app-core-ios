@@ -20,7 +20,7 @@
  */
 //  
 //  TestResult.swift
-//  DGCAVerifier
+//
 //  
 //  Created by Yannick Spreen on 4/28/21.
 //  
@@ -54,10 +54,10 @@ struct RecoveryEntry: HCertEntry {
 
   var validityFailures: [String] {
     var fail = [String]()
-    if validFrom > Date() {
+    if validFrom > HCert.clock {
       fail.append(l10n("hcert.err.rec.future"))
     }
-    if validUntil < Date() {
+    if validUntil < HCert.clock {
       fail.append(l10n("hcert.err.rec.past"))
     }
     return fail
