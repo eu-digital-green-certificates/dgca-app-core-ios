@@ -26,7 +26,6 @@
 
 import Foundation
 import SwiftyJSON
-import JSONSchema
 
 enum ClaimKey: String {
   case hCert = "-260"
@@ -104,39 +103,7 @@ public struct HCert {
     "HC1:"
   ]
 
-  mutating func parseBodyV1(errors: ParseErrors? = nil) -> Bool {
-    guard
-      let schema = JSON(parseJSON: euDgcSchemaV1).dictionaryObject,
-      let bodyDict = body.dictionaryObject
-    else {
-      errors?.errors.append(.json(error: "Validation failed"))
-      return false
-    }
-
-    guard
-      let validation = try? validate(bodyDict, schema: schema)
-    else {
-      errors?.errors.append(.json(error: "Validation failed"))
-      return false
-    }
-    validation.errors?.forEach {
-      errors?.errors.append(.json(error: $0.description))
-    }
-    #if DEBUG
-    if Self.debugPrintJsonErrors {
-      validation.errors?.forEach {
-        print($0.description)
-      }
-    }
-    #else
-    if !validation.valid {
-      return false
-    }
-    #endif
-    return true
-  }
-
-  public init?(from payloadString: String, errors: ParseErrors? = nil) {
+  static func parsePrefix(_ payloadString: String, errors: ParseErrors?) -> String {
     var payloadString = payloadString
     var foundPrefix = false
     for prefix in Self.supportedPrefixes {
@@ -146,10 +113,14 @@ public struct HCert {
         break
       }
     }
-    self.payloadString = payloadString
     if !foundPrefix {
       errors?.errors.append(.prefix)
     }
+    return payloadString
+  }
+
+  public init?(from payload: String, errors: ParseErrors? = nil) {
+    payloadString = Self.parsePrefix(payload, errors: errors)
 
     guard
       let compressed = try? payloadString.fromBase45()
