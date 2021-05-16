@@ -70,6 +70,7 @@
 "info.outdated" = "Update Available";
 "info.outdated.body" = "This application is not up to date. Please open the App Store and download the newest version!";
 
+"hcert.err.empty" = "No entries in the certificate.";
 "hcert.err.crypto" = "Cryptographic signature not valid.";
 "hcert.err.exp" = "Certificate past expiration date.";
 "hcert.err.vac.future" = "Vaccination date is in the future.";
