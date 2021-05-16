@@ -130,7 +130,10 @@ final class SwiftDGCTests: XCTestCase {
     guard let hcert = hcert else {
       return
     }
+    checkHcert(hcert: hcert)
+  }
 
+  func checkHcert(hcert: HCert) {
     let kidMatches = hcert.kidStr == KID.string(from: KID.from(certString ?? ""))
     let valid = kidMatches && hcert.cryptographicallyValid
 

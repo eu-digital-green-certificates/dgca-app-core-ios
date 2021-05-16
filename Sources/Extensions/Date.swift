@@ -83,7 +83,10 @@ extension Date {
       str = String(str.prefix(str.count - 3)) + "Z"
     }
 
-    for fmt in ["yyyy-MM-dd'T'HH:mm:ssZZZZZ", "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ", "yyyy-MM-dd't'HH:mm:ss.SSS'z'"] {
+    for fmt in [
+      "yyyy-MM-dd'T'HH:mm:ssZZZZZ", "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ",
+      "yyyy-MM-dd't'HH:mm:ss'z'", "yyyy-MM-dd't'HH:mm:ss.SSS'z'"
+    ] {
       rfc3339DateTimeFormatter.dateFormat = fmt
       if let date = rfc3339DateTimeFormatter.date(from: str) {
         self = date
