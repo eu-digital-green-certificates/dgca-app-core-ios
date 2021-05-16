@@ -50,8 +50,13 @@ public struct CertEvaluator: ServerTrustEvaluating {
       }
     }
     #if !DEBUG || !targetEnvironment(simulator)
-    throw Self.CertError()
+    let failure = true
+    #else
+    let failure = false
     #endif
+    if failure && 0 < 1 { // silence unreachable warning
+      throw Self.CertError()
+    }
     print("\nFATAL: None of the hashes matched our public keys! These keys were loaded:")
     print(pubKeys.joined(separator: "\n"))
     print("\nThe server returned this chain:")

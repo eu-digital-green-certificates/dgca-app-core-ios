@@ -36,9 +36,13 @@ final class SwiftDGCTests: XCTestCase {
 
     l10nModule = bundle
 
-    XCTAssert(l10n("btn.cancel") != "btn.cancel", "l10n failed")
+    if l10n("btn.cancel") == "btn.cancel" {
+      XCTAssert(false, "l10n failed")
+      return
+    }
 
     HCert.publicKeyStorageDelegate = self
+    HCert.debugPrintJsonErrors = false
 
     guard
       var path = bundle.resourcePath
@@ -77,14 +81,45 @@ final class SwiftDGCTests: XCTestCase {
     }
     json = JSON(parseJSON: string)
     HCert.clockOverride = clock
-    guard let hcert = HCert(from: payloadString ?? "") else {
+    let error = HCert.ParseErrors()
+    let hcert = HCert(from: payloadString ?? "", errors: error)
+    let errors = error.errors
+
+    for error in errors {
+      switch error {
+      case .base45:
+        XCTAssert(!expB45decode, "unexpected base45 err for \(descr)")
+      case .prefix:
+        XCTAssert(!expUnprefix, "unexpected prefix err for \(descr)")
+      case .zlib:
+        XCTAssert(!expCompression, "unexpected zlib err for \(descr)")
+      case .cbor:
+        XCTAssert(!expDecode, "unexpected cbor err for \(descr)")
+      case .json(error: let error):
+        XCTAssert(!expSchemaValidation, "unexpected schema err for \(descr): \(error)")
+      case .version:
+        XCTAssert(!expSchemaValidation, "unexpected version err for \(descr)")
+      }
+    }
+    guard let hcert = hcert else {
       return
     }
-//    print(hcert)
+
+    if expVerify {
+      XCTAssert(hcert.cryptographicallyValid, "cose signature invalid for \(descr)")
+    } else {
+      XCTAssert(!hcert.cryptographicallyValid, "cose signature valid for \(descr)")
+    }
+    if expExpired {
+      XCTAssert(!hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose expired for \(descr)")
+    } else {
+      XCTAssert(hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose not expired for \(descr)")
+    }
   }
 
   var json: JSON?
 
+  // TODO: Should probably check for nil values and ignore those errors.
   var payloadString: String? {
     json?["PREFIX"].string
   }
@@ -130,6 +165,9 @@ final class SwiftDGCTests: XCTestCase {
   }
   var expPicturedecode: Bool {
     expected["EXPECTEDPICTUREDECODE"].bool ?? true
+  }
+  var expExpired: Bool {
+    expected["EXPECTEDEXPIRATIONCHECK"].bool ?? true
   }
 
   static var allTests = [

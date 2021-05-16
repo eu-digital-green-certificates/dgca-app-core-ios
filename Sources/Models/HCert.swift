@@ -85,29 +85,47 @@ public struct HCertConfig {
 }
 
 public struct HCert {
+  public enum ParseError {
+    case base45
+    case prefix
+    case zlib
+    case cbor
+    case json(error: String)
+    case version
+  }
+  public class ParseErrors {
+    var errors: [ParseError] = []
+  }
+
+  public static var debugPrintJsonErrors = true
   public static var config = HCertConfig()
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
   public static let supportedPrefixes = [
     "HC1:"
   ]
 
-  mutating func parseBodyV1() -> Bool {
+  mutating func parseBodyV1(errors: ParseErrors? = nil) -> Bool {
     guard
       let schema = JSON(parseJSON: euDgcSchemaV1).dictionaryObject,
       let bodyDict = body.dictionaryObject
     else {
+      errors?.errors.append(.json(error: "Validation failed"))
       return false
     }
 
     guard
       let validation = try? validate(bodyDict, schema: schema)
     else {
+      errors?.errors.append(.json(error: "Validation failed"))
       return false
     }
+    validation.errors?.forEach {
+      errors?.errors.append(.json(error: $0.description))
+    }
     #if DEBUG
-    if let errors = validation.errors {
-      for err in errors {
-        print(err.description)
+    if Self.debugPrintJsonErrors {
+      validation.errors?.forEach {
+        print($0.description)
       }
     }
     #else
@@ -118,27 +136,38 @@ public struct HCert {
     return true
   }
 
-  public init?(from payloadString: String) {
+  public init?(from payloadString: String, errors: ParseErrors? = nil) {
     var payloadString = payloadString
+    var foundPrefix = false
     for prefix in Self.supportedPrefixes {
       if payloadString.starts(with: prefix) {
         payloadString = String(payloadString.dropFirst(prefix.count))
+        foundPrefix = true
+        break
       }
     }
     self.payloadString = payloadString
+    if !foundPrefix {
+      errors?.errors.append(.prefix)
+    }
 
     guard
       let compressed = try? payloadString.fromBase45()
     else {
+      errors?.errors.append(.base45)
       return nil
     }
 
     cborData = decompress(compressed)
+    if cborData.isEmpty {
+      errors?.errors.append(.zlib)
+    }
     guard
       let headerStr = CBOR.header(from: cborData)?.toString(),
       let bodyStr = CBOR.payload(from: cborData)?.toString(),
       let kid = CBOR.kid(from: cborData)
     else {
+      errors?.errors.append(.cbor)
       return nil
     }
     kidStr = KID.string(from: kid)
@@ -150,11 +179,12 @@ public struct HCert {
     }
     if body[ClaimKey.euDgcV1.rawValue].exists() {
       self.body = body[ClaimKey.euDgcV1.rawValue]
-      if !parseBodyV1() {
+      if !parseBodyV1(errors: errors) {
         return nil
       }
     } else {
       print("Wrong EU_DGC Version!")
+      errors?.errors.append(.version)
       return nil
     }
     findValidity()
