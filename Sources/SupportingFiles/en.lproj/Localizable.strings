@@ -73,6 +73,7 @@
 "hcert.err.empty" = "No entries in the certificate.";
 "hcert.err.crypto" = "Cryptographic signature not valid.";
 "hcert.err.exp" = "Certificate past expiration date.";
+"hcert.err.iat" = "Certificate issuance date is in the future.";
 "hcert.err.vac.future" = "Vaccination date is in the future.";
 "hcert.err.rec.future" = "Recovery statement is not valid yet.";
 "hcert.err.rec.past" = "Recovery statement is not valid anymore.";
