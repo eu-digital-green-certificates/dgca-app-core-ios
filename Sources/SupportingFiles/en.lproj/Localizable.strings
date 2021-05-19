@@ -43,7 +43,7 @@
 "recovery.country" = "Country of Issuance";
 "recovery.issuer" = "Statement Issuer";
 "test.sample-date-time" = "Time of Sampling";
-"test.test-result" = "Time of Sampling";
+"test.test-result" = "Test Result";
 "test.result.negative" = "Not Detected";
 "test.result.positive" = "Detected ⚠️";
 "test.disease" = "Targeted Disease";
