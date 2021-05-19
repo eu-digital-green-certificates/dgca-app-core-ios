@@ -1348,6 +1348,11 @@
         <target>Certificate past expiration date.</target>
         <note/>
       </trans-unit>
+      <trans-unit id="hcert.err.iat" xml:space="preserve">
+        <source>Certificate issuance date is in the future.</source>
+        <target>Certificate issuance date is in the future.</target>
+        <note/>
+      </trans-unit>
       <trans-unit id="hcert.err.rec.future" xml:space="preserve">
         <source>Recovery statement is not valid yet.</source>
         <target>Recovery statement is not valid yet.</target>
@@ -1614,8 +1619,8 @@
         <note/>
       </trans-unit>
       <trans-unit id="test.test-result" xml:space="preserve">
-        <source>Time of Sampling</source>
-        <target>Time of Sampling</target>
+        <source>Test Result</source>
+        <target>Test Result</target>
         <note/>
       </trans-unit>
       <trans-unit id="vac.man.Bharat-Biotech" xml:space="preserve">

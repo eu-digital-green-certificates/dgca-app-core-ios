@@ -144,6 +144,7 @@ public struct HCert {
     kidStr = KID.string(from: kid)
     header = JSON(parseJSON: headerStr)
     var body = JSON(parseJSON: bodyStr)
+    iat = Date(timeIntervalSince1970: Double(body["6"].int ?? 0))
     exp = Date(timeIntervalSince1970: Double(body["4"].int ?? 0))
     if body[ClaimKey.hCert.rawValue].exists() {
       body = body[ClaimKey.hCert.rawValue]
@@ -175,6 +176,9 @@ public struct HCert {
     }
     if exp < HCert.clock {
       validityFailures.append(l10n("hcert.err.exp"))
+    }
+    if iat > HCert.clock {
+      validityFailures.append(l10n("hcert.err.iat"))
     }
     if statement == nil {
       return validityFailures.append(l10n("hcert.err.empty"))
@@ -256,6 +260,7 @@ public struct HCert {
   public var kidStr: String
   public var header: JSON
   public var body: JSON
+  public var iat: Date
   public var exp: Date
 
   static let qrLock = NSLock()

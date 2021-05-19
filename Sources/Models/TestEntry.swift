@@ -19,7 +19,7 @@
  * ---license-end
  */
 //  
-//  TestResult.swift
+//  TestEntry.swift
 //
 //  
 //  Created by Yannick Spreen on 4/28/21.
