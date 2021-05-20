@@ -34,6 +34,8 @@ import SwiftCBOR
 
 public protocol ScanVCDelegate: AnyObject {
   func hCertScanned(_:HCert)
+  func disableBackgroundDetection()
+  func enableBackgroundDetection()
 }
 
 open class ScanVC: UIViewController {
@@ -118,9 +120,11 @@ extension ScanVC {
   private func checkPermissions() {
     switch AVCaptureDevice.authorizationStatus(for: .video) {
     case .notDetermined:
-      AVCaptureDevice.requestAccess(for: .video) { [self] granted in
+      delegate?.disableBackgroundDetection()
+      AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+        self?.delegate?.enableBackgroundDetection()
         if !granted {
-          self.showPermissionsAlert()
+          self?.showPermissionsAlert()
         }
       }
     case .denied, .restricted:
