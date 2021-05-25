@@ -54,10 +54,14 @@ extension SwiftCBOR.CBOR {
     case let .map(vals):
       var str = ""
       for pair in vals {
+        let val = pair.value
+        if case .undefined = val {
+          continue
+        }
         var key = pair.key.toString()
         key = key.trimmingCharacters(in: ["\""])
         key = "\"\(key)\""
-        str += (str.isEmpty ? "" : ", ") + "\(key): \(pair.value.toString())"
+        str += (str.isEmpty ? "" : ", ") + "\(key): \(val.toString())"
       }
       return "{\(str)}"
     case let .boolean(val):
