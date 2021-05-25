@@ -58,9 +58,7 @@ extension SwiftCBOR.CBOR {
         if case .undefined = val {
           continue
         }
-        var key = pair.key.toString()
-        key = key.trimmingCharacters(in: ["\""])
-        key = "\"\(key)\""
+        let key = "\"\(pair.key.toString().trimmingCharacters(in: ["\""]))\""
         str += (str.isEmpty ? "" : ", ") + "\(key): \(val.toString())"
       }
       return "{\(str)}"
