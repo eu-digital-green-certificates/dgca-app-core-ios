@@ -36,12 +36,16 @@ public extension UIViewController {
     cancelTitle: String? = l10n("btn.cancel"),
     inputPlaceholder: String? = nil,
     inputKeyboardType: UIKeyboardType = UIKeyboardType.default,
+    capitalization: UITextAutocapitalizationType? = nil,
     handler: ((_ text: String?) -> Void)? = nil
   ) {
     let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
     alert.addTextField { (textField: UITextField) in
       textField.placeholder = inputPlaceholder
       textField.keyboardType = inputKeyboardType
+      if let cap = capitalization {
+        textField.autocapitalizationType = cap
+      }
     }
     alert.addAction(UIAlertAction(title: actionTitle, style: .default) { _ in
       guard let textField = alert.textFields?.first else {
