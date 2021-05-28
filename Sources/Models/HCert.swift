@@ -250,7 +250,7 @@ public struct HCert {
   }
 
   public var certTypeString: String {
-    type.l10n + (statement == nil ? "" : "\(statement.typeAddon)")
+    type.l10n + (statement == nil ? "" : " \(statement.typeAddon)")
   }
 
   public var info = [InfoSection]()
