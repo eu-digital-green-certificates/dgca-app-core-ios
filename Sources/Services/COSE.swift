@@ -28,6 +28,7 @@ import Foundation
 import SwiftCBOR
 
 let coseTag = UInt64(18)
+let cwtTag = UInt64(61)
 
 public struct COSE {
   public static func verify(_ cborData: Data, with xHex: String, and yHex: String) -> Bool {
