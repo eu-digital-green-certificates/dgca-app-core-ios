@@ -39,7 +39,18 @@ public struct CBOR {
 
     guard
       let cbor = try? decoder.decodeItem(),
-      case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
+      case var SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor
+    else {
+      return nil
+    }
+    if tag.rawValue == cwtTag {
+      guard case let SwiftCBOR.CBOR.tagged(childTag, childElement) = cborElement else {
+        return nil
+      }
+      tag = childTag
+      cborElement = childElement
+    }
+    guard
       tag.rawValue == coseTag, // SIGN1
       case let SwiftCBOR.CBOR.array(array) = cborElement,
       case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
