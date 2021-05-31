@@ -1,5 +1,5 @@
 <h1 align="center">
-    EU Digital Green Certificates App Core - iOS
+    EU Digital COVID Certificate App Core - iOS
 </h1>
 
 <p align="center">
@@ -20,7 +20,7 @@
 
 ## About
 
-This repository contains the source code of the Digital Green Certificates App Core for iOS.
+This repository contains the source code of the EU Digital COVID Certificate App Core for iOS.
 
 The app core provides shared functionality for the [verifier](https://github.com/eu-digital-green-certificates/dgca-verifier-app-ios) and [wallet](https://github.com/eu-digital-green-certificates/dgca-wallet-app-ios) apps.
 
