@@ -1,0 +1,1466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="../Sources/SupportingFiles/en.lproj/Localizable.strings" datatype="plaintext" xml:space="preserve" source-language="en" target-language="cs">
+    <header>
+      <tool tool-id="poeditor.com" tool-name="POEditor"/>
+    </header>
+    <body>
+      <trans-unit id="btn.cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target>Zrušit</target>
+      </trans-unit>
+      <trans-unit id="country.AD" xml:space="preserve">
+        <source>Andorra</source>
+        <target>Andorra</target>
+      </trans-unit>
+      <trans-unit id="country.AE" xml:space="preserve">
+        <source>United Arab Emirates</source>
+        <target>Spojené arabské emiráty</target>
+      </trans-unit>
+      <trans-unit id="country.AF" xml:space="preserve">
+        <source>Afghanistan</source>
+        <target>Afghánistán</target>
+      </trans-unit>
+      <trans-unit id="country.AG" xml:space="preserve">
+        <source>Antigua and Barbuda</source>
+        <target>Antigua a Barbuda</target>
+      </trans-unit>
+      <trans-unit id="country.AI" xml:space="preserve">
+        <source>Anguilla</source>
+        <target>Anguilla</target>
+      </trans-unit>
+      <trans-unit id="country.AL" xml:space="preserve">
+        <source>Albania</source>
+        <target>Albánie</target>
+      </trans-unit>
+      <trans-unit id="country.AM" xml:space="preserve">
+        <source>Armenia</source>
+        <target>Arménie</target>
+      </trans-unit>
+      <trans-unit id="country.AO" xml:space="preserve">
+        <source>Angola</source>
+        <target>Angola</target>
+      </trans-unit>
+      <trans-unit id="country.AQ" xml:space="preserve">
+        <source>Antarctica</source>
+        <target>Antarktida</target>
+      </trans-unit>
+      <trans-unit id="country.AR" xml:space="preserve">
+        <source>Argentina</source>
+        <target>Argentina</target>
+      </trans-unit>
+      <trans-unit id="country.AS" xml:space="preserve">
+        <source>American Samoa</source>
+        <target>Americká Samoa</target>
+      </trans-unit>
+      <trans-unit id="country.AT" xml:space="preserve">
+        <source>Austria</source>
+        <target>Rakousko</target>
+      </trans-unit>
+      <trans-unit id="country.AU" xml:space="preserve">
+        <source>Australia</source>
+        <target>Austrálie</target>
+      </trans-unit>
+      <trans-unit id="country.AW" xml:space="preserve">
+        <source>Aruba</source>
+        <target>Aruba</target>
+      </trans-unit>
+      <trans-unit id="country.AX" xml:space="preserve">
+        <source>Åland Islands</source>
+        <target>Alandy</target>
+      </trans-unit>
+      <trans-unit id="country.AZ" xml:space="preserve">
+        <source>Azerbaijan</source>
+        <target>Ázerbájdžán</target>
+      </trans-unit>
+      <trans-unit id="country.BA" xml:space="preserve">
+        <source>Bosnia and Herzegovina</source>
+        <target>Bosna a Hercegovina</target>
+      </trans-unit>
+      <trans-unit id="country.BB" xml:space="preserve">
+        <source>Barbados</source>
+        <target>Barbados</target>
+      </trans-unit>
+      <trans-unit id="country.BD" xml:space="preserve">
+        <source>Bangladesh</source>
+        <target>Bangladéš</target>
+      </trans-unit>
+      <trans-unit id="country.BE" xml:space="preserve">
+        <source>Belgium</source>
+        <target>Belgie</target>
+      </trans-unit>
+      <trans-unit id="country.BF" xml:space="preserve">
+        <source>Burkina Faso</source>
+        <target>Burkina Faso</target>
+      </trans-unit>
+      <trans-unit id="country.BG" xml:space="preserve">
+        <source>Bulgaria</source>
+        <target>Bulharsko</target>
+      </trans-unit>
+      <trans-unit id="country.BH" xml:space="preserve">
+        <source>Bahrain</source>
+        <target>Bahrajn</target>
+      </trans-unit>
+      <trans-unit id="country.BI" xml:space="preserve">
+        <source>Burundi</source>
+        <target>Burundi</target>
+      </trans-unit>
+      <trans-unit id="country.BJ" xml:space="preserve">
+        <source>Benin</source>
+        <target>Benin</target>
+      </trans-unit>
+      <trans-unit id="country.BL" xml:space="preserve">
+        <source>Saint Barthélemy</source>
+        <target>Svatý Bartoloměj</target>
+      </trans-unit>
+      <trans-unit id="country.BM" xml:space="preserve">
+        <source>Bermuda</source>
+        <target>Bermudy</target>
+      </trans-unit>
+      <trans-unit id="country.BN" xml:space="preserve">
+        <source>Brunei Darussalam</source>
+        <target>Brunej</target>
+      </trans-unit>
+      <trans-unit id="country.BO" xml:space="preserve">
+        <source>Bolivia, Plurinational State of</source>
+        <target>Bolívie, Mnohonárodnostní stát</target>
+      </trans-unit>
+      <trans-unit id="country.BQ" xml:space="preserve">
+        <source>Bonaire, Sint Eustatius and Saba</source>
+        <target>Bonaire, Svatý Eustach a Saba</target>
+      </trans-unit>
+      <trans-unit id="country.BR" xml:space="preserve">
+        <source>Brazil</source>
+        <target>Brazílie</target>
+      </trans-unit>
+      <trans-unit id="country.BS" xml:space="preserve">
+        <source>Bahamas</source>
+        <target>Bahamy</target>
+      </trans-unit>
+      <trans-unit id="country.BT" xml:space="preserve">
+        <source>Bhutan</source>
+        <target>Bhútán</target>
+      </trans-unit>
+      <trans-unit id="country.BV" xml:space="preserve">
+        <source>Bouvet Island</source>
+        <target>Bouvetův ostrov</target>
+      </trans-unit>
+      <trans-unit id="country.BW" xml:space="preserve">
+        <source>Botswana</source>
+        <target>Botswana</target>
+      </trans-unit>
+      <trans-unit id="country.BY" xml:space="preserve">
+        <source>Belarus</source>
+        <target>Bělorusko</target>
+      </trans-unit>
+      <trans-unit id="country.BZ" xml:space="preserve">
+        <source>Belize</source>
+        <target>Belize</target>
+      </trans-unit>
+      <trans-unit id="country.CA" xml:space="preserve">
+        <source>Canada</source>
+        <target>Kanada</target>
+      </trans-unit>
+      <trans-unit id="country.CC" xml:space="preserve">
+        <source>Cocos (Keeling) Islands</source>
+        <target>Kokosové (Keelingovy) ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.CD" xml:space="preserve">
+        <source>Congo, the Democratic Republic of the</source>
+        <target>Kongo, Demokratická republika</target>
+      </trans-unit>
+      <trans-unit id="country.CF" xml:space="preserve">
+        <source>Central African Republic</source>
+        <target>Středoafrická republika</target>
+      </trans-unit>
+      <trans-unit id="country.CG" xml:space="preserve">
+        <source>Congo</source>
+        <target>Kongo</target>
+      </trans-unit>
+      <trans-unit id="country.CH" xml:space="preserve">
+        <source>Switzerland</source>
+        <target>Švýcarsko</target>
+      </trans-unit>
+      <trans-unit id="country.CI" xml:space="preserve">
+        <source>Côte d'Ivoire</source>
+        <target>Pobřeží slonoviny</target>
+      </trans-unit>
+      <trans-unit id="country.CK" xml:space="preserve">
+        <source>Cook Islands</source>
+        <target>Cookovy ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.CL" xml:space="preserve">
+        <source>Chile</source>
+        <target>Chile</target>
+      </trans-unit>
+      <trans-unit id="country.CM" xml:space="preserve">
+        <source>Cameroon</source>
+        <target>Kamerun</target>
+      </trans-unit>
+      <trans-unit id="country.CN" xml:space="preserve">
+        <source>China</source>
+        <target>Čína</target>
+      </trans-unit>
+      <trans-unit id="country.CO" xml:space="preserve">
+        <source>Colombia</source>
+        <target>Kolumbie</target>
+      </trans-unit>
+      <trans-unit id="country.CR" xml:space="preserve">
+        <source>Costa Rica</source>
+        <target>Kostarika</target>
+      </trans-unit>
+      <trans-unit id="country.CU" xml:space="preserve">
+        <source>Cuba</source>
+        <target>Kuba</target>
+      </trans-unit>
+      <trans-unit id="country.CV" xml:space="preserve">
+        <source>Cabo Verde</source>
+        <target>Kapverdy</target>
+      </trans-unit>
+      <trans-unit id="country.CW" xml:space="preserve">
+        <source>Curaçao</source>
+        <target>Curaçao</target>
+      </trans-unit>
+      <trans-unit id="country.CX" xml:space="preserve">
+        <source>Christmas Island</source>
+        <target>Vánoční ostrov</target>
+      </trans-unit>
+      <trans-unit id="country.CY" xml:space="preserve">
+        <source>Cyprus</source>
+        <target>Kypr</target>
+      </trans-unit>
+      <trans-unit id="country.CZ" xml:space="preserve">
+        <source>Czech Republic</source>
+        <target>Česká republika</target>
+      </trans-unit>
+      <trans-unit id="country.DE" xml:space="preserve">
+        <source>Germany</source>
+        <target>Německo</target>
+      </trans-unit>
+      <trans-unit id="country.DJ" xml:space="preserve">
+        <source>Djibouti</source>
+        <target>Džibutsko</target>
+      </trans-unit>
+      <trans-unit id="country.DK" xml:space="preserve">
+        <source>Denmark</source>
+        <target>Dánsko</target>
+      </trans-unit>
+      <trans-unit id="country.DM" xml:space="preserve">
+        <source>Dominica</source>
+        <target>Dominika</target>
+      </trans-unit>
+      <trans-unit id="country.DO" xml:space="preserve">
+        <source>Dominican Republic</source>
+        <target>Dominikánská republika</target>
+      </trans-unit>
+      <trans-unit id="country.DZ" xml:space="preserve">
+        <source>Algeria</source>
+        <target>Alžírsko</target>
+      </trans-unit>
+      <trans-unit id="country.EC" xml:space="preserve">
+        <source>Ecuador</source>
+        <target>Ekvádor</target>
+      </trans-unit>
+      <trans-unit id="country.EE" xml:space="preserve">
+        <source>Estonia</source>
+        <target>Estonsko</target>
+      </trans-unit>
+      <trans-unit id="country.EG" xml:space="preserve">
+        <source>Egypt</source>
+        <target>Egypt</target>
+      </trans-unit>
+      <trans-unit id="country.EH" xml:space="preserve">
+        <source>Western Sahara</source>
+        <target>Západní Sahara</target>
+      </trans-unit>
+      <trans-unit id="country.ER" xml:space="preserve">
+        <source>Eritrea</source>
+        <target>Eritrea</target>
+      </trans-unit>
+      <trans-unit id="country.ES" xml:space="preserve">
+        <source>Spain</source>
+        <target>Španělsko</target>
+      </trans-unit>
+      <trans-unit id="country.ET" xml:space="preserve">
+        <source>Ethiopia</source>
+        <target>Etiopie</target>
+      </trans-unit>
+      <trans-unit id="country.FI" xml:space="preserve">
+        <source>Finland</source>
+        <target>Finsko</target>
+      </trans-unit>
+      <trans-unit id="country.FJ" xml:space="preserve">
+        <source>Fiji</source>
+        <target>Fidži</target>
+      </trans-unit>
+      <trans-unit id="country.FK" xml:space="preserve">
+        <source>Falkland Islands (Malvinas)</source>
+        <target>Falklandy (Malvíny)</target>
+      </trans-unit>
+      <trans-unit id="country.FM" xml:space="preserve">
+        <source>Micronesia, Federated States of</source>
+        <target>Mikronésie, Federativní státy</target>
+      </trans-unit>
+      <trans-unit id="country.FO" xml:space="preserve">
+        <source>Faroe Islands</source>
+        <target>Faerské ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.FR" xml:space="preserve">
+        <source>France</source>
+        <target>Francie</target>
+      </trans-unit>
+      <trans-unit id="country.GA" xml:space="preserve">
+        <source>Gabon</source>
+        <target>Gabon</target>
+      </trans-unit>
+      <trans-unit id="country.GB" xml:space="preserve">
+        <source>United Kingdom</source>
+        <target>Spojené království</target>
+      </trans-unit>
+      <trans-unit id="country.GD" xml:space="preserve">
+        <source>Grenada</source>
+        <target>Grenada</target>
+      </trans-unit>
+      <trans-unit id="country.GE" xml:space="preserve">
+        <source>Georgia</source>
+        <target>Gruzie</target>
+      </trans-unit>
+      <trans-unit id="country.GF" xml:space="preserve">
+        <source>French Guiana</source>
+        <target>Francouzská Guyana</target>
+      </trans-unit>
+      <trans-unit id="country.GG" xml:space="preserve">
+        <source>Guernsey</source>
+        <target>Guernsey</target>
+      </trans-unit>
+      <trans-unit id="country.GH" xml:space="preserve">
+        <source>Ghana</source>
+        <target>Ghana</target>
+      </trans-unit>
+      <trans-unit id="country.GI" xml:space="preserve">
+        <source>Gibraltar</source>
+        <target>Gibraltar</target>
+      </trans-unit>
+      <trans-unit id="country.GL" xml:space="preserve">
+        <source>Greenland</source>
+        <target>Grónsko</target>
+      </trans-unit>
+      <trans-unit id="country.GM" xml:space="preserve">
+        <source>Gambia</source>
+        <target>Gambie</target>
+      </trans-unit>
+      <trans-unit id="country.GN" xml:space="preserve">
+        <source>Guinea</source>
+        <target>Guinea</target>
+      </trans-unit>
+      <trans-unit id="country.GP" xml:space="preserve">
+        <source>Guadeloupe</source>
+        <target>Guadeloupe</target>
+      </trans-unit>
+      <trans-unit id="country.GQ" xml:space="preserve">
+        <source>Equatorial Guinea</source>
+        <target>Rovníková Guinea</target>
+      </trans-unit>
+      <trans-unit id="country.GR" xml:space="preserve">
+        <source>Greece</source>
+        <target>Řecko</target>
+      </trans-unit>
+      <trans-unit id="country.GS" xml:space="preserve">
+        <source>South Georgia and the South Sandwich Islands</source>
+        <target>Jižní Georgie a Jižní Sandwichovy ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.GT" xml:space="preserve">
+        <source>Guatemala</source>
+        <target>Guatemala</target>
+      </trans-unit>
+      <trans-unit id="country.GU" xml:space="preserve">
+        <source>Guam</source>
+        <target>Guam</target>
+      </trans-unit>
+      <trans-unit id="country.GW" xml:space="preserve">
+        <source>Guinea-Bissau</source>
+        <target>Guinea-Bissau</target>
+      </trans-unit>
+      <trans-unit id="country.GY" xml:space="preserve">
+        <source>Guyana</source>
+        <target>Guyana</target>
+      </trans-unit>
+      <trans-unit id="country.HK" xml:space="preserve">
+        <source>Hong Kong</source>
+        <target>Hongkong</target>
+      </trans-unit>
+      <trans-unit id="country.HM" xml:space="preserve">
+        <source>Heard Island and McDonald Islands</source>
+        <target>Heardův ostrov a McDonaldovy ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.HN" xml:space="preserve">
+        <source>Honduras</source>
+        <target>Honduras</target>
+      </trans-unit>
+      <trans-unit id="country.HR" xml:space="preserve">
+        <source>Croatia</source>
+        <target>Chorvatsko</target>
+      </trans-unit>
+      <trans-unit id="country.HT" xml:space="preserve">
+        <source>Haiti</source>
+        <target>Haiti</target>
+      </trans-unit>
+      <trans-unit id="country.HU" xml:space="preserve">
+        <source>Hungary</source>
+        <target>Maďarsko</target>
+      </trans-unit>
+      <trans-unit id="country.ID" xml:space="preserve">
+        <source>Indonesia</source>
+        <target>Indonésie</target>
+      </trans-unit>
+      <trans-unit id="country.IE" xml:space="preserve">
+        <source>Ireland</source>
+        <target>Irsko</target>
+      </trans-unit>
+      <trans-unit id="country.IL" xml:space="preserve">
+        <source>Israel</source>
+        <target>Izrael</target>
+      </trans-unit>
+      <trans-unit id="country.IM" xml:space="preserve">
+        <source>Isle of Man</source>
+        <target>Ostrov Man</target>
+      </trans-unit>
+      <trans-unit id="country.IN" xml:space="preserve">
+        <source>India</source>
+        <target>Indie</target>
+      </trans-unit>
+      <trans-unit id="country.IO" xml:space="preserve">
+        <source>British Indian Ocean Territory</source>
+        <target>Britské indickooceánské území</target>
+      </trans-unit>
+      <trans-unit id="country.IQ" xml:space="preserve">
+        <source>Iraq</source>
+        <target>Irák</target>
+      </trans-unit>
+      <trans-unit id="country.IR" xml:space="preserve">
+        <source>Iran, Islamic Republic of</source>
+        <target>Írán, Islámská republika</target>
+      </trans-unit>
+      <trans-unit id="country.IS" xml:space="preserve">
+        <source>Iceland</source>
+        <target>Island</target>
+      </trans-unit>
+      <trans-unit id="country.IT" xml:space="preserve">
+        <source>Italy</source>
+        <target>Itálie</target>
+      </trans-unit>
+      <trans-unit id="country.JE" xml:space="preserve">
+        <source>Jersey</source>
+        <target>Jersey</target>
+      </trans-unit>
+      <trans-unit id="country.JM" xml:space="preserve">
+        <source>Jamaica</source>
+        <target>Jamajka</target>
+      </trans-unit>
+      <trans-unit id="country.JO" xml:space="preserve">
+        <source>Jordan</source>
+        <target>Jordánsko</target>
+      </trans-unit>
+      <trans-unit id="country.JP" xml:space="preserve">
+        <source>Japan</source>
+        <target>Japonsko</target>
+      </trans-unit>
+      <trans-unit id="country.KE" xml:space="preserve">
+        <source>Kenya</source>
+        <target>Keňa</target>
+      </trans-unit>
+      <trans-unit id="country.KG" xml:space="preserve">
+        <source>Kyrgyzstan</source>
+        <target>Kyrgyzstán</target>
+      </trans-unit>
+      <trans-unit id="country.KH" xml:space="preserve">
+        <source>Cambodia</source>
+        <target>Kambodža</target>
+      </trans-unit>
+      <trans-unit id="country.KI" xml:space="preserve">
+        <source>Kiribati</source>
+        <target>Kiribati</target>
+      </trans-unit>
+      <trans-unit id="country.KM" xml:space="preserve">
+        <source>Comoros</source>
+        <target>Komory</target>
+      </trans-unit>
+      <trans-unit id="country.KN" xml:space="preserve">
+        <source>Saint Kitts and Nevis</source>
+        <target>Svatý Kryštof a Nevis</target>
+      </trans-unit>
+      <trans-unit id="country.KP" xml:space="preserve">
+        <source>Korea, Democratic People's Republic of</source>
+        <target>Korea, Lidově demokratická republika</target>
+      </trans-unit>
+      <trans-unit id="country.KR" xml:space="preserve">
+        <source>Korea, Republic of</source>
+        <target>Korea, Republika</target>
+      </trans-unit>
+      <trans-unit id="country.KW" xml:space="preserve">
+        <source>Kuwait</source>
+        <target>Kuvajt</target>
+      </trans-unit>
+      <trans-unit id="country.KY" xml:space="preserve">
+        <source>Cayman Islands</source>
+        <target>Kajmanské ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.KZ" xml:space="preserve">
+        <source>Kazakhstan</source>
+        <target>Kazachstán</target>
+      </trans-unit>
+      <trans-unit id="country.LA" xml:space="preserve">
+        <source>Lao People's Democratic Republic</source>
+        <target>Laoská lidově demokratická republika</target>
+      </trans-unit>
+      <trans-unit id="country.LB" xml:space="preserve">
+        <source>Lebanon</source>
+        <target>Libanon</target>
+      </trans-unit>
+      <trans-unit id="country.LC" xml:space="preserve">
+        <source>Saint Lucia</source>
+        <target>Svatá Lucie</target>
+      </trans-unit>
+      <trans-unit id="country.LI" xml:space="preserve">
+        <source>Liechtenstein</source>
+        <target>Lichtenštejnsko</target>
+      </trans-unit>
+      <trans-unit id="country.LK" xml:space="preserve">
+        <source>Sri Lanka</source>
+        <target>Srí Lanka</target>
+      </trans-unit>
+      <trans-unit id="country.LR" xml:space="preserve">
+        <source>Liberia</source>
+        <target>Libérie</target>
+      </trans-unit>
+      <trans-unit id="country.LS" xml:space="preserve">
+        <source>Lesotho</source>
+        <target>Lesotho</target>
+      </trans-unit>
+      <trans-unit id="country.LT" xml:space="preserve">
+        <source>Lithuania</source>
+        <target>Litva</target>
+      </trans-unit>
+      <trans-unit id="country.LU" xml:space="preserve">
+        <source>Luxembourg</source>
+        <target>Lucembursko</target>
+      </trans-unit>
+      <trans-unit id="country.LV" xml:space="preserve">
+        <source>Latvia</source>
+        <target>Lotyšsko</target>
+      </trans-unit>
+      <trans-unit id="country.LY" xml:space="preserve">
+        <source>Libya</source>
+        <target>Libye</target>
+      </trans-unit>
+      <trans-unit id="country.MA" xml:space="preserve">
+        <source>Morocco</source>
+        <target>Maroko</target>
+      </trans-unit>
+      <trans-unit id="country.MC" xml:space="preserve">
+        <source>Monaco</source>
+        <target>Monako</target>
+      </trans-unit>
+      <trans-unit id="country.MD" xml:space="preserve">
+        <source>Moldova, Republic of</source>
+        <target>Moldavsko, Republika</target>
+      </trans-unit>
+      <trans-unit id="country.ME" xml:space="preserve">
+        <source>Montenegro</source>
+        <target>Černá Hora</target>
+      </trans-unit>
+      <trans-unit id="country.MF" xml:space="preserve">
+        <source>Saint Martin (French part)</source>
+        <target>Svatý Martin (francouzská část)</target>
+      </trans-unit>
+      <trans-unit id="country.MG" xml:space="preserve">
+        <source>Madagascar</source>
+        <target>Madagaskar</target>
+      </trans-unit>
+      <trans-unit id="country.MH" xml:space="preserve">
+        <source>Marshall Islands</source>
+        <target>Marshallovy ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.MK" xml:space="preserve">
+        <source>Macedonia, the former Yugoslav Republic of</source>
+        <target>Makedonie, Bývalá jugoslávská republika</target>
+      </trans-unit>
+      <trans-unit id="country.ML" xml:space="preserve">
+        <source>Mali</source>
+        <target>Mali</target>
+      </trans-unit>
+      <trans-unit id="country.MM" xml:space="preserve">
+        <source>Myanmar</source>
+        <target>Myanmar</target>
+      </trans-unit>
+      <trans-unit id="country.MN" xml:space="preserve">
+        <source>Mongolia</source>
+        <target>Mongolsko</target>
+      </trans-unit>
+      <trans-unit id="country.MO" xml:space="preserve">
+        <source>Macao</source>
+        <target>Macao</target>
+      </trans-unit>
+      <trans-unit id="country.MP" xml:space="preserve">
+        <source>Northern Mariana Islands</source>
+        <target>Severní Mariany</target>
+      </trans-unit>
+      <trans-unit id="country.MQ" xml:space="preserve">
+        <source>Martinique</source>
+        <target>Martinik</target>
+      </trans-unit>
+      <trans-unit id="country.MR" xml:space="preserve">
+        <source>Mauritania</source>
+        <target>Mauritánie</target>
+      </trans-unit>
+      <trans-unit id="country.MS" xml:space="preserve">
+        <source>Montserrat</source>
+        <target>Montserrat</target>
+      </trans-unit>
+      <trans-unit id="country.MT" xml:space="preserve">
+        <source>Malta</source>
+        <target>Malta</target>
+      </trans-unit>
+      <trans-unit id="country.MU" xml:space="preserve">
+        <source>Mauritius</source>
+        <target>Mauricius</target>
+      </trans-unit>
+      <trans-unit id="country.MV" xml:space="preserve">
+        <source>Maldives</source>
+        <target>Maledivy</target>
+      </trans-unit>
+      <trans-unit id="country.MW" xml:space="preserve">
+        <source>Malawi</source>
+        <target>Malawi</target>
+      </trans-unit>
+      <trans-unit id="country.MX" xml:space="preserve">
+        <source>Mexico</source>
+        <target>Mexiko</target>
+      </trans-unit>
+      <trans-unit id="country.MY" xml:space="preserve">
+        <source>Malaysia</source>
+        <target>Malajsie</target>
+      </trans-unit>
+      <trans-unit id="country.MZ" xml:space="preserve">
+        <source>Mozambique</source>
+        <target>Mosambik</target>
+      </trans-unit>
+      <trans-unit id="country.NA" xml:space="preserve">
+        <source>Namibia</source>
+        <target>Namibie</target>
+      </trans-unit>
+      <trans-unit id="country.NC" xml:space="preserve">
+        <source>New Caledonia</source>
+        <target>Nová Kaledonie</target>
+      </trans-unit>
+      <trans-unit id="country.NE" xml:space="preserve">
+        <source>Niger</source>
+        <target>Niger</target>
+      </trans-unit>
+      <trans-unit id="country.NF" xml:space="preserve">
+        <source>Norfolk Island</source>
+        <target>Ostrov Norfolk</target>
+      </trans-unit>
+      <trans-unit id="country.NG" xml:space="preserve">
+        <source>Nigeria</source>
+        <target>Nigérie</target>
+      </trans-unit>
+      <trans-unit id="country.NI" xml:space="preserve">
+        <source>Nicaragua</source>
+        <target>Nikaragua</target>
+      </trans-unit>
+      <trans-unit id="country.NL" xml:space="preserve">
+        <source>Netherlands</source>
+        <target>Nizozemsko</target>
+      </trans-unit>
+      <trans-unit id="country.NO" xml:space="preserve">
+        <source>Norway</source>
+        <target>Norsko</target>
+      </trans-unit>
+      <trans-unit id="country.NP" xml:space="preserve">
+        <source>Nepal</source>
+        <target>Nepál</target>
+      </trans-unit>
+      <trans-unit id="country.NR" xml:space="preserve">
+        <source>Nauru</source>
+        <target>Nauru</target>
+      </trans-unit>
+      <trans-unit id="country.NU" xml:space="preserve">
+        <source>Niue</source>
+        <target>Niue</target>
+      </trans-unit>
+      <trans-unit id="country.NZ" xml:space="preserve">
+        <source>New Zealand</source>
+        <target>Nový Zéland</target>
+      </trans-unit>
+      <trans-unit id="country.OM" xml:space="preserve">
+        <source>Oman</source>
+        <target>Omán</target>
+      </trans-unit>
+      <trans-unit id="country.PA" xml:space="preserve">
+        <source>Panama</source>
+        <target>Panama</target>
+      </trans-unit>
+      <trans-unit id="country.PE" xml:space="preserve">
+        <source>Peru</source>
+        <target>Peru</target>
+      </trans-unit>
+      <trans-unit id="country.PF" xml:space="preserve">
+        <source>French Polynesia</source>
+        <target>Francouzská Polynésie</target>
+      </trans-unit>
+      <trans-unit id="country.PG" xml:space="preserve">
+        <source>Papua New Guinea</source>
+        <target>Papua Nová Guinea</target>
+      </trans-unit>
+      <trans-unit id="country.PH" xml:space="preserve">
+        <source>Philippines</source>
+        <target>Filipíny</target>
+      </trans-unit>
+      <trans-unit id="country.PK" xml:space="preserve">
+        <source>Pakistan</source>
+        <target>Pákistán</target>
+      </trans-unit>
+      <trans-unit id="country.PL" xml:space="preserve">
+        <source>Poland</source>
+        <target>Polsko</target>
+      </trans-unit>
+      <trans-unit id="country.PM" xml:space="preserve">
+        <source>Saint Pierre and Miquelon</source>
+        <target>Saint Pierre a Miquelon</target>
+      </trans-unit>
+      <trans-unit id="country.PN" xml:space="preserve">
+        <source>Pitcairn</source>
+        <target>Pitcairn</target>
+      </trans-unit>
+      <trans-unit id="country.PR" xml:space="preserve">
+        <source>Puerto Rico</source>
+        <target>Portoriko</target>
+      </trans-unit>
+      <trans-unit id="country.PS" xml:space="preserve">
+        <source>Palestine, State of</source>
+        <target>Palestina, stát</target>
+      </trans-unit>
+      <trans-unit id="country.PT" xml:space="preserve">
+        <source>Portugal</source>
+        <target>Portugalsko</target>
+      </trans-unit>
+      <trans-unit id="country.PW" xml:space="preserve">
+        <source>Palau</source>
+        <target>Palau</target>
+      </trans-unit>
+      <trans-unit id="country.PY" xml:space="preserve">
+        <source>Paraguay</source>
+        <target>Paraguay</target>
+      </trans-unit>
+      <trans-unit id="country.QA" xml:space="preserve">
+        <source>Qatar</source>
+        <target>Katar</target>
+      </trans-unit>
+      <trans-unit id="country.RE" xml:space="preserve">
+        <source>Réunion</source>
+        <target>Réunion</target>
+      </trans-unit>
+      <trans-unit id="country.RO" xml:space="preserve">
+        <source>Romania</source>
+        <target>Rumunsko</target>
+      </trans-unit>
+      <trans-unit id="country.RS" xml:space="preserve">
+        <source>Serbia</source>
+        <target>Srbsko</target>
+      </trans-unit>
+      <trans-unit id="country.RU" xml:space="preserve">
+        <source>Russian Federation</source>
+        <target>Ruská federace</target>
+      </trans-unit>
+      <trans-unit id="country.RW" xml:space="preserve">
+        <source>Rwanda</source>
+        <target>Rwanda</target>
+      </trans-unit>
+      <trans-unit id="country.SA" xml:space="preserve">
+        <source>Saudi Arabia</source>
+        <target>Saúdská Arábie</target>
+      </trans-unit>
+      <trans-unit id="country.SB" xml:space="preserve">
+        <source>Solomon Islands</source>
+        <target>Šalamounovy ostrovy</target>
+      </trans-unit>
+      <trans-unit id="country.SC" xml:space="preserve">
+        <source>Seychelles</source>
+        <target>Seychely</target>
+      </trans-unit>
+      <trans-unit id="country.SD" xml:space="preserve">
+        <source>Sudan</source>
+        <target>Súdán</target>
+      </trans-unit>
+      <trans-unit id="country.SE" xml:space="preserve">
+        <source>Sweden</source>
+        <target>Švédsko</target>
+      </trans-unit>
+      <trans-unit id="country.SG" xml:space="preserve">
+        <source>Singapore</source>
+        <target>Singapur</target>
+      </trans-unit>
+      <trans-unit id="country.SH" xml:space="preserve">
+        <source>Saint Helena, Ascension and Tristan da Cunha</source>
+        <target>Svatá Helena, Ascension a Tristan da Cunha</target>
+      </trans-unit>
+      <trans-unit id="country.SI" xml:space="preserve">
+        <source>Slovenia</source>
+        <target>Slovinsko</target>
+      </trans-unit>
+      <trans-unit id="country.SJ" xml:space="preserve">
+        <source>Svalbard and Jan Mayen</source>
+        <target>Špicberky a Jan Mayen</target>
+      </trans-unit>
+      <trans-unit id="country.SK" xml:space="preserve">
+        <source>Slovakia</source>
+        <target>Slovensko</target>
+      </trans-unit>
+      <trans-unit id="country.SL" xml:space="preserve">
+        <source>Sierra Leone</source>
+        <target>Sierra Leone</target>
+      </trans-unit>
+      <trans-unit id="country.SM" xml:space="preserve">
+        <source>San Marino</source>
+        <target>San Marino</target>
+      </trans-unit>
+      <trans-unit id="country.SN" xml:space="preserve">
+        <source>Senegal</source>
+        <target>Senegal</target>
+      </trans-unit>
+      <trans-unit id="country.SO" xml:space="preserve">
+        <source>Somalia</source>
+        <target>Somálsko</target>
+      </trans-unit>
+      <trans-unit id="country.SR" xml:space="preserve">
+        <source>Suriname</source>
+        <target>Surinam</target>
+      </trans-unit>
+      <trans-unit id="country.SS" xml:space="preserve">
+        <source>South Sudan</source>
+        <target>Jižní Súdán</target>
+      </trans-unit>
+      <trans-unit id="country.ST" xml:space="preserve">
+        <source>Sao Tome and Principe</source>
+        <target>Svatý Tomáš a Princův ostrov</target>
+      </trans-unit>
+      <trans-unit id="country.SV" xml:space="preserve">
+        <source>El Salvador</source>
+        <target>Salvador</target>
+      </trans-unit>
+      <trans-unit id="country.SX" xml:space="preserve">
+        <source>Sint Maarten (Dutch part)</source>
+        <target>Svatý Martin (nizozemská část)</target>
+      </trans-unit>
+      <trans-unit id="country.SY" xml:space="preserve">
+        <source>Syrian Arab Republic</source>
+        <target>Syrská arabská republika</target>
+      </trans-unit>
+      <trans-unit id="country.SZ" xml:space="preserve">
+        <source>Swaziland</source>
+        <target>Svazijsko</target>
+      </trans-unit>
+      <trans-unit id="country.TC" xml:space="preserve">
+        <source>Turks and Caicos Islands</source>
+        <target>Turks a Caicos</target>
+      </trans-unit>
+      <trans-unit id="country.TD" xml:space="preserve">
+        <source>Chad</source>
+        <target>Chad</target>
+      </trans-unit>
+      <trans-unit id="country.TF" xml:space="preserve">
+        <source>French Southern Territories</source>
+        <target>Francouzská jižní území</target>
+      </trans-unit>
+      <trans-unit id="country.TG" xml:space="preserve">
+        <source>Togo</source>
+        <target>Togo</target>
+      </trans-unit>
+      <trans-unit id="country.TH" xml:space="preserve">
+        <source>Thailand</source>
+        <target>Thajsko</target>
+      </trans-unit>
+      <trans-unit id="country.TJ" xml:space="preserve">
+        <source>Tajikistan</source>
+        <target>Tádžikistán</target>
+      </trans-unit>
+      <trans-unit id="country.TK" xml:space="preserve">
+        <source>Tokelau</source>
+        <target>Tokelau</target>
+      </trans-unit>
+      <trans-unit id="country.TL" xml:space="preserve">
+        <source>Timor-Leste</source>
+        <target>Východní Timor</target>
+      </trans-unit>
+      <trans-unit id="country.TM" xml:space="preserve">
+        <source>Turkmenistan</source>
+        <target>Turkmenistán</target>
+      </trans-unit>
+      <trans-unit id="country.TN" xml:space="preserve">
+        <source>Tunisia</source>
+        <target>Tunisko</target>
+      </trans-unit>
+      <trans-unit id="country.TO" xml:space="preserve">
+        <source>Tonga</source>
+        <target>Tonga</target>
+      </trans-unit>
+      <trans-unit id="country.TR" xml:space="preserve">
+        <source>Turkey</source>
+        <target>Turecko</target>
+      </trans-unit>
+      <trans-unit id="country.TT" xml:space="preserve">
+        <source>Trinidad and Tobago</source>
+        <target>Trinidad a Tobago</target>
+      </trans-unit>
+      <trans-unit id="country.TV" xml:space="preserve">
+        <source>Tuvalu</source>
+        <target>Tuvalu</target>
+      </trans-unit>
+      <trans-unit id="country.TW" xml:space="preserve">
+        <source>Taiwan, Province of China</source>
+        <target>Tchaj-wan, čínská provincie</target>
+      </trans-unit>
+      <trans-unit id="country.TZ" xml:space="preserve">
+        <source>Tanzania, United Republic of</source>
+        <target>Tanzanie, Sjednocená republika</target>
+      </trans-unit>
+      <trans-unit id="country.UA" xml:space="preserve">
+        <source>Ukraine</source>
+        <target>Ukrajina</target>
+      </trans-unit>
+      <trans-unit id="country.UG" xml:space="preserve">
+        <source>Uganda</source>
+        <target>Uganda</target>
+      </trans-unit>
+      <trans-unit id="country.UM" xml:space="preserve">
+        <source>United States Minor Outlying Islands</source>
+        <target>Menší odlehlé ostrovy Spojených států amerických</target>
+      </trans-unit>
+      <trans-unit id="country.US" xml:space="preserve">
+        <source>United States</source>
+        <target>Spojené státy americké</target>
+      </trans-unit>
+      <trans-unit id="country.UY" xml:space="preserve">
+        <source>Uruguay</source>
+        <target>Uruguay</target>
+      </trans-unit>
+      <trans-unit id="country.UZ" xml:space="preserve">
+        <source>Uzbekistan</source>
+        <target>Uzbekistán</target>
+      </trans-unit>
+      <trans-unit id="country.VA" xml:space="preserve">
+        <source>Holy See (Vatican City State)</source>
+        <target>Svatý stolec (Vatikánský městský stát)</target>
+      </trans-unit>
+      <trans-unit id="country.VC" xml:space="preserve">
+        <source>Saint Vincent and the Grenadines</source>
+        <target>Svatý Vincenc a Grenadiny</target>
+      </trans-unit>
+      <trans-unit id="country.VE" xml:space="preserve">
+        <source>Venezuela, Bolivarian Republic of</source>
+        <target>Venezuela, Bolívarovská republika</target>
+      </trans-unit>
+      <trans-unit id="country.VG" xml:space="preserve">
+        <source>Virgin Islands, British</source>
+        <target>Panenské ostrovy, Britské</target>
+      </trans-unit>
+      <trans-unit id="country.VI" xml:space="preserve">
+        <source>Virgin Islands, U.S.</source>
+        <target>Panenské ostrovy, USA</target>
+      </trans-unit>
+      <trans-unit id="country.VN" xml:space="preserve">
+        <source>Vietnam</source>
+        <target>Vietnam</target>
+      </trans-unit>
+      <trans-unit id="country.VU" xml:space="preserve">
+        <source>Vanuatu</source>
+        <target>Vanuatu</target>
+      </trans-unit>
+      <trans-unit id="country.WF" xml:space="preserve">
+        <source>Wallis and Futuna</source>
+        <target>Wallis a Futuna</target>
+      </trans-unit>
+      <trans-unit id="country.WS" xml:space="preserve">
+        <source>Samoa</source>
+        <target>Samoa</target>
+      </trans-unit>
+      <trans-unit id="country.YE" xml:space="preserve">
+        <source>Yemen</source>
+        <target>Jemen</target>
+      </trans-unit>
+      <trans-unit id="country.YT" xml:space="preserve">
+        <source>Mayotte</source>
+        <target>Mayotte</target>
+      </trans-unit>
+      <trans-unit id="country.ZA" xml:space="preserve">
+        <source>South Africa</source>
+        <target>Jihoafrická republika</target>
+      </trans-unit>
+      <trans-unit id="country.ZM" xml:space="preserve">
+        <source>Zambia</source>
+        <target>Zambie</target>
+      </trans-unit>
+      <trans-unit id="country.ZW" xml:space="preserve">
+        <source>Zimbabwe</source>
+        <target>Zimbabwe</target>
+      </trans-unit>
+      <trans-unit id="disease.840539006" xml:space="preserve">
+        <source>COVID-19</source>
+        <target>COVID-19</target>
+      </trans-unit>
+      <trans-unit id="disease.unknown" xml:space="preserve">
+        <source>Unknown</source>
+        <target>Neznámé</target>
+      </trans-unit>
+      <trans-unit id="enum.HCertType.recovery" xml:space="preserve">
+        <source>Recovery</source>
+        <target>Prodělání nemoci</target>
+      </trans-unit>
+      <trans-unit id="enum.HCertType.test" xml:space="preserve">
+        <source>Test Result</source>
+        <target>Výsledek testu</target>
+        <note>Localizable.strings
+  DGCAVerifier
+
+  Created by Yannick Spreen on 5/6/21.</note>
+      </trans-unit>
+      <trans-unit id="enum.HCertType.vaccine" xml:space="preserve">
+        <source>Vaccination</source>
+        <target>Očkování</target>
+      </trans-unit>
+      <trans-unit id="enum.HCertValidity.invalid" xml:space="preserve">
+        <source>Invalid</source>
+        <target>Neplatný</target>
+      </trans-unit>
+      <trans-unit id="enum.HCertValidity.valid" xml:space="preserve">
+        <source>Valid</source>
+        <target>Platný</target>
+      </trans-unit>
+      <trans-unit id="err.alg-not-supported" xml:space="preserve">
+        <source>Algorithm not supported.</source>
+        <target>Algoritmus není podporován.</target>
+      </trans-unit>
+      <trans-unit id="err.barcode" xml:space="preserve">
+        <source>Barcode Error</source>
+        <target>Chyba čárového kódu</target>
+      </trans-unit>
+      <trans-unit id="err.cam" xml:space="preserve">
+        <source>Cannot Find Camera</source>
+        <target>Fotoaparát nenalezen</target>
+      </trans-unit>
+      <trans-unit id="err.cam.desc" xml:space="preserve">
+        <source>There seems to be a problem with the camera on your device.</source>
+        <target>Vypadá to, že se na vašem zařízení vyskytl problém s fotoaparátem.</target>
+      </trans-unit>
+      <trans-unit id="err.cam.perm" xml:space="preserve">
+        <source>Camera Permissions</source>
+        <target>Oprávnění používat fotoaparát</target>
+      </trans-unit>
+      <trans-unit id="err.cam.perm.desc" xml:space="preserve">
+        <source>Please open Settings and grant permission for this app to use your camera.</source>
+        <target>Prosím, otevřete nastavení a udělte této aplikaci oprávnění používat fotoaparát.</target>
+      </trans-unit>
+      <trans-unit id="err.misc" xml:space="preserve">
+        <source>Something went wrong.</source>
+        <target>Něco se pokazilo.</target>
+      </trans-unit>
+      <trans-unit id="err.pub-key-irretrievable" xml:space="preserve">
+        <source>Cannot retrieve public key.</source>
+        <target>Nepodařilo se získat veřejný klíč.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.crypto" xml:space="preserve">
+        <source>Cryptographic signature not valid.</source>
+        <target>Kryptografický podpis není platný.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.empty" xml:space="preserve">
+        <source>No entries in the certificate.</source>
+        <target>Žádné vstupy v certifikátu.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.exp" xml:space="preserve">
+        <source>Certificate past expiration date.</source>
+        <target>Certifikát vypršel.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.iat" xml:space="preserve">
+        <source>Certificate issuance date is in the future.</source>
+        <target>Datum vydání certifikátu je v budoucnosti.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.rec.future" xml:space="preserve">
+        <source>Recovery statement is not valid yet.</source>
+        <target>Potvrzení o prodělání nemoci ještě není platné.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.rec.past" xml:space="preserve">
+        <source>Recovery statement is not valid anymore.</source>
+        <target>Potvrzení o prodělání nemoci již není platné.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.tst.future" xml:space="preserve">
+        <source>Test date is in the future.</source>
+        <target>Datum provedení testu je v budoucnosti.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.tst.positive" xml:space="preserve">
+        <source>The test result is positive.</source>
+        <target>Pozitivní výsledek testu.</target>
+      </trans-unit>
+      <trans-unit id="hcert.err.vac.future" xml:space="preserve">
+        <source>Vaccination date is in the future.</source>
+        <target>Datum očkování je v budoucnosti.</target>
+      </trans-unit>
+      <trans-unit id="header.cert-type" xml:space="preserve">
+        <source>Certificate Type</source>
+        <target>Typ certifikátu</target>
+      </trans-unit>
+      <trans-unit id="header.dob" xml:space="preserve">
+        <source>Date of Birth</source>
+        <target>Datum narození</target>
+      </trans-unit>
+      <trans-unit id="header.expires-at" xml:space="preserve">
+        <source>Certificate Expiration</source>
+        <target>Expirace certifikátu</target>
+      </trans-unit>
+      <trans-unit id="header.std-fn" xml:space="preserve">
+        <source>Standardised Family Name</source>
+        <target>Příjmení</target>
+      </trans-unit>
+      <trans-unit id="header.std-gn" xml:space="preserve">
+        <source>Standardised Given Name</source>
+        <target>Jméno</target>
+      </trans-unit>
+      <trans-unit id="header.uvci" xml:space="preserve">
+        <source>Unique Certificate Identifier</source>
+        <target>Unikátní identifikátor certifikátu</target>
+      </trans-unit>
+      <trans-unit id="header.validity-errors" xml:space="preserve">
+        <source>Reason for Invalidity</source>
+        <target>Důvod neplatnosti</target>
+      </trans-unit>
+      <trans-unit id="info.outdated" xml:space="preserve">
+        <source>Update Available</source>
+        <target>Dostupná aktualizace</target>
+      </trans-unit>
+      <trans-unit id="info.outdated.body" xml:space="preserve">
+        <source>This application is not up to date. Please open the App Store and download the newest version!</source>
+        <target>Tato aplikace není aktualizovaná. Prosím, navštivte App Store a stáhněte si nejnovější verzi!</target>
+      </trans-unit>
+      <trans-unit id="recovery.country" xml:space="preserve">
+        <source>Country of Issuance</source>
+        <target>Země vydání</target>
+      </trans-unit>
+      <trans-unit id="recovery.disease" xml:space="preserve">
+        <source>Targeted Disease</source>
+        <target>Cílené onemocnění</target>
+      </trans-unit>
+      <trans-unit id="recovery.issuer" xml:space="preserve">
+        <source>Statement Issuer</source>
+        <target>Vydavatel potvrzení</target>
+      </trans-unit>
+      <trans-unit id="recovery.valid-from" xml:space="preserve">
+        <source>Valid from</source>
+        <target>Platné od</target>
+      </trans-unit>
+      <trans-unit id="recovery.valid-until" xml:space="preserve">
+        <source>Valid Until</source>
+        <target>Platné do</target>
+      </trans-unit>
+      <trans-unit id="test.center" xml:space="preserve">
+        <source>Test Center</source>
+        <target>Testovací centrum</target>
+      </trans-unit>
+      <trans-unit id="test.country" xml:space="preserve">
+        <source>Country of Test</source>
+        <target>Země provedení testu</target>
+      </trans-unit>
+      <trans-unit id="test.disease" xml:space="preserve">
+        <source>Targeted Disease</source>
+        <target>Cílené onemocnění</target>
+      </trans-unit>
+      <trans-unit id="test.issuer" xml:space="preserve">
+        <source>Test Issuer</source>
+        <target>Vydavatel testu</target>
+      </trans-unit>
+      <trans-unit id="test.man.344" xml:space="preserve">
+        <source>SD BIOSENSOR Inc, STANDARD F COVID-19 Ag FIA</source>
+        <target>SD BIOSENSOR Inc, STANDARD F COVID-19 Ag FIA</target>
+      </trans-unit>
+      <trans-unit id="test.man.345" xml:space="preserve">
+        <source>SD BIOSENSOR Inc, STANDARD Q COVID-19 Ag Test</source>
+        <target>SD BIOSENSOR Inc, STANDARD Q COVID-19 Ag Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1065" xml:space="preserve">
+        <source>Becton Dickinson, Veritor System Rapid Detection of SARS-CoV-2</source>
+        <target>Becton Dickinson, Veritor System Rapid Detection of SARS-CoV-2</target>
+      </trans-unit>
+      <trans-unit id="test.man.1097" xml:space="preserve">
+        <source>Quidel Corporation, Sofia SARS Antigen FIA</source>
+        <target>Quidel Corporation, Sofia SARS Antigen FIA</target>
+      </trans-unit>
+      <trans-unit id="test.man.1162" xml:space="preserve">
+        <source>Nal von minden GmbH, NADAL COVID-19 Ag Test</source>
+        <target>Nal von minden GmbH, NADAL COVID-19 Ag Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1173" xml:space="preserve">
+        <source>CerTest Biotec, S.L., CerTest SARS-CoV-2 Card test</source>
+        <target>CerTest Biotec, S.L., CerTest SARS-CoV-2 Card test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1180" xml:space="preserve">
+        <source>MEDsan GmbH, MEDsan SARS-CoV-2 Antigen Rapid Test</source>
+        <target>MEDsan GmbH, MEDsan SARS-CoV-2 Antigen Rapid Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1218" xml:space="preserve">
+        <source>Siemens Healthineers, CLINITEST Rapid Covid-19 Antigen Test</source>
+        <target>Siemens Healthineers, CLINITEST Rapid Covid-19 Antigen Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1223" xml:space="preserve">
+        <source>BIOSYNEX SWISS SA, BIOSYNEX COVID-19 Ag BSS</source>
+        <target>BIOSYNEX SWISS SA, BIOSYNEX COVID-19 Ag BSS</target>
+      </trans-unit>
+      <trans-unit id="test.man.1232" xml:space="preserve">
+        <source>Abbott Rapid Diagnostics, Panbio COVID-19 Ag Test</source>
+        <target>Abbott Rapid Diagnostics, Panbio COVID-19 Ag Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1242" xml:space="preserve">
+        <source>Bionote, Inc, NowCheck COVID-19 Ag Test</source>
+        <target>Bionote, Inc, NowCheck COVID-19 Ag Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1244" xml:space="preserve">
+        <source>GenBody, Inc, Genbody COVID-19 Ag Test</source>
+        <target>GenBody, Inc, Genbody COVID-19 Ag Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1268" xml:space="preserve">
+        <source>LumiraDX UK Ltd, LumiraDx SARS-CoV-2 Ag Test</source>
+        <target>LumiraDX UK Ltd, LumiraDx SARS-CoV-2 Ag Test</target>
+      </trans-unit>
+      <trans-unit id="test.man.1271" xml:space="preserve">
+        <source>Precision Biosensor, Inc, Exdia COVID-19 Ag</source>
+        <target>Precision Biosensor, Inc, Exdia COVID-19 Ag</target>
+      </trans-unit>
+      <trans-unit id="test.man.1278" xml:space="preserve">
+        <source>Xiamen Boson Biotech Co. Ltd, Rapid SARS-CoV-2 Antigen Test Card</source>
+        <target>Xiamen Boson Biotech Co. Ltd, Rapid SARS-CoV-2 Antigen Test Card</target>
+      </trans-unit>
+      <trans-unit id="test.man.1304" xml:space="preserve">
+        <source>AMEDA Labordiagnostik GmbH, AMP Rapid Test SARS-CoV-2 Ag</source>
+        <target>AMEDA Labordiagnostik GmbH, AMP Rapid Test SARS-CoV-2 Ag</target>
+      </trans-unit>
+      <trans-unit id="test.man.1331" xml:space="preserve">
+        <source>Beijing Lepu Medical Technology Co., Ltd, SARS-CoV-2 Antigen Rapid Test Kit</source>
+        <target>Beijing Lepu Medical Technology Co., Ltd, SARS-CoV-2 Antigen Rapid Test Kit</target>
+      </trans-unit>
+      <trans-unit id="test.man.1333" xml:space="preserve">
+        <source>Joinstar Biomedical Technology Co., Ltd, COVID-19 Rapid Antigen Test (Colloidal Gold)</source>
+        <target>Joinstar Biomedical Technology Co., Ltd, COVID-19 Rapid Antigen Test (Colloidal Gold)</target>
+      </trans-unit>
+      <trans-unit id="test.man.1341" xml:space="preserve">
+        <source>Qingdao Hightop Biotech Co., Ltd, SARS-CoV-2 Antigen Rapid Test (Immunochromatography)</source>
+        <target>Qingdao Hightop Biotech Co., Ltd, SARS-CoV-2 Antigen Rapid Test (Immunochromatography)</target>
+      </trans-unit>
+      <trans-unit id="test.man.1343" xml:space="preserve">
+        <source>Zhejiang Orient Gene Biotech, Coronavirus Ag Rapid Test Cassette (Swab)</source>
+        <target>Zhejiang Orient Gene Biotech, Coronavirus Ag Rapid Test Cassette (Swab)</target>
+      </trans-unit>
+      <trans-unit id="test.man.1360" xml:space="preserve">
+        <source>Guangdong Wesail Biotech Co., Ltd, COVID-19 Ag Test Kit</source>
+        <target>Guangdong Wesail Biotech Co., Ltd, COVID-19 Ag Test Kit</target>
+      </trans-unit>
+      <trans-unit id="test.man.1363" xml:space="preserve">
+        <source>Hangzhou Clongene Biotech Co., Ltd, Covid-19 Antigen Rapid Test Kit</source>
+        <target>Hangzhou Clongene Biotech Co., Ltd, Covid-19 Antigen Rapid Test Kit</target>
+      </trans-unit>
+      <trans-unit id="test.man.1481" xml:space="preserve">
+        <source>MP Biomedicals Germany GmbH, Rapid SARS-CoV-2 Antigen Test Card</source>
+        <target>MP Biomedicals Germany GmbH, Rapid SARS-CoV-2 Antigen Test Card</target>
+      </trans-unit>
+      <trans-unit id="test.man.1484" xml:space="preserve">
+        <source>Beijing Wantai Biological Pharmacy Enterprise Co., Ltd, Wantai SARS-CoV-2 Ag Rapid Test (FIA)</source>
+        <target>Beijing Wantai Biological Pharmacy Enterprise Co., Ltd, Wantai SARS-CoV-2 Ag Rapid Test (FIA)</target>
+      </trans-unit>
+      <trans-unit id="test.man.1489" xml:space="preserve">
+        <source>Safecare Biotech (Hangzhou) Co. Ltd, COVID-19 Antigen Rapid Test Kit (Swab)</source>
+        <target>Safecare Biotech (Hangzhou) Co. Ltd, COVID-19 Antigen Rapid Test Kit (Swab)</target>
+      </trans-unit>
+      <trans-unit id="test.man.1767" xml:space="preserve">
+        <source>Healgen Scientific Limited Liability Company, Coronavirus Ag Rapid Test Cassette</source>
+        <target>Healgen Scientific Limited Liability Company, Coronavirus Ag Rapid Test Cassette</target>
+      </trans-unit>
+      <trans-unit id="test.man.unknown" xml:space="preserve">
+        <source>Unknown</source>
+        <target>Neznámý</target>
+      </trans-unit>
+      <trans-unit id="test.result.negative" xml:space="preserve">
+        <source>Not Detected</source>
+        <target>Nedetekováno</target>
+      </trans-unit>
+      <trans-unit id="test.result.positive" xml:space="preserve">
+        <source>Detected ⚠️</source>
+        <target>Detekováno ⚠️</target>
+      </trans-unit>
+      <trans-unit id="test.sample-date-time" xml:space="preserve">
+        <source>Time of Sampling</source>
+        <target>Čas odběru</target>
+      </trans-unit>
+      <trans-unit id="test.test-result" xml:space="preserve">
+        <source>Test Result</source>
+        <target>Výsledek testu</target>
+      </trans-unit>
+      <trans-unit id="vac.man.Bharat-Biotech" xml:space="preserve">
+        <source>Bharat Biotech</source>
+        <target>Bharat Biotech</target>
+      </trans-unit>
+      <trans-unit id="vac.man.Gamaleya-Research-Institute" xml:space="preserve">
+        <source>Gamaleya Research Institute</source>
+        <target>Gamaleya Research Institute</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100001417" xml:space="preserve">
+        <source>Janssen-Cilag International</source>
+        <target>Janssen-Cilag International</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100001699" xml:space="preserve">
+        <source>AstraZeneca AB</source>
+        <target>AstraZeneca AB</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100006270" xml:space="preserve">
+        <source>Curevac AG</source>
+        <target>Curevac AG</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100010771" xml:space="preserve">
+        <source>Sinopharm Weiqida Europe Pharmaceutical s.r.o. - Prague location</source>
+        <target>Sinopharm Weiqida Europe Pharmaceutical s.r.o. - Prague location</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100013793" xml:space="preserve">
+        <source>CanSino Biologics</source>
+        <target>CanSino Biologics</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100020693" xml:space="preserve">
+        <source>China Sinopharm International Corp. - Beijing location</source>
+        <target>China Sinopharm International Corp. - Beijing location</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100024420" xml:space="preserve">
+        <source>Sinopharm Zhijun (Shenzhen) Pharmaceutical Co. Ltd. - Shenzhen location</source>
+        <target>Sinopharm Zhijun (Shenzhen) Pharmaceutical Co. Ltd. - Shenzhen location</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100030215" xml:space="preserve">
+        <source>Biontech Manufacturing GmbH</source>
+        <target>Biontech Manufacturing GmbH</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100031184" xml:space="preserve">
+        <source>Moderna Biotech Spain S.L.</source>
+        <target>Moderna Biotech Spain S.L.</target>
+      </trans-unit>
+      <trans-unit id="vac.man.ORG-100032020" xml:space="preserve">
+        <source>Novavax CZ AS</source>
+        <target>Novavax CZ AS</target>
+      </trans-unit>
+      <trans-unit id="vac.man.Sinovac-Biotech" xml:space="preserve">
+        <source>Sinovac Biotech</source>
+        <target>Sinovac Biotech</target>
+      </trans-unit>
+      <trans-unit id="vac.man.Vector-Institute" xml:space="preserve">
+        <source>Vector Institute</source>
+        <target>Vector Institute</target>
+      </trans-unit>
+      <trans-unit id="vac.man.unknown" xml:space="preserve">
+        <source>Unknown</source>
+        <target>Neznámá</target>
+      </trans-unit>
+      <trans-unit id="vac.product.BBIBP-CorV" xml:space="preserve">
+        <source>BBIBP-CorV</source>
+        <target>BBIBP-CorV</target>
+      </trans-unit>
+      <trans-unit id="vac.product.CVnCoV" xml:space="preserve">
+        <source>CVnCoV</source>
+        <target>CVnCoV</target>
+      </trans-unit>
+      <trans-unit id="vac.product.Convidecia" xml:space="preserve">
+        <source>Convidecia</source>
+        <target>Convidecia</target>
+      </trans-unit>
+      <trans-unit id="vac.product.CoronaVac" xml:space="preserve">
+        <source>CoronaVac</source>
+        <target>CoronaVac</target>
+      </trans-unit>
+      <trans-unit id="vac.product.Covaxin" xml:space="preserve">
+        <source>Covaxin (also known as BBV152 A, B, C)</source>
+        <target>Covaxin (také známá jako BBV152 A, B, C)</target>
+      </trans-unit>
+      <trans-unit id="vac.product.EU/1/20/1507" xml:space="preserve">
+        <source>COVID-19 Vaccine Moderna</source>
+        <target>COVID-19 Vaccine Moderna</target>
+      </trans-unit>
+      <trans-unit id="vac.product.EU/1/20/1525" xml:space="preserve">
+        <source>COVID-19 Vaccine Janssen</source>
+        <target>COVID-19 Vaccine Janssen</target>
+      </trans-unit>
+      <trans-unit id="vac.product.EU/1/20/1528" xml:space="preserve">
+        <source>Comirnaty</source>
+        <target>Comirnaty</target>
+      </trans-unit>
+      <trans-unit id="vac.product.EU/1/21/1529" xml:space="preserve">
+        <source>Vaxzevria</source>
+        <target>Vaxzevria</target>
+      </trans-unit>
+      <trans-unit id="vac.product.EpiVacCorona" xml:space="preserve">
+        <source>EpiVacCorona</source>
+        <target>EpiVacCorona</target>
+      </trans-unit>
+      <trans-unit id="vac.product.Inactivated-SARS-CoV-2-Vero-Cell" xml:space="preserve">
+        <source>Inactivated SARS-CoV-2 (Vero Cell)</source>
+        <target>Inactivated SARS-CoV-2 (Vero Cell)</target>
+      </trans-unit>
+      <trans-unit id="vac.product.Sputnik-V" xml:space="preserve">
+        <source>Sputnik-V</source>
+        <target>Sputnik-V</target>
+      </trans-unit>
+      <trans-unit id="vac.product.unknown" xml:space="preserve">
+        <source>Unknown</source>
+        <target>Neznámý</target>
+      </trans-unit>
+      <trans-unit id="vac.type.1119305005" xml:space="preserve">
+        <source>SARS-CoV-2 antigen vaccine</source>
+        <target>SARS-CoV-2 antigen vaccine</target>
+      </trans-unit>
+      <trans-unit id="vac.type.1119349007" xml:space="preserve">
+        <source>SARS-CoV-2 mRNA vaccine</source>
+        <target>SARS-CoV-2 mRNA vaccine</target>
+      </trans-unit>
+      <trans-unit id="vac.type.J07BX03" xml:space="preserve">
+        <source>covid-19 vaccines</source>
+        <target>vakcíny proti covid-19</target>
+      </trans-unit>
+      <trans-unit id="vac.type.unknown" xml:space="preserve">
+        <source>Unknown</source>
+        <target>Neznámý</target>
+      </trans-unit>
+      <trans-unit id="vaccine.country" xml:space="preserve">
+        <source>Country of Vaccination</source>
+        <target>Země provedení očkování</target>
+      </trans-unit>
+      <trans-unit id="vaccine.date" xml:space="preserve">
+        <source>Date of Vaccination</source>
+        <target>Datum očkování</target>
+      </trans-unit>
+      <trans-unit id="vaccine.disease" xml:space="preserve">
+        <source>Targeted Disease</source>
+        <target>Cílené onemocnění</target>
+      </trans-unit>
+      <trans-unit id="vaccine.issuer" xml:space="preserve">
+        <source>Certificate Issuer</source>
+        <target>Vydavatel certifikátu</target>
+      </trans-unit>
+      <trans-unit id="vaccine.manufacturer" xml:space="preserve">
+        <source>Authorization Holder / Manufacturer</source>
+        <target>Držitel autorizace / výrobce</target>
+      </trans-unit>
+      <trans-unit id="vaccine.product" xml:space="preserve">
+        <source>Medical Product</source>
+        <target>Zdravotnický výrobek</target>
+      </trans-unit>
+      <trans-unit id="vaccine.type" xml:space="preserve">
+        <source>Vaccine or Prophylaxis</source>
+        <target>Vakcína nebo profylaxe</target>
+      </trans-unit>
+      <trans-unit id="vaccine.x-of-x" xml:space="preserve">
+        <source>%d of %d</source>
+        <target>%d z %d</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
