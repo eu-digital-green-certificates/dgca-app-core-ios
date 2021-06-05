@@ -69,19 +69,23 @@ final class SwiftDGCTests: XCTestCase {
 
     HCert.publicKeyStorageDelegate = self
     HCert.debugPrintJsonErrors = false
-
+    var isDirectory = ObjCBool(true)
     guard
       var path = bundle.resourcePath
     else {
       return
     }
     path += "/dgc-testdata"
+    XCTAssert(FileManager.default.fileExists(atPath:path,isDirectory: &isDirectory),path+"does not exist");
+    
     let contents = ls(path: path).filter {
       isDir(path: "\(path)/\($0)") && !$0.hasPrefix(".")
     }
     for country in contents.sorted() {
       testCountry(dir: "\(path)/\(country)", for: country)
     }
+    
+    
   }
 
   func testCountry(dir: String, for countryName: String) {

@@ -33,35 +33,75 @@ struct UnwrappedCBOR {
   let unprotected: [SwiftCBOR.CBOR: SwiftCBOR.CBOR]
 }
 
-public struct CBOR {
-  static func unwrap(data: Data) -> UnwrappedCBOR? {
-    let decoder = SwiftCBOR.CBORDecoder(input: data.uint)
+enum CborType: UInt8 {
+    case tag = 210
+    case list = 132
+    case cwt = 216
+    case unknown
+    
+    static func from(data: Data) -> CborType {
+        switch data.first {
+        case self.tag.rawValue: return tag
+        case list.rawValue: return list
+        case cwt.rawValue: return cwt
+        default: return unknown
+        }
+    }
+}
 
-    guard
-      let cbor = try? decoder.decodeItem(),
-      case var SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor
-    else {
-      return nil
-    }
-    if tag.rawValue == cwtTag {
-      guard case let SwiftCBOR.CBOR.tagged(childTag, childElement) = cborElement else {
-        return nil
-      }
-      tag = childTag
-      cborElement = childElement
-    }
-    guard
-      tag.rawValue == coseTag, // SIGN1
-      case let SwiftCBOR.CBOR.array(array) = cborElement,
-      case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
-      let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
-      case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
-      case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
-      let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
-    else {
-      return nil
-    }
-    return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+public struct CBOR {
+    static func unwrap(data: Data) -> UnwrappedCBOR? {
+        
+        let type = CborType.from(data: data);
+        let decoder = SwiftCBOR.CBORDecoder(input: data.uint)
+
+        switch type {
+        case .tag:
+            guard
+              let cbor = try? decoder.decodeItem(),
+              case var SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
+              case let SwiftCBOR.CBOR.array(array) = cborElement,
+              case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
+              let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
+              case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
+              case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
+              let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
+              else {
+                 return nil
+              }
+              return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+        case .list:
+            guard
+              let cbor=try? SwiftCBOR.CBOR.decode(data.uint),
+              case let SwiftCBOR.CBOR.array(array) = cbor,
+              case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
+              let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
+              case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
+              case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
+              let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
+                else {
+                   return nil
+                }
+              return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+        case .cwt:
+            guard
+             let cbor = try? decoder.decodeItem(),
+             case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
+             case let SwiftCBOR.CBOR.tagged(childTag, childElement) = cborElement,
+             case let SwiftCBOR.CBOR.array(array) = childElement,
+             case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
+             let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
+             case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
+             case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
+             let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
+             else {
+               return nil
+             }
+            return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+        case .unknown:
+            return nil;
+        }
+        return nil;
   }
 
   public static func payload(from data: Data) -> SwiftCBOR.CBOR? {
