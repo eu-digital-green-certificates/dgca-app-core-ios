@@ -31,6 +31,9 @@ struct UnwrappedCBOR {
   let payload: SwiftCBOR.CBOR
   let protected: SwiftCBOR.CBOR
   let unprotected: [SwiftCBOR.CBOR: SwiftCBOR.CBOR]
+  let protectedBytes: [UInt8]
+  let payloadBytes: [UInt8]
+  let signatureBytes: [UInt8]
 }
 
 enum CborType: UInt8 {
@@ -65,11 +68,12 @@ public struct CBOR {
               let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
               case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
               case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
+              case let SwiftCBOR.CBOR.byteString(signatureBytes) = array[3],
               let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
               else {
                  return nil
               }
-              return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+            return .init(payload: payload, protected: protected, unprotected: unprotectedMap,protectedBytes:protectedBytes,payloadBytes:payloadBytes,signatureBytes: signatureBytes)
         case .list:
             guard
               let cbor=try? SwiftCBOR.CBOR.decode(data.uint),
@@ -78,11 +82,12 @@ public struct CBOR {
               let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
               case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
               case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
+              case let SwiftCBOR.CBOR.byteString(signatureBytes) = array[3],
               let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
                 else {
                    return nil
                 }
-              return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+            return .init(payload: payload, protected: protected, unprotected: unprotectedMap,protectedBytes:protectedBytes,payloadBytes:payloadBytes,signatureBytes: signatureBytes)
         case .cwt:
             guard
              let cbor = try? decoder.decodeItem(),
@@ -93,11 +98,13 @@ public struct CBOR {
              let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
              case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
              case let SwiftCBOR.CBOR.byteString(payloadBytes) = array[2],
+             case let SwiftCBOR.CBOR.byteString(signatureBytes) = array[3],
              let payload = try? SwiftCBOR.CBOR.decode(payloadBytes)
              else {
                return nil
              }
-            return .init(payload: payload, protected: protected, unprotected: unprotectedMap)
+            return .init(payload: payload, protected: protected, unprotected: unprotectedMap,protectedBytes:protectedBytes,payloadBytes:payloadBytes,signatureBytes: signatureBytes)
+            return nil;
         case .unknown:
             return nil;
         }
@@ -133,11 +140,8 @@ public struct CBOR {
   }
 
   public static func hash(from cborData: Data) -> String {
-    let decoder = SwiftCBOR.CBORDecoder(input: cborData.uint)
-
     guard
-      let cbor = try? decoder.decodeItem(),
-      let data = COSE.signedPayloadBytes(from: cbor)
+      let data = COSE.signedPayloadBytes(from: cborData)
     else {
       return ""
     }

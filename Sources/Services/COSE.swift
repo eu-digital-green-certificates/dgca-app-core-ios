@@ -27,84 +27,25 @@
 import Foundation
 import SwiftCBOR
 
-let coseTag = UInt64(18)
-let cwtTag = UInt64(61)
-
 public struct COSE {
-  public static func verify(_ cborData: Data, with xHex: String, and yHex: String) -> Bool {
-    let decoder = SwiftCBOR.CBORDecoder(input: cborData.uint)
-
-    guard let cbor = try? decoder.decodeItem() else {
-      return false
-    }
-    return verify(cbor, with: xHex, and: yHex)
+    public static func verify(_cbor:Data, with derPubKeyB64: String) -> Bool {
+        guard let sign = CBOR.unwrap(data: _cbor)?.signatureBytes else {return false};
+        guard let bytes = signedPayloadBytes(from: _cbor) ?? nil else { return false };
+        guard let key = X509.pubKey(from: derPubKeyB64) else {
+           return false
+         }
+        return Signature.verify(Data(bytes: sign),for: bytes,with: key)
   }
-  public static func verify(_ cborData: Data, with rsa: String) -> Bool {
-    let decoder = SwiftCBOR.CBORDecoder(input: cborData.uint)
 
-    guard let cbor = try? decoder.decodeItem() else {
-      return false
-    }
-    return verify(cbor, with: rsa)
-  }
-  public static func verify(_ cbor: SwiftCBOR.CBOR, with xHex: String, and yHex: String) -> Bool {
-    guard
-      case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
-      tag.rawValue == coseTag, // SIGN1
-      case let SwiftCBOR.CBOR.array(array) = cborElement,
-      case let SwiftCBOR.CBOR.byteString(signature) = array[3]
-    else {
-      return false
-    }
+  public static func signedPayloadBytes(from cbor: Data) -> Data? {
+    guard let unwrapped = CBOR.unwrap(data: cbor) else {return nil};
 
     let signedPayload: [UInt8] = SwiftCBOR.CBOR.encode(
       [
         "Signature1",
-        array[0],
+        SwiftCBOR.CBOR.byteString(unwrapped.protectedBytes) ,
         SwiftCBOR.CBOR.byteString([]),
-        array[2]
-      ]
-    )
-    let data = Data(signedPayload)
-    let sign = Data(signature)
-    guard let key = JWK.ecFrom(x: xHex, y: yHex) else {
-      return false
-    }
-    return Signature.verify(sign, for: data, with: key)
-  }
-
-  public static func verify(_ cbor: SwiftCBOR.CBOR, with derPubKeyB64: String) -> Bool {
-    guard
-      case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
-      tag.rawValue == coseTag, // SIGN1
-      case let SwiftCBOR.CBOR.array(array) = cborElement,
-      case let SwiftCBOR.CBOR.byteString(signature) = array[3],
-      let bytes = signedPayloadBytes(from: cbor)
-    else {
-      return false
-    }
-    let sign = Data(signature)
-    guard let key = X509.pubKey(from: derPubKeyB64) else {
-      return false
-    }
-    return Signature.verify(sign, for: bytes, with: key)
-  }
-
-  public static func signedPayloadBytes(from cbor: SwiftCBOR.CBOR) -> Data? {
-    guard
-      case let SwiftCBOR.CBOR.tagged(tag, cborElement) = cbor,
-      tag.rawValue == coseTag, // SIGN1
-      case let SwiftCBOR.CBOR.array(array) = cborElement
-    else {
-      return nil
-    }
-
-    let signedPayload: [UInt8] = SwiftCBOR.CBOR.encode(
-      [
-        "Signature1",
-        array[0],
-        SwiftCBOR.CBOR.byteString([]),
-        array[2]
+        SwiftCBOR.CBOR.byteString(unwrapped.payloadBytes) ,
       ]
     )
     return Data(signedPayload)
