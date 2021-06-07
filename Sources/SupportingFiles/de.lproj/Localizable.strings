@@ -143,7 +143,7 @@
 
 "vac.type.1119349007" = "SARS-CoV-2 mRNA Impfstoff";
 "vac.type.1119305005" = "SARS-CoV-2 antigen Impfstoff";
-"vac.type.J07BX03" = "covid-19 Impfstoffe";
+"vac.type.J07BX03" = "Covid-19 Impfstoffe";
 "vac.type.unknown" = "Unbekannt";
 
 "country.AF" = "Afghanistan";
@@ -290,7 +290,7 @@
 "country.MU" = "Mauritius";
 "country.YT" = "Mayotte";
 "country.MX" = "Mexiko";
-"country.FM" = "Föderierte Staaten von Mikronesien ";
+"country.FM" = "Föderierte Staaten von Mikronesien";
 "country.MD" = "Moldawien";
 "country.MC" = "Monaco";
 "country.MN" = "Mongolei";
@@ -389,7 +389,7 @@
 "country.VE" = "Bolivarische Republik Venezuela";
 "country.VN" = "Vietnam";
 "country.VG" = "Britische Jungferninseln";
-"country.VI" = "Amerikanische Jungferninseln.";
+"country.VI" = "Amerikanische Jungferninseln";
 "country.WF" = "Wallis und Futuna";
 "country.EH" = "Westsahara";
 "country.YE" = "Jemen";
