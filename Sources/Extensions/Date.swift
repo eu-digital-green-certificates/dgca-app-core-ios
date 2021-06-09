@@ -43,14 +43,19 @@ extension Date {
 
   static let isoFormatter = formatter(for: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   static let dateFormatter = formatter(for: "yyyy-MM-dd")
+  static let dateFormatterYM = formatter(for: "yyyy-MM")
+  static let dateFormatterY = formatter(for: "yyyy")
+  static let dateFormatterFull = formatter(for: "yyyy-MM-dd'T'HH:mm:ss")
   static let dateTimeFormatter = formatter(for: "yyyy-MM-dd HH:mm", utcPosix: false)
 
   public var isoString: String {
     Date.isoFormatter.string(from: self)
   }
+  
   public var dateString: String {
     Date.dateFormatter.string(from: self)
   }
+  
   public var dateTimeString: String {
     Date.dateTimeFormatter.string(from: self)
   }
@@ -61,12 +66,21 @@ extension Date {
     }
     self = date
   }
+  
   init?(dateString: String) {
-    guard let date = Date.dateFormatter.date(from: dateString) else {
+    if let date = Date.dateFormatter.date(from: dateString) {
+      self = date
+    } else if let date = Date.dateFormatterYM.date(from: dateString) {
+      self = date
+    } else if let date = Date.dateFormatterY.date(from: dateString) {
+      self = date
+    } else if let date = Date.dateFormatterFull.date(from: dateString) {
+      self = date
+    } else {
       return nil
     }
-    self = date
   }
+  
   init?(rfc3339DateTimeString str: String) {
     var str = str
     let rfc3339DateTimeFormatter = DateFormatter()
@@ -103,6 +117,7 @@ extension Date {
     formatter.dateStyle = .medium
     return formatter.string(from: self)
   }
+  
   public var dateTimeStringUtc: String {
     let formatter = DateFormatter()
     formatter.locale = .current
