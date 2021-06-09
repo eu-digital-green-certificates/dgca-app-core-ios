@@ -333,7 +333,7 @@ public struct HCert {
       return false
     }
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
-      if COSE.verify(cborData, with: key) {
+      if COSE.verify(_cbor: cborData, with: key) {
         return true
       }
     }
