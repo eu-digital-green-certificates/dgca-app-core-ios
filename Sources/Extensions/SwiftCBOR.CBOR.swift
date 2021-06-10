@@ -32,12 +32,12 @@ extension SwiftCBOR.CBOR {
     switch self {
     case let .byteString(val):
       let fallBack = "[" + val.map { "\($0)" }.joined(separator: ", ") + "]"
-      if
-        let child = try? SwiftCBOR.CBOR.decode(val),
-        case .map(_) = child
-      {
-        return child.toString()
-      }
+//      if
+//        let child = try? SwiftCBOR.CBOR.decode(val),
+//        case .map(_) = child
+//      {
+//        return child.toString()
+//      }
       return fallBack
     case let .unsignedInt(val):
       return "\(val)"
