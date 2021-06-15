@@ -131,7 +131,6 @@ let euDgcSchemaV1 = """
           "title": "Standardised family name",
           "description": "The family name(s) of the person transliterated",
           "type": "string",
-          "pattern": "^[A-Z<]*$",
           "maxLength": 50,
           "examples": [
             "DCERVENKOVA<PANKLOVA"
@@ -150,7 +149,6 @@ let euDgcSchemaV1 = """
           "title": "Standardised given name",
           "description": "The given name(s) of the person transliterated",
           "type": "string",
-          "pattern": "^[A-Z<]*$",
           "maxLength": 50,
           "examples": [
             "JIRINA<MARIA<ALENA"
