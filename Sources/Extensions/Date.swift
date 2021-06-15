@@ -47,7 +47,9 @@ extension Date {
   static let dateFormatterY = formatter(for: "yyyy")
   static let dateFormatterFull = formatter(for: "yyyy-MM-dd'T'HH:mm:ss")
   static let dateTimeFormatter = formatter(for: "yyyy-MM-dd HH:mm", utcPosix: false)
-
+  static let dateFormatterOffset = formatter(for: "yyyy-MM-dd'T'HH:mm:ssZZZZZ")
+  static let dateFormatterFractional = formatter(for: "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX")
+    
   public var isoString: String {
     Date.isoFormatter.string(from: self)
   }
@@ -76,6 +78,10 @@ extension Date {
       self = date
     } else if let date = Date.dateFormatterFull.date(from: dateString) {
       self = date
+    } else if let date = Date.dateFormatterOffset.date(from: dateString) {
+      self = date
+    } else if let date = Date.dateFormatterFractional.date(from: dateString) {
+        self = date
     } else {
       return nil
     }
