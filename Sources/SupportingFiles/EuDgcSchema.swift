@@ -70,7 +70,7 @@ let euDgcSchemaV1 = """
     },
     "v": {
       "description": "Vaccination Group",
-      "type": "array",
+      "type": ["null", "array"],
       "items": {
         "$ref": "#/$defs/vaccination_entry"
       },
