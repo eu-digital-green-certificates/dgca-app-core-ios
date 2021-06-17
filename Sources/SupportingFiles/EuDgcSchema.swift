@@ -230,7 +230,6 @@ let euDgcSchemaV1 = """
         "tt",
         "sc",
         "tr",
-        "tc",
         "co",
         "is",
         "ci"
