@@ -60,12 +60,11 @@ let euDgcSchemaV1 = """
       "title": "Date of birth",
       "description": "Date of Birth of the person addressed in the DGC. ISO 8601 date format restricted to range 1900-2099",
       "type": "string",
-      "format": "date",
-      "pattern": "^(19|20)\\\\d\\\\d(-\\\\d\\\\d){0,2}((T)(\\\\d{2}):(\\\\d{2}):(\\\\d{2}))?$",
       "examples": [
         "1979-04-14",
         "1979-04",
         "1979",
+        "",
         "1979-04-14T00:00:00"
       ]
     },
