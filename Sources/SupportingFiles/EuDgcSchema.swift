@@ -109,7 +109,7 @@ let euDgcSchemaV1 = """
     "issuer": {
       "description": "Certificate Issuer",
       "type": "string",
-      "maxLength": 50
+      "maxLength": 80
     },
     "person_name": {
       "description": "Person name: Surname(s), given name(s) - in that order",
@@ -122,7 +122,7 @@ let euDgcSchemaV1 = """
           "title": "Family name",
           "description": "The family or primary name(s) of the person addressed in the certificate",
           "type": "string",
-          "maxLength": 50,
+          "maxLength": 80,
           "examples": [
             "d'Červenková Panklová"
           ]
@@ -131,7 +131,8 @@ let euDgcSchemaV1 = """
           "title": "Standardised family name",
           "description": "The family name(s) of the person transliterated",
           "type": "string",
-          "maxLength": 50,
+          "pattern": "^[A-Z<]*$",
+          "maxLength": 80,
           "examples": [
             "DCERVENKOVA<PANKLOVA"
           ]
@@ -140,7 +141,7 @@ let euDgcSchemaV1 = """
           "title": "Given name",
           "description": "The given name(s) of the person addressed in the certificate",
           "type": "string",
-          "maxLength": 50,
+          "maxLength": 80,
           "examples": [
             "Jiřina-Maria Alena"
           ]
@@ -149,7 +150,8 @@ let euDgcSchemaV1 = """
           "title": "Standardised given name",
           "description": "The given name(s) of the person transliterated",
           "type": "string",
-          "maxLength": 50,
+          "pattern": "^[A-Z<]*$",
+          "maxLength": 80,
           "examples": [
             "JIRINA<MARIA<ALENA"
           ]
@@ -159,7 +161,7 @@ let euDgcSchemaV1 = """
     "certificate_id": {
       "description": "Certificate Identifier, format as per UVCI: Annex 2 in  https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf",
       "type": "string",
-      "maxLength": 50
+      "maxLength": 80
     },
     "vaccination_entry": {
       "description": "Vaccination Entry",
@@ -267,7 +269,7 @@ let euDgcSchemaV1 = """
         "tc": {
           "description": "Testing Centre",
           "type": "string",
-          "maxLength": 50
+          "maxLength": 80
         },
         "co": {
           "description": "Country of Test",
