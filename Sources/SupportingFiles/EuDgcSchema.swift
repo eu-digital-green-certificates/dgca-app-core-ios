@@ -206,7 +206,7 @@ let euDgcSchemaV1 = """
         "dt": {
           "description": "Date of Vaccination",
           "type": "string",
-          "format": "date",
+          "format": "date-time",
           "$comment": "SemanticSG: constrain to specific date range?"
         },
         "co": {
@@ -317,12 +317,12 @@ let euDgcSchemaV1 = """
         "df": {
           "description": "ISO 8601 Date: Certificate Valid From",
           "type": "string",
-          "format": "date"
+          "format": "date-time"
         },
         "du": {
           "description": "Certificate Valid Until",
           "type": "string",
-          "format": "date"
+          "format": "date-time"
         },
         "ci": {
           "description": "Unique Certificate Identifier, UVCI",
