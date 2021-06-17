@@ -37,7 +37,7 @@ extension HCert {
       errors?.errors.append(.json(error: "Validation failed"))
       return false
     }
-
+    
     guard
       let validation = try? validate(bodyDict, schema: schema)
     else {
@@ -51,6 +51,9 @@ extension HCert {
     if Self.debugPrintJsonErrors {
       validation.errors?.forEach {
         print($0.description)
+      }
+      if !validation.valid {
+        return false
       }
     }
     #else

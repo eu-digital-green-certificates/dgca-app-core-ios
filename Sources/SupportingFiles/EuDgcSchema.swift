@@ -203,7 +203,6 @@ let euDgcSchemaV1 = """
         "dt": {
           "description": "Date of Vaccination",
           "type": "string",
-          "format": "date-time",
           "$comment": "SemanticSG: constrain to specific date range?"
         },
         "co": {
@@ -251,12 +250,10 @@ let euDgcSchemaV1 = """
         "sc": {
           "description": "Date/Time of Sample Collection",
           "type": "string",
-          "format": "date-time"
         },
         "dr": {
           "description": "Date/Time of Test Result",
           "type": "string",
-          "format": "date-time"
         },
         "tr": {
           "description": "Test Result",
@@ -300,7 +297,6 @@ let euDgcSchemaV1 = """
         "fr": {
           "description": "ISO 8601 Date of First Positive Test Result",
           "type": "string",
-          "format": "date"
         },
         "co": {
           "description": "Country of Test",
@@ -313,12 +309,10 @@ let euDgcSchemaV1 = """
         "df": {
           "description": "ISO 8601 Date: Certificate Valid From",
           "type": "string",
-          "format": "date-time"
         },
         "du": {
           "description": "Certificate Valid Until",
           "type": "string",
-          "format": "date-time"
         },
         "ci": {
           "description": "Unique Certificate Identifier, UVCI",
