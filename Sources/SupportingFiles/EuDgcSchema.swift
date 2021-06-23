@@ -35,7 +35,7 @@ let euDgcSchemaV1 = """
   "$id": "https://id.uvci.eu/DGC.combined-schema.json",
   "title": "EU DGC",
   "description": "EU Digital Green Certificate",
-  "$comment": "Schema version 1.0.0",
+  "$comment": "Schema version 1.x",
   "required": [
     "ver",
     "nam",
