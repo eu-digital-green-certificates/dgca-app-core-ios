@@ -25,8 +25,17 @@
 //
 
 import Foundation
+import ASN1Decoder
 
 public struct X509 {
+    
+  static let OID_TEST = "1.3.6.1.4.1.1847.2021.1.1"
+  static let OID_ALT_TEST = "1.3.6.1.4.1.0.1847.2021.1.1"
+  static let OID_VACCINATION = "1.3.6.1.4.1.1847.2021.1.2"
+  static let OID_ALT_VACCINATION = "1.3.6.1.4.1.0.1847.2021.1.2"
+  static let OID_RECOVERY = "1.3.6.1.4.1.1847.2021.1.3"
+  static let OID_ALT_RECOVERY = "1.3.6.1.4.1.0.1847.2021.1.3"
+    
   public static func pubKey(from b64EncodedCert: String) -> SecKey? {
     guard
       let encodedCertData = Data(base64Encoded: b64EncodedCert),
@@ -90,4 +99,33 @@ public struct X509 {
     data.append(rawPublicKeyBytes)
     return data
   }
+    static func checkisSuitable(cert: String, certType: HCertType)->Bool{
+        return isSuitable(cert: Data(base64Encoded:  cert)!, for: certType)
+    }
+    
+    static func isSuitable(cert: Data,for certType: HCertType) -> Bool {
+        guard let certificate = try? X509Certificate(data: cert) else {
+            return false
+        }
+        if isType(in: certificate) {
+            switch certType {
+            case .test:
+                return nil != certificate.extensionObject(oid: OID_TEST) || nil != certificate.extensionObject(oid: OID_ALT_TEST)
+            case .vaccine:
+                return nil != certificate.extensionObject(oid: OID_VACCINATION) || nil != certificate.extensionObject(oid: OID_ALT_VACCINATION)
+            case .recovery:
+                return nil != certificate.extensionObject(oid: OID_RECOVERY) || nil != certificate.extensionObject(oid: OID_ALT_RECOVERY)
+            }
+        }
+        return true
+    }
+
+    static func isType(in certificate: X509Certificate) -> Bool {
+            return nil != certificate.extensionObject(oid: OID_TEST)
+                || nil != certificate.extensionObject(oid: OID_VACCINATION)
+                || nil != certificate.extensionObject(oid: OID_RECOVERY)
+                || nil != certificate.extensionObject(oid: OID_ALT_TEST)
+                || nil != certificate.extensionObject(oid: OID_ALT_VACCINATION)
+                || nil != certificate.extensionObject(oid: OID_ALT_RECOVERY)
+        }
 }
