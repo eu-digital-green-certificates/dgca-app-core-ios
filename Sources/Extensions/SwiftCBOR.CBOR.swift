@@ -44,7 +44,7 @@ extension SwiftCBOR.CBOR {
     case let .negativeInt(val):
       return "-\(val + 1)"
     case let .utf8String(val):
-      return "\"\(val)\""
+        return "\"\(val.replacingOccurrences(of: "\"", with: ""))\""
     case let .array(vals):
       var str = ""
       for val in vals {
