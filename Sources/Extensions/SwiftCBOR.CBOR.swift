@@ -28,6 +28,12 @@ import Foundation
 import SwiftCBOR
 
 extension SwiftCBOR.CBOR {
+  
+  func sanitize(value: String)->String
+  {
+    return value.trimmingCharacters(in: ["\""]).replacingOccurrences(of: "\"", with: "")
+  }
+    
   func toString() -> String {
     switch self {
     case let .byteString(val):
@@ -44,7 +50,7 @@ extension SwiftCBOR.CBOR {
     case let .negativeInt(val):
       return "-\(val + 1)"
     case let .utf8String(val):
-        return "\"\(val.replacingOccurrences(of: "\"", with: ""))\""
+        return "\"\(sanitize(value: val))\""
     case let .array(vals):
       var str = ""
       for val in vals {
@@ -58,7 +64,7 @@ extension SwiftCBOR.CBOR {
         if case .undefined = val {
           continue
         }
-        let key = "\"\(pair.key.toString().trimmingCharacters(in: ["\""]))\""
+        let key = "\"\(sanitize(value: pair.key.toString()))\""
         str += (str.isEmpty ? "" : ", ") + "\(key): \(val.toString())"
       }
       return "{\(str)}"
