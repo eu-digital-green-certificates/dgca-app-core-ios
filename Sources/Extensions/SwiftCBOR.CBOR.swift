@@ -31,7 +31,9 @@ extension SwiftCBOR.CBOR {
   
   func sanitize(value: String)->String
   {
-    return value.trimmingCharacters(in: ["\""]).replacingOccurrences(of: "\"", with: "")
+    return value.trimmingCharacters(in: ["\""])
+                .replacingOccurrences(of: "\"", with: "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
   }
     
   func toString() -> String {
