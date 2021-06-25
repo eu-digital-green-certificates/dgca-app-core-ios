@@ -6,7 +6,6 @@ import XCTest
 import Foundation
 @testable
 import SwiftDGC
-import SwiftyJSON
 
 
 
