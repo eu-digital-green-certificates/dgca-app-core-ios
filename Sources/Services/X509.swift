@@ -115,6 +115,8 @@ public struct X509 {
                 return nil != certificate.extensionObject(oid: OID_VACCINATION) || nil != certificate.extensionObject(oid: OID_ALT_VACCINATION)
             case .recovery:
                 return nil != certificate.extensionObject(oid: OID_RECOVERY) || nil != certificate.extensionObject(oid: OID_ALT_RECOVERY)
+            case .unknown:
+                return false
             }
         }
         return true

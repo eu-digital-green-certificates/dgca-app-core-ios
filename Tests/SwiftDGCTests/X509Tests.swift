@@ -22,6 +22,7 @@ final class X509Test:XCTestCase {
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.recovery))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.test))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.vaccine))
+        XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.unknown))
     }
     
     func testvalidOIDforTestandVac()
@@ -33,6 +34,7 @@ final class X509Test:XCTestCase {
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.recovery))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.test))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.vaccine))
+        XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.unknown))
     }
     
     func testvalidOIDforRecovery()
@@ -44,6 +46,7 @@ final class X509Test:XCTestCase {
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.recovery))
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.test))
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.vaccine))
+        XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.unknown))
     }
     
     func testvalidOIDforVaccine()
@@ -55,6 +58,7 @@ final class X509Test:XCTestCase {
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.recovery))
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.test))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.vaccine))
+        XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.unknown))
     }
     
     func testvalidOIDforTest()
@@ -66,6 +70,7 @@ final class X509Test:XCTestCase {
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.recovery))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.test))
         XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.vaccine))
+        XCTAssertFalse(X509.isSuitable(cert: data, for: HCertType.unknown))
     }
     
     func testValidButNoOIDs()
@@ -77,6 +82,7 @@ final class X509Test:XCTestCase {
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.recovery))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.test))
         XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.vaccine))
+        XCTAssertTrue(X509.isSuitable(cert: data, for: HCertType.unknown))
     }
 }
 

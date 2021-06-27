@@ -48,6 +48,7 @@ public enum HCertType: String {
   case test
   case vaccine
   case recovery
+  case unknown
 }
 
 public enum HCertValidity: String {
@@ -315,7 +316,11 @@ public struct HCert {
     if statement is RecoveryEntry {
       return .recovery
     }
-    return .test
+    
+    if statement is TestEntry {
+      return .test
+    }
+    return .unknown
   }
   public var validityFailures = [String]()
   public var isValid: Bool {
