@@ -31,8 +31,7 @@ extension SwiftCBOR.CBOR {
   
   func sanitize(value: String)->String
   {
-    return value.trimmingCharacters(in: ["\""])
-                .replacingOccurrences(of: "\"", with: "")
+    return value.replacingOccurrences(of: "\"", with: "\\\"")
                 .trimmingCharacters(in: .whitespacesAndNewlines)
   }
     
@@ -66,7 +65,7 @@ extension SwiftCBOR.CBOR {
         if case .undefined = val {
           continue
         }
-        let key = "\"\(sanitize(value: pair.key.toString()))\""
+        let key = "\"\(pair.key.toString().trimmingCharacters(in: ["\""]))\""
         str += (str.isEmpty ? "" : ", ") + "\(key): \(val.toString())"
       }
       return "{\(str)}"
