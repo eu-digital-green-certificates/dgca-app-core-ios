@@ -186,6 +186,10 @@ public struct HCert {
     validityFailures.append(contentsOf: statement.validityFailures)
   }
 
+  public mutating func makeSectionForRuleError(errorString: String) {
+    info = [InfoSection(header: l10n("header.validity-errors"), content: errorString)]
+  }
+  
   mutating func makeSections() {
     info = isValid ? [] : [
       InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
@@ -262,6 +266,7 @@ public struct HCert {
   public var body: JSON
   public var iat: Date
   public var exp: Date
+  public var ruleCountryCode: String?
 
   static let qrLock = NSLock()
 
