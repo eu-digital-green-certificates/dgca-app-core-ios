@@ -200,11 +200,11 @@ public struct HCert {
         content: certTypeString
       )
     ] + personIdentifiers
-    if let date = dateOfBirth {
+    if let date = get(.dateOfBirth).string {
       info += [
         InfoSection(
           header: l10n("header.dob"),
-          content: date.localDateString
+          content: date
         )
       ]
     }
@@ -276,11 +276,9 @@ public struct HCert {
     return "\(first) \(last)"
   }
 
-  public var dateOfBirth: Date? {
-    guard let dateString = get(.dateOfBirth).string else {
-      return nil
-    }
-    return Date(dateString: dateString)
+  public var dateOfBirth: String {
+    let dob = get(.dateOfBirth).string ?? ""
+    return "\(dob)"
   }
 
   var personIdentifiers: [InfoSection] {

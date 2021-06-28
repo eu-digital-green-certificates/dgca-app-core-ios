@@ -35,7 +35,7 @@ public let euDgcSchemaV1 = """
   "$id": "https://id.uvci.eu/DGC.combined-schema.json",
   "title": "EU DGC",
   "description": "EU Digital Green Certificate",
-  "$comment": "Schema version 1.0.0",
+  "$comment": "Schema version 1.x",
   "required": [
     "ver",
     "nam",
@@ -46,7 +46,7 @@ public let euDgcSchemaV1 = """
     "ver": {
       "title": "Schema version",
       "description": "Version of the schema, according to Semantic versioning (ISO, https://semver.org/ version 2.0.0 or newer)",
-      "type": "string",
+      "type": ["null","string"],
       "pattern": "^\\\\d+.\\\\d+.\\\\d+$",
       "examples": [
         "1.0.0"
@@ -59,23 +59,21 @@ public let euDgcSchemaV1 = """
     "dob": {
       "title": "Date of birth",
       "description": "Date of Birth of the person addressed in the DGC. ISO 8601 date format restricted to range 1900-2099",
-      "type": "string",
-      "format": "date",
-      "pattern": "^(19|20)\\\\d\\\\d(-\\\\d\\\\d){0,2}((T)(\\\\d{2}):(\\\\d{2}):(\\\\d{2}))?$",
+      "type": ["null","string"],
       "examples": [
         "1979-04-14",
         "1979-04",
         "1979",
+        "",
         "1979-04-14T00:00:00"
       ]
     },
     "v": {
       "description": "Vaccination Group",
-      "type": "array",
+      "type": ["null", "array"],
       "items": {
         "$ref": "#/$defs/vaccination_entry"
       },
-      "minItems": 1
     },
     "t": {
       "description": "Test Group",
@@ -83,33 +81,27 @@ public let euDgcSchemaV1 = """
       "items": {
         "$ref": "#/$defs/test_entry"
       },
-      "minItems": 1
     },
     "r": {
       "description": "Recovery Group",
       "type": ["null", "array"],
       "items": {
         "$ref": "#/$defs/recovery_entry"
-      },
-      "minItems": 1
+      }
     }
   },
   "$defs": {
     "dose_posint": {
       "description": "Dose Number / Total doses in Series: positive integer, range: [1,9]",
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 9
+      "type": ["null","integer"]
     },
     "country_vt": {
       "description": "Country of Vaccination / Test, ISO 3166 where possible",
-      "type": "string",
-      "pattern": "[A-Z]{1,10}"
+      "type": ["null","string"]
     },
     "issuer": {
       "description": "Certificate Issuer",
-      "type": "string",
-      "maxLength": 50
+      "type": ["null","string"]
     },
     "person_name": {
       "description": "Person name: Surname(s), given name(s) - in that order",
@@ -121,8 +113,7 @@ public let euDgcSchemaV1 = """
         "fn": {
           "title": "Family name",
           "description": "The family or primary name(s) of the person addressed in the certificate",
-          "type": "string",
-          "maxLength": 50,
+          "type": ["null","string"],
           "examples": [
             "d'Červenková Panklová"
           ]
@@ -130,8 +121,7 @@ public let euDgcSchemaV1 = """
         "fnt": {
           "title": "Standardised family name",
           "description": "The family name(s) of the person transliterated",
-          "type": "string",
-          "maxLength": 50,
+          "type": ["null","string"],
           "examples": [
             "DCERVENKOVA<PANKLOVA"
           ]
@@ -139,8 +129,7 @@ public let euDgcSchemaV1 = """
         "gn": {
           "title": "Given name",
           "description": "The given name(s) of the person addressed in the certificate",
-          "type": "string",
-          "maxLength": 50,
+          "type": ["null","string"],
           "examples": [
             "Jiřina-Maria Alena"
           ]
@@ -148,8 +137,7 @@ public let euDgcSchemaV1 = """
         "gnt": {
           "title": "Standardised given name",
           "description": "The given name(s) of the person transliterated",
-          "type": "string",
-          "maxLength": 50,
+          "type": ["null","string"],
           "examples": [
             "JIRINA<MARIA<ALENA"
           ]
@@ -158,8 +146,7 @@ public let euDgcSchemaV1 = """
     },
     "certificate_id": {
       "description": "Certificate Identifier, format as per UVCI: Annex 2 in  https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf",
-      "type": "string",
-      "maxLength": 50
+      "type": ["null","string"]
     },
     "vaccination_entry": {
       "description": "Vaccination Entry",
@@ -175,7 +162,7 @@ public let euDgcSchemaV1 = """
         "is",
         "ci"
       ],
-      "type": "object",
+      "type": ["null","object"],
       "properties": {
         "tg": {
           "description": "disease or agent targeted",
@@ -203,8 +190,7 @@ public let euDgcSchemaV1 = """
         },
         "dt": {
           "description": "Date of Vaccination",
-          "type": "string",
-          "format": "date-time",
+          "type": ["null","string"],
           "$comment": "SemanticSG: constrain to specific date range?"
         },
         "co": {
@@ -228,23 +214,22 @@ public let euDgcSchemaV1 = """
         "tt",
         "sc",
         "tr",
-        "tc",
         "co",
         "is",
         "ci"
       ],
-      "type": "object",
+      "type": ["null","object"],
       "properties": {
         "tg": {
           "$ref": "#/$defs/disease-agent-targeted"
         },
         "tt": {
           "description": "Type of Test",
-          "type": "string"
+          "type": ["null","string"]
         },
         "nm": {
           "description": "NAA Test Name",
-          "type": "string"
+          "type": ["null","string"]
         },
         "ma": {
           "description": "RAT Test name and manufacturer",
@@ -252,13 +237,11 @@ public let euDgcSchemaV1 = """
         },
         "sc": {
           "description": "Date/Time of Sample Collection",
-          "type": "string",
-          "format": "date-time"
+          "type": ["null","string"]
         },
         "dr": {
           "description": "Date/Time of Test Result",
-          "type": "string",
-          "format": "date-time"
+          "type": ["null","string"]
         },
         "tr": {
           "description": "Test Result",
@@ -266,8 +249,7 @@ public let euDgcSchemaV1 = """
         },
         "tc": {
           "description": "Testing Centre",
-          "type": "string",
-          "maxLength": 50
+          "type": ["null","string"]
         },
         "co": {
           "description": "Country of Test",
@@ -294,15 +276,14 @@ public let euDgcSchemaV1 = """
         "du",
         "ci"
       ],
-      "type": "object",
+      "type": ["null","object"],
       "properties": {
         "tg": {
           "$ref": "#/$defs/disease-agent-targeted"
         },
         "fr": {
           "description": "ISO 8601 Date of First Positive Test Result",
-          "type": "string",
-          "format": "date"
+          "type": ["null","string"]
         },
         "co": {
           "description": "Country of Test",
@@ -314,13 +295,11 @@ public let euDgcSchemaV1 = """
         },
         "df": {
           "description": "ISO 8601 Date: Certificate Valid From",
-          "type": "string",
-          "format": "date-time"
+          "type": ["null","string"]
         },
         "du": {
           "description": "Certificate Valid Until",
-          "type": "string",
-          "format": "date-time"
+          "type": ["null","string"]
         },
         "ci": {
           "description": "Unique Certificate Identifier, UVCI",
@@ -330,32 +309,32 @@ public let euDgcSchemaV1 = """
     },
     "disease-agent-targeted": {
       "description": "EU eHealthNetwork: Value Sets for Digital Green Certificates. version 1.0, 2021-04-16, section 2.1",
-      "type": "string",
+      "type": ["null","string"],
       "valueset-uri": "valuesets/disease-agent-targeted.json"
     },
     "vaccine-prophylaxis": {
       "description": "EU eHealthNetwork: Value Sets for Digital Green Certificates. version 1.0, 2021-04-16, section 2.2",
-      "type": "string",
+      "type": ["null","string"],
       "valueset-uri": "valuesets/vaccine-prophylaxis.json"
     },
     "vaccine-medicinal-product": {
       "description": "EU eHealthNetwork: Value Sets for Digital Green Certificates. version 1.0, 2021-04-16, section 2.3",
-      "type": "string",
+      "type": ["null","string"],
       "valueset-uri": "valuesets/vaccine-medicinal-product.json"
     },
     "vaccine-mah-manf": {
       "description": "EU eHealthNetwork: Value Sets for Digital Green Certificates. version 1.0, 2021-04-16, section 2.4",
-      "type": "string",
+      "type": ["null","string"],
       "valueset-uri": "valuesets/vaccine-mah-manf.json"
     },
     "test-manf": {
       "description": "EU eHealthNetwork: Value Sets for Digital Green Certificates. version 1.0, 2021-04-16, section 2.8",
-      "type": "string",
+      "type": ["null","string"],
       "valueset-uri": "valuesets/test-manf.json"
     },
     "test-result": {
       "description": "EU eHealthNetwork: Value Sets for Digital Green Certificates. version 1.0, 2021-04-16, section 2.9",
-      "type": "string",
+      "type": ["null","string"],
       "valueset-uri": "valuesets/test-results.json"
     }
   }
