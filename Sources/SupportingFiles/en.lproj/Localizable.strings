@@ -232,6 +232,7 @@
 "country.GH" = "Ghana";
 "country.GI" = "Gibraltar";
 "country.GR" = "Greece";
+"country.EL" = "Greece";
 "country.GL" = "Greenland";
 "country.GD" = "Grenada";
 "country.GP" = "Guadeloupe";
@@ -395,3 +396,7 @@
 "country.YE" = "Yemen";
 "country.ZM" = "Zambia";
 "country.ZW" = "Zimbabwe";
+
+//County Code scanner
+"scaner.no.countrys" = "Country codes list empty";
+"scanner.select.country" = "Select Country of CertLogic Rule";

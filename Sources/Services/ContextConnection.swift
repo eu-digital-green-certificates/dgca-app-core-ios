@@ -37,6 +37,7 @@ var alamofireSessions = [String: Alamofire.Session]()
 public extension ContextConnection {
   static func request(
     _ path: [String],
+    externalLink: String? = nil,
     method: HTTPMethod = .get,
     parameters: Parameters? = nil,
     encoding: ParameterEncoding = URLEncoding.default,
@@ -48,7 +49,7 @@ public extension ContextConnection {
     for key in path {
       json = json[key]
     }
-    let url = json["url"].string ?? ""
+    let url = (json["url"].string ?? "") + (externalLink ?? "")
     if alamofireSessions[url] == nil {
       var keys = ["*"]
       if json["pubKeys"].exists() {

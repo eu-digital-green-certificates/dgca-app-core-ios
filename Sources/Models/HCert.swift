@@ -147,6 +147,7 @@ public struct HCert {
     var body = JSON(parseJSON: bodyStr)
     iat = Date(timeIntervalSince1970: Double(body["6"].int ?? 0))
     exp = Date(timeIntervalSince1970: Double(body["4"].int ?? 0))
+    issCode = body["1"].string ?? ""
     if body[ClaimKey.hCert.rawValue].exists() {
       body = body[ClaimKey.hCert.rawValue]
     }
@@ -186,6 +187,11 @@ public struct HCert {
     }
     validityFailures.append(contentsOf: statement.validityFailures)
   }
+  
+  public mutating func makeSectionForRuleError(errorString: String) {
+    info = [InfoSection(header: l10n("header.validity-errors"), content: errorString)]
+  }
+
   
   mutating func makeSections() {
     info = isValid ? [] : [
@@ -259,11 +265,12 @@ public struct HCert {
   public var payloadString: String
   public var cborData: Data
   public var kidStr: String
+  public var issCode: String
   public var header: JSON
   public var body: JSON
   public var iat: Date
   public var exp: Date
-  
+
   static let qrLock = NSLock()
   
   public var fullName: String {
