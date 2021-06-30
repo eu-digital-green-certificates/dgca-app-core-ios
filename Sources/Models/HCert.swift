@@ -96,14 +96,14 @@ public struct HCert {
   public class ParseErrors {
     var errors: [ParseError] = []
   }
-
+  
   public static var debugPrintJsonErrors = true
   public static var config = HCertConfig()
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
   public static let supportedPrefixes = [
     "HC1:"
   ]
-
+  
   static func parsePrefix(_ payloadString: String, errors: ParseErrors?) -> String {
     var payloadString = payloadString
     var foundPrefix = false
@@ -119,17 +119,17 @@ public struct HCert {
     }
     return payloadString
   }
-
+  
   public init?(from payload: String, errors: ParseErrors? = nil) {
     payloadString = Self.parsePrefix(payload, errors: errors)
-
+    
     guard
       let compressed = try? payloadString.fromBase45()
     else {
       errors?.errors.append(.base45)
       return nil
     }
-
+    
     cborData = decompress(compressed)
     if cborData.isEmpty {
       errors?.errors.append(.zlib)
@@ -162,14 +162,14 @@ public struct HCert {
     }
     findValidity()
     makeSections()
-
+    
     #if os(iOS)
     if Self.config.prefetchAllCodes {
       prefetchCode()
     }
     #endif
   }
-
+  
   mutating func findValidity() {
     validityFailures = []
     if !cryptographicallyValid {
@@ -186,7 +186,7 @@ public struct HCert {
     }
     validityFailures.append(contentsOf: statement.validityFailures)
   }
-
+  
   mutating func makeSections() {
     info = isValid ? [] : [
       InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
@@ -241,7 +241,7 @@ public struct HCert {
       )
     ]
   }
-
+  
   func get(_ attribute: AttributeKey) -> JSON {
     var object = body
     for key in attributeKeys[attribute] ?? [] {
@@ -249,13 +249,13 @@ public struct HCert {
     }
     return object
   }
-
+  
   public var certTypeString: String {
     type.l10n + (statement == nil ? "" : " \(statement.typeAddon)")
   }
-
+  
   public var info = [InfoSection]()
-
+  
   public var payloadString: String
   public var cborData: Data
   public var kidStr: String
@@ -263,25 +263,25 @@ public struct HCert {
   public var body: JSON
   public var iat: Date
   public var exp: Date
-
+  
   static let qrLock = NSLock()
-
+  
   public var fullName: String {
     let first = get(.firstName).string ?? ""
     let last = get(.lastName).string ?? ""
     return "\(first) \(last)"
   }
-
+  
   public var dateOfBirth: String {
     let dob = get(.dateOfBirth).string ?? ""
     return "\(dob)"
   }
-
+  
   var personIdentifiers: [InfoSection] {
     // Note from author: Identifiers were previously planned, but got removed *for now*.
     []
   }
-
+  
   var testStatements: [TestEntry] {
     return get(.testStatements)
       .array?
@@ -336,15 +336,12 @@ public struct HCert {
       return false
     }
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
-        if(X509.checkisSuitable(cert:key,certType:type))
-        {
-           if COSE.verify(_cbor: cborData, with: key) {
-              return true
+      if X509.checkisSuitable(cert:key,certType:type) {
+        if COSE.verify(_cbor: cborData, with: key) {
+          return true
+        } else {
+          return false
         }
-        else
-           {
-             return false
-           }
       }
     }
     return false
@@ -361,7 +358,6 @@ public struct HCert {
   public var keyPair: SecKey! {
     Enclave.loadOrGenerateKey(with: uvci)
   }
-
   public static var clock: Date {
     clockOverride ?? Date()
   }
