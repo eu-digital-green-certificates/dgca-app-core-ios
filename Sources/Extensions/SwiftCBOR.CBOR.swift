@@ -29,29 +29,28 @@ import SwiftCBOR
 
 extension SwiftCBOR.CBOR {
   
-  func sanitize(value: String)->String
-  {
+  func sanitize(value: String) -> String {
     return value.replacingOccurrences(of: "\"", with: "\\\"")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
+      .trimmingCharacters(in: .whitespacesAndNewlines)
   }
-    
+  
   func toString() -> String {
     switch self {
     case let .byteString(val):
       let fallBack = "[" + val.map { "\($0)" }.joined(separator: ", ") + "]"
-//      if
-//        let child = try? SwiftCBOR.CBOR.decode(val),
-//        case .map(_) = child
-//      {
-//        return child.toString()
-//      }
+      //      if
+      //        let child = try? SwiftCBOR.CBOR.decode(val),
+      //        case .map(_) = child
+      //      {
+      //        return child.toString()
+      //      }
       return fallBack
     case let .unsignedInt(val):
       return "\(val)"
     case let .negativeInt(val):
       return "-\(val + 1)"
     case let .utf8String(val):
-        return "\"\(sanitize(value: val))\""
+      return "\"\(sanitize(value: val))\""
     case let .array(vals):
       var str = ""
       for val in vals {

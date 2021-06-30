@@ -15,17 +15,15 @@ import SwiftCBOR
 
 final class CborToStringTest: XCTestCase {
     
-    func testNormal()
-    {
-        let test = "Hello";
+    func testNormal() {
+        let test = "Hello"
         let cbor = SwiftCBOR.CBOR.init(stringLiteral: test)
         let toStr = cbor.toString()
         XCTAssertTrue(toStr == "\"Hello\"")
     }
     
-    func testEnqouting()
-    {
-        let test = "\"Hello\"";
+    func testEnqouting() {
+        let test = "\"Hello\""
         let cbor = SwiftCBOR.CBOR.init(stringLiteral: test)
         let toStr = cbor.toString()
         XCTAssertTrue(toStr == "\"\\\"Hello\\\"\"")
