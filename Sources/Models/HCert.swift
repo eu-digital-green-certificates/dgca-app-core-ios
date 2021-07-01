@@ -270,7 +270,8 @@ public struct HCert {
   public var body: JSON
   public var iat: Date
   public var exp: Date
-
+  public var ruleCountryCode: String?
+  
   static let qrLock = NSLock()
   
   public var fullName: String {
