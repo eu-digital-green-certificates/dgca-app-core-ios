@@ -77,6 +77,8 @@ public struct InfoSection {
   public var content: String
   public var style = InfoSectionStyle.normal
   public var isPrivate = false
+  public var sectionItems: [InfoSection] = []
+  public var isExpanded: Bool = false
 }
 
 public struct HCertConfig {
