@@ -88,6 +88,14 @@ public struct InfoSection {
   public var isExpanded: Bool = false
   public var countryName: String?
   public var ruleValidationResult: RuleValidationResult = .open
+  
+  public init(header: String, content: String, countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
+    self.header = header
+    self.content = content
+    self.countryName = countryName
+    self.ruleValidationResult = ruleValidationResult
+  }
+  
 }
 
 public struct HCertConfig {
