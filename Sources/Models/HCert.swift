@@ -54,6 +54,7 @@ public enum HCertType: String {
 public enum HCertValidity: String {
   case valid
   case invalid
+  case ruleInvalid
 }
 
 let attributeKeys: [AttributeKey: [String]] = [
