@@ -79,6 +79,7 @@ public struct InfoSection {
   public var isPrivate = false
   public var sectionItems: [InfoSection] = []
   public var isExpanded: Bool = false
+  public var countryName: String?
 }
 
 public struct HCertConfig {
