@@ -89,10 +89,12 @@ public struct InfoSection {
   public var countryName: String?
   public var ruleValidationResult: RuleValidationResult = .open
   
-  public init(header: String, content: String, countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
+  public init(header: String, content: String, style: InfoSectionStyle = .normal, isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
     self.header = header
     self.content = content
     self.countryName = countryName
+    self.style = style
+    self.isPrivate = isPrivate
     self.ruleValidationResult = ruleValidationResult
   }
   
