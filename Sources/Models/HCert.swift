@@ -199,10 +199,64 @@ public struct HCert {
     validityFailures.append(contentsOf: statement.validityFailures)
   }
   
-  public mutating func makeSectionForRuleError(errorString: String) {
-    info = [InfoSection(header: l10n("header.validity-errors"), content: errorString)]
+  //
+  public mutating func makeSectionForRuleError(infoSections: InfoSection) {
+    info = isValid ? [] : [
+      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+    ]
+    info += [
+      InfoSection(
+        header: l10n("header.cert-type"),
+        content: certTypeString
+      )
+    ] + personIdentifiers
+    info += [infoSections]
+    if let date = get(.dateOfBirth).string {
+      info += [
+        InfoSection(
+          header: l10n("header.dob"),
+          content: date
+        )
+      ]
+    }
+    if let last = get(.lastNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-fn"),
+          content: last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    if let first = get(.firstNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-gn"),
+          content: first.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    info += statement == nil ? [] : statement.info
+    info += [
+      InfoSection(
+        header: l10n("header.expires-at"),
+        content: exp.dateTimeStringUtc
+      ),
+      InfoSection(
+        header: l10n("header.uvci"),
+        content: uvci,
+        style: .fixedWidthFont,
+        isPrivate: true
+      )
+    ]
   }
 
+  //
   
   mutating func makeSections() {
     info = isValid ? [] : [
