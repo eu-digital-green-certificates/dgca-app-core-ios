@@ -211,6 +211,7 @@ public struct HCert {
   
   //
   public mutating func makeSectionForRuleError(infoSections: InfoSection) {
+    info.removeAll()
     info = isValid ? [] : [
       InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
     ]
