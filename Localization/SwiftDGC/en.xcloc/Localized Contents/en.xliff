@@ -1283,6 +1283,11 @@
         <target>Vaccination</target>
         <note/>
       </trans-unit>
+      <trans-unit id="enum.HCertValidity.ruleInvalid" xml:space="preserve">
+        <source>Limited validity</source>
+        <target>Limited validity</target>
+        <note/>
+      </trans-unit>
       <trans-unit id="enum.HCertValidity.invalid" xml:space="preserve">
         <source>Invalid</source>
         <target>Invalid</target>

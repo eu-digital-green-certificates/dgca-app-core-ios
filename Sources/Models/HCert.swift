@@ -54,6 +54,7 @@ public enum HCertType: String {
 public enum HCertValidity: String {
   case valid
   case invalid
+  case ruleInvalid
 }
 
 let attributeKeys: [AttributeKey: [String]] = [
@@ -72,6 +73,12 @@ public enum InfoSectionStyle {
   case fixedWidthFont
 }
 
+public enum RuleValidationResult: Int {
+  case error = 0
+  case passed
+  case open
+}
+
 public struct InfoSection {
   public var header: String
   public var content: String
@@ -79,6 +86,17 @@ public struct InfoSection {
   public var isPrivate = false
   public var sectionItems: [InfoSection] = []
   public var isExpanded: Bool = false
+  public var countryName: String?
+  public var ruleValidationResult: RuleValidationResult = .open
+  
+  public init(header: String, content: String, style: InfoSectionStyle = .normal, isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
+    self.header = header
+    self.content = content
+    self.countryName = countryName
+    self.style = style
+    self.isPrivate = isPrivate
+    self.ruleValidationResult = ruleValidationResult
+  }
 }
 
 public struct HCertConfig {
@@ -190,10 +208,65 @@ public struct HCert {
     validityFailures.append(contentsOf: statement.validityFailures)
   }
   
-  public mutating func makeSectionForRuleError(errorString: String) {
-    info = [InfoSection(header: l10n("header.validity-errors"), content: errorString)]
+  //
+  public mutating func makeSectionForRuleError(infoSections: InfoSection) {
+    info.removeAll()
+    info = isValid ? [] : [
+      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+    ]
+    info += [
+      InfoSection(
+        header: l10n("header.cert-type"),
+        content: certTypeString
+      )
+    ] + personIdentifiers
+    info += [infoSections]
+    if let date = get(.dateOfBirth).string {
+      info += [
+        InfoSection(
+          header: l10n("header.dob"),
+          content: date
+        )
+      ]
+    }
+    if let last = get(.lastNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-fn"),
+          content: last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    if let first = get(.firstNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-gn"),
+          content: first.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    info += statement == nil ? [] : statement.info
+    info += [
+      InfoSection(
+        header: l10n("header.expires-at"),
+        content: exp.dateTimeStringUtc
+      ),
+      InfoSection(
+        header: l10n("header.uvci"),
+        content: uvci,
+        style: .fixedWidthFont,
+        isPrivate: true
+      )
+    ]
   }
 
+  //
   
   mutating func makeSections() {
     info = isValid ? [] : [

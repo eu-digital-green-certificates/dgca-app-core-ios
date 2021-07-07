@@ -30,6 +30,7 @@
 "enum.HCertType.recovery" = "Recovery";
 "enum.HCertValidity.valid" = "Valid";
 "enum.HCertValidity.invalid" = "Invalid";
+"enum.HCertValidity.ruleInvalid" = "Limited validity";
 "header.cert-type" = "Certificate Type";
 "header.dob" = "Date of Birth";
 "header.std-fn" = "Standardised Family Name";
