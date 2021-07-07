@@ -97,7 +97,6 @@ public struct InfoSection {
     self.isPrivate = isPrivate
     self.ruleValidationResult = ruleValidationResult
   }
-  
 }
 
 public struct HCertConfig {
