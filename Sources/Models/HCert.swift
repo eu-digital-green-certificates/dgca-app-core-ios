@@ -253,6 +253,7 @@ public struct HCert {
     }
     info += statement == nil ? [] : statement.info
     info += [
+// Certificate expiration date
 //      InfoSection(
 //        header: l10n("header.expires-at"),
 //        content: exp.dateTimeStringUtc
@@ -316,6 +317,7 @@ public struct HCert {
     }
     info += statement == nil ? [] : statement.info
     info += [
+// Certificate expiration date
 //      InfoSection(
 //        header: l10n("header.expires-at"),
 //        content: exp.dateTimeStringUtc
