@@ -253,15 +253,21 @@ public struct HCert {
     }
     info += statement == nil ? [] : statement.info
     info += [
-      InfoSection(
-        header: l10n("header.expires-at"),
-        content: exp.dateTimeStringUtc
-      ),
+//      InfoSection(
+//        header: l10n("header.expires-at"),
+//        content: exp.dateTimeStringUtc
+//      ),
       InfoSection(
         header: l10n("header.uvci"),
         content: uvci,
         style: .fixedWidthFont,
         isPrivate: true
+      )
+    ]
+    info += [
+      InfoSection(
+        header: l10n("issuer.country"),
+        content: l10n("country.\(issCode.uppercased())")
       )
     ]
   }
@@ -310,15 +316,21 @@ public struct HCert {
     }
     info += statement == nil ? [] : statement.info
     info += [
-      InfoSection(
-        header: l10n("header.expires-at"),
-        content: exp.dateTimeStringUtc
-      ),
+//      InfoSection(
+//        header: l10n("header.expires-at"),
+//        content: exp.dateTimeStringUtc
+//      ),
       InfoSection(
         header: l10n("header.uvci"),
         content: uvci,
         style: .fixedWidthFont,
         isPrivate: true
+      )
+    ]
+    info += [
+      InfoSection(
+        header: l10n("issuer.country"),
+        content: l10n("country.\(issCode.uppercased())")
       )
     ]
   }
