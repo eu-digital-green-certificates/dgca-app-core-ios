@@ -221,14 +221,6 @@ public struct HCert {
       )
     ] + personIdentifiers
     info += [infoSections]
-    if let date = get(.dateOfBirth).string {
-      info += [
-        InfoSection(
-          header: l10n("header.dob"),
-          content: date
-        )
-      ]
-    }
     if let last = get(.lastNameStandardized).string {
       info += [
         InfoSection(
@@ -251,17 +243,32 @@ public struct HCert {
         )
       ]
     }
+    if let date = get(.dateOfBirth).string {
+      info += [
+        InfoSection(
+          header: l10n("header.dob"),
+          content: date
+        )
+      ]
+    }
     info += statement == nil ? [] : statement.info
     info += [
-      InfoSection(
-        header: l10n("header.expires-at"),
-        content: exp.dateTimeStringUtc
-      ),
+// Certificate expiration date
+//      InfoSection(
+//        header: l10n("header.expires-at"),
+//        content: exp.dateTimeStringUtc
+//      ),
       InfoSection(
         header: l10n("header.uvci"),
         content: uvci,
         style: .fixedWidthFont,
         isPrivate: true
+      )
+    ]
+    info += [
+      InfoSection(
+        header: l10n("issuer.country"),
+        content: l10n("country.\(issCode.uppercased())")
       )
     ]
   }
@@ -278,14 +285,6 @@ public struct HCert {
         content: certTypeString
       )
     ] + personIdentifiers
-    if let date = get(.dateOfBirth).string {
-      info += [
-        InfoSection(
-          header: l10n("header.dob"),
-          content: date
-        )
-      ]
-    }
     if let last = get(.lastNameStandardized).string {
       info += [
         InfoSection(
@@ -308,17 +307,32 @@ public struct HCert {
         )
       ]
     }
+    if let date = get(.dateOfBirth).string {
+      info += [
+        InfoSection(
+          header: l10n("header.dob"),
+          content: date
+        )
+      ]
+    }
     info += statement == nil ? [] : statement.info
     info += [
-      InfoSection(
-        header: l10n("header.expires-at"),
-        content: exp.dateTimeStringUtc
-      ),
+// Certificate expiration date
+//      InfoSection(
+//        header: l10n("header.expires-at"),
+//        content: exp.dateTimeStringUtc
+//      ),
       InfoSection(
         header: l10n("header.uvci"),
         content: uvci,
         style: .fixedWidthFont,
         isPrivate: true
+      )
+    ]
+    info += [
+      InfoSection(
+        header: l10n("issuer.country"),
+        content: l10n("country.\(issCode.uppercased())")
       )
     ]
   }
