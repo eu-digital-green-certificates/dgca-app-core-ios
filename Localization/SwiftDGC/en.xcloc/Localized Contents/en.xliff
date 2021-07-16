@@ -1354,8 +1354,8 @@
         <note/>
       </trans-unit>
       <trans-unit id="hcert.err.iat" xml:space="preserve">
-        <source>Certificate issuance date is in the future.</source>
-        <target>Certificate issuance date is in the future.</target>
+        <source>Cryptographic signature not valid.</source>
+        <target>Cryptographic signature not valid.</target>
         <note/>
       </trans-unit>
       <trans-unit id="hcert.err.rec.future" xml:space="preserve">
