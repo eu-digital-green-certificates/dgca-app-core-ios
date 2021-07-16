@@ -221,14 +221,6 @@ public struct HCert {
       )
     ] + personIdentifiers
     info += [infoSections]
-    if let date = get(.dateOfBirth).string {
-      info += [
-        InfoSection(
-          header: l10n("header.dob"),
-          content: date
-        )
-      ]
-    }
     if let last = get(.lastNameStandardized).string {
       info += [
         InfoSection(
@@ -248,6 +240,14 @@ public struct HCert {
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
           style: .fixedWidthFont
+        )
+      ]
+    }
+    if let date = get(.dateOfBirth).string {
+      info += [
+        InfoSection(
+          header: l10n("header.dob"),
+          content: date
         )
       ]
     }
@@ -278,14 +278,6 @@ public struct HCert {
         content: certTypeString
       )
     ] + personIdentifiers
-    if let date = get(.dateOfBirth).string {
-      info += [
-        InfoSection(
-          header: l10n("header.dob"),
-          content: date
-        )
-      ]
-    }
     if let last = get(.lastNameStandardized).string {
       info += [
         InfoSection(
@@ -305,6 +297,14 @@ public struct HCert {
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
           style: .fixedWidthFont
+        )
+      ]
+    }
+    if let date = get(.dateOfBirth).string {
+      info += [
+        InfoSection(
+          header: l10n("header.dob"),
+          content: date
         )
       ]
     }
