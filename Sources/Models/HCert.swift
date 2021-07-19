@@ -144,10 +144,12 @@ public struct HCert {
   }
   
   public init?(from payload: String, errors: ParseErrors? = nil) {
-    if !Self.checkCH1PreffixExist(payload) {
+    
+    guard Self.checkCH1PreffixExist(payload) else {
       errors?.errors.append(.prefix)
       return nil
     }
+    
     fullPayloadString = payload
     payloadString = Self.parsePrefix(payload)
     

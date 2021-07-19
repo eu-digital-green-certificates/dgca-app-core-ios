@@ -50,7 +50,7 @@ extension HCert {
   }
 
   func makeQrCode() -> UIImage? {
-    let data = payloadString.data(using: String.Encoding.ascii)
+    let data = fullPayloadString.data(using: String.Encoding.ascii)
 
     if let filter = CIFilter(name: "CIQRCodeGenerator") {
       filter.setValue(data, forKey: "inputMessage")
