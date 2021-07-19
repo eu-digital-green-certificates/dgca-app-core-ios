@@ -145,13 +145,13 @@ public struct HCert {
   
   public init?(from payload: String, errors: ParseErrors? = nil) {
     
-    guard Self.checkCH1PreffixExist(payload) else {
-      errors?.errors.append(.prefix)
-      return nil
+    if Self.checkCH1PreffixExist(payload) {
+      fullPayloadString = payload
+      payloadString = Self.parsePrefix(payload)
+    } else {
+      fullPayloadString = Self.supportedPrefixes.first ?? "" + payload
+      payloadString = payload
     }
-    
-    fullPayloadString = payload
-    payloadString = Self.parsePrefix(payload)
     
     guard
       let compressed = try? payloadString.fromBase45()
