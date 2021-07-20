@@ -124,24 +124,34 @@ public struct HCert {
     "HC1:"
   ]
   
-  static func parsePrefix(_ payloadString: String, errors: ParseErrors?) -> String {
+  static func parsePrefix(_ payloadString: String) -> String {
     var payloadString = payloadString
-    var foundPrefix = false
-    for prefix in Self.supportedPrefixes {
+    Self.supportedPrefixes.forEach({ prefix in
       if payloadString.starts(with: prefix) {
         payloadString = String(payloadString.dropFirst(prefix.count))
-        foundPrefix = true
-        break
       }
-    }
-    if !foundPrefix {
-      errors?.errors.append(.prefix)
-    }
+    })
     return payloadString
   }
   
+  static private func checkCH1PreffixExist(_ payloadString: String?) -> Bool {
+    guard let payloadString = payloadString  else { return false }
+    var foundPrefix = false
+    Self.supportedPrefixes.forEach { prefix in
+      if payloadString.starts(with: prefix) { foundPrefix = true }
+    }
+    return foundPrefix
+  }
+  
   public init?(from payload: String, errors: ParseErrors? = nil) {
-    payloadString = Self.parsePrefix(payload, errors: errors)
+    
+    if Self.checkCH1PreffixExist(payload) {
+      fullPayloadString = payload
+      payloadString = Self.parsePrefix(payload)
+    } else {
+      fullPayloadString = Self.supportedPrefixes.first ?? "" + payload
+      payloadString = payload
+    }
     
     guard
       let compressed = try? payloadString.fromBase45()
@@ -351,6 +361,7 @@ public struct HCert {
   
   public var info = [InfoSection]()
   
+  public var fullPayloadString: String
   public var payloadString: String
   public var cborData: Data
   public var kidStr: String
