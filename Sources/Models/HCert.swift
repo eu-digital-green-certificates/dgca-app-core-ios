@@ -145,6 +145,7 @@ public struct HCert {
   
   public init?(from payload: String, errors: ParseErrors? = nil) {
     
+    let payload = payload
     if Self.checkCH1PreffixExist(payload) {
       fullPayloadString = payload
       payloadString = Self.parsePrefix(payload)
