@@ -149,7 +149,8 @@ public struct HCert {
       fullPayloadString = payload
       payloadString = Self.parsePrefix(payload)
     } else {
-      fullPayloadString = Self.supportedPrefixes.first ?? "" + payload
+      fullPayloadString = Self.supportedPrefixes.first ?? ""
+      fullPayloadString = fullPayloadString + payload
       payloadString = payload
     }
     
