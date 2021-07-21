@@ -108,6 +108,7 @@
 "test.man.1278" = "Xiamen Boson Biotech Co. Ltd, Rapid SARS-CoV-2 Antigen Test Card";
 "test.man.1343" = "Zhejiang Orient Gene Biotech, Coronavirus Ag Rapid Test Cassette (Swab)";
 "test.man.unknown" = "Unknown";
+"test.type" = "Type of Test";
 
 "disease.840539006" = "COVID-19";
 "disease.unknown" = "Unknown";
