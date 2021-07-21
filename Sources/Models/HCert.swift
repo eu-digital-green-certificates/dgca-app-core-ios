@@ -44,6 +44,11 @@ enum AttributeKey: String {
   case recoveryStatements
 }
 
+public enum AppType: Int {
+  case verifier
+  case wallet
+}
+
 public enum HCertType: String {
   case test
   case vaccine
@@ -124,6 +129,8 @@ public struct HCert {
     "HC1:"
   ]
   
+  public var appType: AppType = .verifier
+  
   static func parsePrefix(_ payloadString: String) -> String {
     var payloadString = payloadString
     Self.supportedPrefixes.forEach({ prefix in
@@ -143,7 +150,7 @@ public struct HCert {
     return foundPrefix
   }
   
-  public init?(from payload: String, errors: ParseErrors? = nil) {
+  public init?(from payload: String, errors: ParseErrors? = nil, applicationType: AppType = .verifier) {
     
     let payload = payload
     if Self.checkCH1PreffixExist(payload) {
@@ -154,6 +161,7 @@ public struct HCert {
       fullPayloadString = fullPayloadString + payload
       payloadString = payload
     }
+    appType = applicationType
     
     guard
       let compressed = try? payloadString.fromBase45()
@@ -194,7 +202,7 @@ public struct HCert {
       return nil
     }
     findValidity()
-    makeSections()
+    makeSections(for: appType)
     
     #if os(iOS)
     if Self.config.prefetchAllCodes {
@@ -221,7 +229,7 @@ public struct HCert {
   }
   
   //
-  public mutating func makeSectionForRuleError(infoSections: InfoSection) {
+  public mutating func makeSectionForRuleError(infoSections: InfoSection, for appType: AppType) {
     info.removeAll()
     info = isValid ? [] : [
       InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
@@ -233,70 +241,64 @@ public struct HCert {
       )
     ] + personIdentifiers
     info += [infoSections]
-    if let last = get(.lastNameStandardized).string {
-      info += [
-        InfoSection(
-          header: l10n("header.std-fn"),
-          content: last.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
-      ]
+    switch appType {
+    case .verifier:
+        makeSectionsForVerifier(includeInvalidSection: false)
+    case .wallet:
+      switch type {
+        case .vaccine:
+          makeSectionsForVaccine(includeInvalidSection: false)
+          break
+      case .test:
+        makeSectionsForTest()
+        break
+      case .recovery:
+        makeSectionsForRecovery(includeInvalidSection: false)
+        break
+        default:
+          makeSectionsForVerifier(includeInvalidSection: false)
+        }
+      break
     }
-    if let first = get(.firstNameStandardized).string {
-      info += [
-        InfoSection(
-          header: l10n("header.std-gn"),
-          content: first.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
-      ]
-    }
-    if let date = get(.dateOfBirth).string {
-      info += [
-        InfoSection(
-          header: l10n("header.dob"),
-          content: date
-        )
-      ]
-    }
-    info += statement == nil ? [] : statement.info
-    info += [
-// Certificate expiration date
-//      InfoSection(
-//        header: l10n("header.expires-at"),
-//        content: exp.dateTimeStringUtc
-//      ),
-      InfoSection(
-        header: l10n("header.uvci"),
-        content: uvci,
-        style: .fixedWidthFont,
-        isPrivate: true
-      )
-    ]
-    info += [
-      InfoSection(
-        header: l10n("issuer.country"),
-        content: l10n("country.\(issCode.uppercased())")
-      )
-    ]
   }
 
   //
   
-  mutating func makeSections() {
-    info = isValid ? [] : [
+  mutating func makeSections(for appType: AppType) {
+    info.removeAll()
+    switch appType {
+    case .verifier:
+        makeSectionsForVerifier()
+    case .wallet:
+      switch type {
+        case .vaccine:
+          makeSectionsForVaccine()
+          break
+      case .test:
+        makeSectionsForTest()
+        break
+      case .recovery:
+        makeSectionsForRecovery()
+        break
+        default:
+          makeSectionsForVerifier()
+        }
+      break
+    }
+  }
+  
+  mutating func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
+    info = isValid && includeInvalidSection ? [] : [
       InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
     ]
-    info += [
-      InfoSection(
-        header: l10n("header.cert-type"),
-        content: certTypeString
-      )
-    ] + personIdentifiers
+    if includeInvalidSection {
+      info += [
+        InfoSection(
+          header: l10n("header.cert-type"),
+          content: certTypeString
+        )
+      ] + personIdentifiers
+    }
     if let last = get(.lastNameStandardized).string {
       info += [
         InfoSection(
@@ -329,11 +331,6 @@ public struct HCert {
     }
     info += statement == nil ? [] : statement.info
     info += [
-// Certificate expiration date
-//      InfoSection(
-//        header: l10n("header.expires-at"),
-//        content: exp.dateTimeStringUtc
-//      ),
       InfoSection(
         header: l10n("header.uvci"),
         content: uvci,
@@ -341,13 +338,151 @@ public struct HCert {
         isPrivate: true
       )
     ]
-    info += [
-      InfoSection(
-        header: l10n("issuer.country"),
-        content: l10n("country.\(issCode.uppercased())")
-      )
-    ]
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
   }
+  
+  mutating func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
+    info = isValid && includeInvalidSection ? [] : [
+      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+    ]
+    if includeInvalidSection {
+      info += [
+        InfoSection(
+          header: l10n("header.cert-type"),
+          content: certTypeString
+        )
+      ] + personIdentifiers
+    }
+    if let last = get(.lastNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-fn"),
+          content: last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    if let first = get(.firstNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-gn"),
+          content: first.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    info += statement == nil ? [] : statement.walletInfo
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
+  }
+  
+  mutating func makeSectionsForTest(includeInvalidSection: Bool = true) {
+    info = isValid && includeInvalidSection ? [] : [
+      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+    ]
+    if includeInvalidSection {
+      info += [
+        InfoSection(
+          header: l10n("header.cert-type"),
+          content: certTypeString
+        )
+      ] + personIdentifiers
+    }
+    if let last = get(.lastNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-fn"),
+          content: last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    if let first = get(.firstNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-gn"),
+          content: first.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    info += statement == nil ? [] : statement.walletInfo
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
+  }
+
+  mutating func makeSectionsForRecovery(includeInvalidSection: Bool = true) {
+    info = isValid && includeInvalidSection ? [] : [
+      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+    ]
+    if includeInvalidSection {
+      info += [
+        InfoSection(
+          header: l10n("header.cert-type"),
+          content: certTypeString
+        )
+      ] + personIdentifiers
+    }
+    if let last = get(.lastNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-fn"),
+          content: last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    if let first = get(.firstNameStandardized).string {
+      info += [
+        InfoSection(
+          header: l10n("header.std-gn"),
+          content: first.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont
+        )
+      ]
+    }
+    info += statement == nil ? [] : statement.walletInfo
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
+  }
+
   
   func get(_ attribute: AttributeKey) -> JSON {
     var object = body

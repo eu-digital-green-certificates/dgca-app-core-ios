@@ -29,6 +29,7 @@ import Foundation
 
 public protocol HCertEntry {
   var info: [InfoSection] { get }
+  var walletInfo: [InfoSection] { get }
   var typeAddon: String { get }
   var uvci: String { get }
   var validityFailures: [String] { get }

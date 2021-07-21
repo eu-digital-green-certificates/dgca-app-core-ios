@@ -1473,6 +1473,11 @@
         <target>Test Issuer</target>
         <note/>
       </trans-unit>
+      <trans-unit id="test.type" xml:space="preserve">
+        <source>Type of Test</source>
+        <target>Type of Test</target>
+        <note/>
+      </trans-unit>
       <trans-unit id="test.man.344" xml:space="preserve">
         <source>SD BIOSENSOR Inc, STANDARD F COVID-19 Ag FIA</source>
         <target>SD BIOSENSOR Inc, STANDARD F COVID-19 Ag FIA</target>

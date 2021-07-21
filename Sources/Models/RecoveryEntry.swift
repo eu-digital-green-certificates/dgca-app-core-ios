@@ -52,6 +52,27 @@ struct RecoveryEntry: HCertEntry {
     ]
   }
 
+  var walletInfo: [InfoSection] {
+    [
+      InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
+      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
+      InfoSection(
+        header: l10n("recovery.disease"),
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
+      ),
+      InfoSection(
+        header: l10n("recovery.country"),
+        content: country(for: countryCode),
+        isPrivate: true
+      ),
+      InfoSection(
+        header: l10n("recovery.issuer"),
+        content: issuer,
+        isPrivate: true
+      )
+    ]
+  }
+
   var validityFailures: [String] {
     var fail = [String]()
     if validFrom > HCert.clock {
