@@ -338,12 +338,14 @@ public struct HCert {
         isPrivate: true
       )
     ]
-    info += [
-      InfoSection(
-        header: l10n("issuer.country"),
-        content: l10n("country.\(issCode.uppercased())")
-      )
-    ]
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
   }
   
   mutating func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
@@ -381,12 +383,14 @@ public struct HCert {
       ]
     }
     info += statement == nil ? [] : statement.walletInfo
-    info += [
-      InfoSection(
-        header: l10n("issuer.country"),
-        content: l10n("country.\(issCode.uppercased())")
-      )
-    ]
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
   }
   
   mutating func makeSectionsForTest(includeInvalidSection: Bool = true) {
@@ -424,12 +428,14 @@ public struct HCert {
       ]
     }
     info += statement == nil ? [] : statement.walletInfo
-    info += [
-      InfoSection(
-        header: l10n("issuer.country"),
-        content: l10n("country.\(issCode.uppercased())")
-      )
-    ]
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
   }
 
   mutating func makeSectionsForRecovery(includeInvalidSection: Bool = true) {
@@ -467,12 +473,14 @@ public struct HCert {
       ]
     }
     info += statement == nil ? [] : statement.walletInfo
-    info += [
-      InfoSection(
-        header: l10n("issuer.country"),
-        content: l10n("country.\(issCode.uppercased())")
-      )
-    ]
+    if issCode.count > 0 {
+      info += [
+        InfoSection(
+          header: l10n("issuer.country"),
+          content: l10n("country.\(issCode.uppercased())")
+        )
+      ]
+    }
   }
 
   
