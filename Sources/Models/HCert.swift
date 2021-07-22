@@ -288,9 +288,11 @@ public struct HCert {
   }
   
   mutating func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
-    info = isValid && includeInvalidSection ? [] : [
-      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-    ]
+    if includeInvalidSection {
+      info = isValid ? [] : [
+        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+      ]
+    }
     if includeInvalidSection {
       info += [
         InfoSection(
@@ -349,9 +351,11 @@ public struct HCert {
   }
   
   mutating func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
-    info = isValid && includeInvalidSection ? [] : [
-      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-    ]
+    if includeInvalidSection {
+      info = isValid ? [] : [
+        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+      ]
+    }
     if includeInvalidSection {
       info += [
         InfoSection(
@@ -394,9 +398,11 @@ public struct HCert {
   }
   
   mutating func makeSectionsForTest(includeInvalidSection: Bool = true) {
-    info = isValid && includeInvalidSection ? [] : [
-      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-    ]
+    if includeInvalidSection {
+      info = isValid ? [] : [
+        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+      ]
+    }
     if includeInvalidSection {
       info += [
         InfoSection(
@@ -439,9 +445,11 @@ public struct HCert {
   }
 
   mutating func makeSectionsForRecovery(includeInvalidSection: Bool = true) {
-    info = isValid && includeInvalidSection ? [] : [
+    if includeInvalidSection {
+      info = isValid ? [] : [
       InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-    ]
+      ]
+    }
     if includeInvalidSection {
       info += [
         InfoSection(
