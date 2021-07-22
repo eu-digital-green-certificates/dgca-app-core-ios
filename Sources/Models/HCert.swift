@@ -589,6 +589,9 @@ public struct HCert {
       return false
     }
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
+      if !X509.isCertificateValid(cert: key) {
+        return false
+      }
       if X509.checkisSuitable(cert:key,certType:type) {
         if COSE.verify(_cbor: cborData, with: key) {
           return true
