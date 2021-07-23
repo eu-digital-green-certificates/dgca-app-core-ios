@@ -104,6 +104,18 @@ public struct X509 {
     return isSuitable(cert: Data(base64Encoded:  cert)!, for: certType)
   }
   
+  static func isCertificateValid(cert: String) -> Bool {
+    guard let data = Data(base64Encoded:  cert) else { return true }
+    guard let certificate = try? X509Certificate(data: data) else {
+      return false
+    }
+    if (certificate.notAfter ?? Date()) > Date() {
+      return true
+    } else {
+      return false
+    }
+  }
+  
   static func isSuitable(cert: Data,for certType: HCertType) -> Bool {
     guard let certificate = try? X509Certificate(data: cert) else {
       return false
