@@ -231,15 +231,19 @@ public struct HCert {
   //
   public mutating func makeSectionForRuleError(infoSections: InfoSection, for appType: AppType) {
     info.removeAll()
-    info = isValid ? [] : [
-      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-    ]
+    info = []
     info += [
       InfoSection(
         header: l10n("header.cert-type"),
         content: certTypeString
       )
     ] + personIdentifiers
+    if !isValid {
+      info += [
+        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+      ]
+    }
+    if !isValid { return }
     info += [infoSections]
     switch appType {
     case .verifier:
@@ -289,17 +293,19 @@ public struct HCert {
   
   mutating func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
-      info = isValid ? [] : [
-        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-      ]
-    }
-    if includeInvalidSection {
+      info = []
       info += [
         InfoSection(
           header: l10n("header.cert-type"),
           content: certTypeString
         )
       ] + personIdentifiers
+      if !isValid {
+        info += [
+          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+        ]
+      }
+      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
@@ -352,17 +358,19 @@ public struct HCert {
   
   mutating func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
-      info = isValid ? [] : [
-        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-      ]
-    }
-    if includeInvalidSection {
+      info = []
       info += [
         InfoSection(
           header: l10n("header.cert-type"),
           content: certTypeString
         )
       ] + personIdentifiers
+      if !isValid {
+        info += [
+          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+        ]
+      }
+      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
@@ -399,17 +407,19 @@ public struct HCert {
   
   mutating func makeSectionsForTest(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
-      info = isValid ? [] : [
-        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-      ]
-    }
-    if includeInvalidSection {
+      info = []
       info += [
         InfoSection(
           header: l10n("header.cert-type"),
           content: certTypeString
         )
       ] + personIdentifiers
+      if !isValid {
+        info += [
+          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+        ]
+      }
+      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
@@ -446,17 +456,19 @@ public struct HCert {
 
   mutating func makeSectionsForRecovery(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
-      info = isValid ? [] : [
-      InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-      ]
-    }
-    if includeInvalidSection {
+      info = []
       info += [
         InfoSection(
           header: l10n("header.cert-type"),
           content: certTypeString
         )
       ] + personIdentifiers
+      if !isValid {
+        info += [
+          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+        ]
+      }
+      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
