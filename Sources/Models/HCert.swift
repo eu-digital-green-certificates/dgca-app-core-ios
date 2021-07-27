@@ -370,7 +370,6 @@ public struct HCert {
           InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
         ]
       }
-      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
@@ -419,7 +418,6 @@ public struct HCert {
           InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
         ]
       }
-      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
@@ -468,7 +466,6 @@ public struct HCert {
           InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
         ]
       }
-      if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
