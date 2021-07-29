@@ -1838,6 +1838,11 @@
         <target>Issuer Country</target>
         <note/>
       </trans-unit>
+      <trans-unit id="section.name" xml:space="preserve">
+        <source>Name</source>
+        <target>Name</target>
+        <note/>
+      </trans-unit>
     </body>
   </file>
 </xliff>

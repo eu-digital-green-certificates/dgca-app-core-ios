@@ -371,24 +371,48 @@ public struct HCert {
         ]
       }
     }
-    if let last = get(.lastNameStandardized).string {
-      info += [
-        InfoSection(
-          header: l10n("header.std-fn"),
-          content: last.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
-      ]
+    var fullName = ""
+    if let last = get(.lastName).string {
+         fullName = fullName + last.replacingOccurrences(
+          of: "<",
+          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-    if let first = get(.firstNameStandardized).string {
+    if let first = get(.firstName).string {
+      if !fullName.isEmpty {
+      fullName = fullName + " " + first.replacingOccurrences(
+       of: "<",
+       with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      } else {
+        fullName = fullName + first.replacingOccurrences(
+         of: "<",
+         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      }
+    }
+
+    if fullName.isEmpty {
+      if let last = get(.lastNameStandardized).string {
+           fullName = fullName + last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      }
+      if let first = get(.firstNameStandardized).string {
+        if !fullName.isEmpty {
+        fullName = fullName + " " + first.replacingOccurrences(
+         of: "<",
+         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        } else {
+          fullName = fullName + first.replacingOccurrences(
+           of: "<",
+           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        }
+      }
+    }
+    
+    if !fullName.isEmpty {
       info += [
         InfoSection(
-          header: l10n("header.std-gn"),
-          content: first.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          header: l10n("section.name"),
+          content: fullName,
           style: .fixedWidthFont
         )
       ]
@@ -419,24 +443,48 @@ public struct HCert {
         ]
       }
     }
-    if let last = get(.lastNameStandardized).string {
-      info += [
-        InfoSection(
-          header: l10n("header.std-fn"),
-          content: last.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
-      ]
+    var fullName = ""
+    if let last = get(.lastName).string {
+         fullName = fullName + last.replacingOccurrences(
+          of: "<",
+          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-    if let first = get(.firstNameStandardized).string {
+    if let first = get(.firstName).string {
+      if !fullName.isEmpty {
+      fullName = fullName + " " + first.replacingOccurrences(
+       of: "<",
+       with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      } else {
+        fullName = fullName + first.replacingOccurrences(
+         of: "<",
+         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      }
+    }
+
+    if fullName.isEmpty {
+      if let last = get(.lastNameStandardized).string {
+           fullName = fullName + last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      }
+      if let first = get(.firstNameStandardized).string {
+        if !fullName.isEmpty {
+        fullName = fullName + " " + first.replacingOccurrences(
+         of: "<",
+         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        } else {
+          fullName = fullName + first.replacingOccurrences(
+           of: "<",
+           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        }
+      }
+    }
+    
+    if !fullName.isEmpty {
       info += [
         InfoSection(
-          header: l10n("header.std-gn"),
-          content: first.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          header: l10n("section.name"),
+          content: fullName,
           style: .fixedWidthFont
         )
       ]
@@ -467,24 +515,48 @@ public struct HCert {
         ]
       }
     }
-    if let last = get(.lastNameStandardized).string {
-      info += [
-        InfoSection(
-          header: l10n("header.std-fn"),
-          content: last.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
-      ]
+    var fullName = ""
+    if let last = get(.lastName).string {
+         fullName = fullName + last.replacingOccurrences(
+          of: "<",
+          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-    if let first = get(.firstNameStandardized).string {
+    if let first = get(.firstName).string {
+      if !fullName.isEmpty {
+      fullName = fullName + " " + first.replacingOccurrences(
+       of: "<",
+       with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      } else {
+        fullName = fullName + first.replacingOccurrences(
+         of: "<",
+         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      }
+    }
+
+    if fullName.isEmpty {
+      if let last = get(.lastNameStandardized).string {
+           fullName = fullName + last.replacingOccurrences(
+            of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      }
+      if let first = get(.firstNameStandardized).string {
+        if !fullName.isEmpty {
+        fullName = fullName + " " + first.replacingOccurrences(
+         of: "<",
+         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        } else {
+          fullName = fullName + first.replacingOccurrences(
+           of: "<",
+           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        }
+      }
+    }
+    
+    if !fullName.isEmpty {
       info += [
         InfoSection(
-          header: l10n("header.std-gn"),
-          content: first.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          header: l10n("section.name"),
+          content: fullName,
           style: .fixedWidthFont
         )
       ]

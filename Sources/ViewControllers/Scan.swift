@@ -41,7 +41,8 @@ public protocol ScanVCDelegate: AnyObject {
 open class ScanVC: UIViewController {
   var captureSession: AVCaptureSession?
   public weak var delegate: ScanVCDelegate?
-
+  public var applicationType: AppType = .verifier
+  
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
     guard error == nil else {
       self.showAlert(withTitle: l10n("err.barcode"), message: error?.localizedDescription ?? l10n("err.misc"))
@@ -237,7 +238,7 @@ extension ScanVC {
   }
 
   func observationHandler(payloadS: String?) {
-    if var hCert = HCert(from: payloadS ?? "") {
+    if var hCert = HCert(from: payloadS ?? "", applicationType: applicationType) {
       hCert.ruleCountryCode = getSelectedCountryCode()
       delegate?.hCertScanned(hCert)
     }
