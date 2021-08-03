@@ -372,36 +372,36 @@ public struct HCert {
       }
     }
     var fullName = ""
-    if let last = get(.lastName).string {
-         fullName = fullName + last.replacingOccurrences(
+    if let first = get(.firstName).string {
+         fullName = fullName + first.replacingOccurrences(
           of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-    if let first = get(.firstName).string {
+    if let last = get(.lastName).string {
       if !fullName.isEmpty {
-      fullName = fullName + " " + first.replacingOccurrences(
+      fullName = fullName + " " + last.replacingOccurrences(
        of: "<",
        with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       } else {
-        fullName = fullName + first.replacingOccurrences(
+        fullName = fullName + last.replacingOccurrences(
          of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
     }
 
     if fullName.isEmpty {
-      if let last = get(.lastNameStandardized).string {
-           fullName = fullName + last.replacingOccurrences(
+      if let first = get(.firstNameStandardized).string {
+           fullName = fullName + first.replacingOccurrences(
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
-      if let first = get(.firstNameStandardized).string {
+      if let last = get(.lastNameStandardized).string {
         if !fullName.isEmpty {
-        fullName = fullName + " " + first.replacingOccurrences(
+        fullName = fullName + " " + last.replacingOccurrences(
          of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         } else {
-          fullName = fullName + first.replacingOccurrences(
+          fullName = fullName + last.replacingOccurrences(
            of: "<",
            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         }
@@ -444,42 +444,42 @@ public struct HCert {
       }
     }
     var fullName = ""
-    if let last = get(.lastName).string {
-         fullName = fullName + last.replacingOccurrences(
+    if let first = get(.firstName).string {
+         fullName = fullName + first.replacingOccurrences(
           of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-    if let first = get(.firstName).string {
+    if let last = get(.lastName).string {
       if !fullName.isEmpty {
-      fullName = fullName + " " + first.replacingOccurrences(
+      fullName = fullName + " " + last.replacingOccurrences(
        of: "<",
        with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       } else {
-        fullName = fullName + first.replacingOccurrences(
+        fullName = fullName + last.replacingOccurrences(
          of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
     }
 
     if fullName.isEmpty {
-      if let last = get(.lastNameStandardized).string {
-           fullName = fullName + last.replacingOccurrences(
+      if let first = get(.firstNameStandardized).string {
+           fullName = fullName + first.replacingOccurrences(
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
-      if let first = get(.firstNameStandardized).string {
+      if let last = get(.lastNameStandardized).string {
         if !fullName.isEmpty {
-        fullName = fullName + " " + first.replacingOccurrences(
+        fullName = fullName + " " + last.replacingOccurrences(
          of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         } else {
-          fullName = fullName + first.replacingOccurrences(
+          fullName = fullName + last.replacingOccurrences(
            of: "<",
            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         }
       }
     }
-    
+
     if !fullName.isEmpty {
       info += [
         InfoSection(
@@ -516,42 +516,42 @@ public struct HCert {
       }
     }
     var fullName = ""
-    if let last = get(.lastName).string {
-         fullName = fullName + last.replacingOccurrences(
+    if let first = get(.firstName).string {
+         fullName = fullName + first.replacingOccurrences(
           of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-    if let first = get(.firstName).string {
+    if let last = get(.lastName).string {
       if !fullName.isEmpty {
-      fullName = fullName + " " + first.replacingOccurrences(
+      fullName = fullName + " " + last.replacingOccurrences(
        of: "<",
        with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       } else {
-        fullName = fullName + first.replacingOccurrences(
+        fullName = fullName + last.replacingOccurrences(
          of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
     }
 
     if fullName.isEmpty {
-      if let last = get(.lastNameStandardized).string {
-           fullName = fullName + last.replacingOccurrences(
+      if let first = get(.firstNameStandardized).string {
+           fullName = fullName + first.replacingOccurrences(
             of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
-      if let first = get(.firstNameStandardized).string {
+      if let last = get(.lastNameStandardized).string {
         if !fullName.isEmpty {
-        fullName = fullName + " " + first.replacingOccurrences(
+        fullName = fullName + " " + last.replacingOccurrences(
          of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         } else {
-          fullName = fullName + first.replacingOccurrences(
+          fullName = fullName + last.replacingOccurrences(
            of: "<",
            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         }
       }
     }
-    
+
     if !fullName.isEmpty {
       info += [
         InfoSection(
