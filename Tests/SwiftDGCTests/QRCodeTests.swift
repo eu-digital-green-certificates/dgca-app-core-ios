@@ -61,6 +61,32 @@ final class QRCodeTests: XCTestCase {
     XCTAssert(cert != nil)
     XCTAssert(cert?.validityFailures.count == 0)
   }
+    
+  func testTagDOS()
+  {
+    let hCert = "HC1:NCFTW2JY7ZVQ/20LZC9%BW561NM7 QZLAQ7Q%0KO9T6W4A91IZO W8S%RFT3Z7RVC4Y62+I0WS0.46FE5NJ4H+8WHTF QWA4+H9J12 K08E5%T50CHOHGM8E90O0%92UFLJTR+KUTRPI8XPCSQU1OU1.KSVJGBF+KQUFN4T7BTT 0P9VJN0WL1KYRNZ-C99UNPA*T9VBF+YT/RG1VRYFQ0%G$E6IO0552W2NQLJZ368JDC$HDBMQVDU21DJ4SB0$709A00/E2ALTO0IR8Y0B9Q6WWQK9E279H09YUTLQV/XKPJEI%U1CQ $CI1SF*IM9H$B5NRCBS1ZKALZ1PB0C5RORM76HS+1NBS*BRXUCUWBY84V4FUX22YAQAVR0KGDNB8WSSQOAI3*AV559UQ9:JP0TXR7*IQYNL$22N+24T0WOLYZ3C*38G6 SBR8BU.0DZ9P:J:L35FQHDU:XIOK3R32GFKV2RC.67UE9MFK-LR*Q/UP/H6ZKQ $2LENGCO5-HYCNL$K$735$C7+QDS72BMK9BULC 8R6 LDKR.OP5ENH L4QDJ-J+:3D-185DY6U55GY8VE TN16.:83-7T+AJ-5-4GK8WTUSPJ382580K1VFWFKOVKU4F%5ND*NA-VH7E:/046C353S$23ZD7L0.FD%0"
+    
+    
+    let bytes =  manipulateCBOR(hCert: hCert)
+    
+    let result = try? CBOR.unwrap(data: bytes.unsafelyUnwrapped)
+    
+    XCTAssert(result == nil)
+  }
+    
+  func manipulateCBOR(hCert: String) -> Data?
+  {
+    let payload = String(hCert.dropFirst(4))
+    guard
+      let compressed = try? payload.fromBase45()
+    else {
+      return nil
+    }
+  
+    var cborData = decompress(compressed)
+    cborData[1] = 131
+    return cborData.dropLast(65)
+  }
 }
 
 extension QRCodeTests: PublicKeyStorageDelegate {

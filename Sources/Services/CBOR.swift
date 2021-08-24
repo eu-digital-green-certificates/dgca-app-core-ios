@@ -64,6 +64,7 @@ public struct CBOR {
               let cbor = try? decoder.decodeItem(),
               case let SwiftCBOR.CBOR.tagged(_, cborElement) = cbor,
               case let SwiftCBOR.CBOR.array(array) = cborElement,
+              array.count == 4,
               case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
               let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
               case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
@@ -83,6 +84,7 @@ public struct CBOR {
             guard
               let cbor=try? SwiftCBOR.CBOR.decode(data.uint),
               case let SwiftCBOR.CBOR.array(array) = cbor,
+              array.count == 4,
               case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
               let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
               case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
@@ -104,6 +106,7 @@ public struct CBOR {
              case let SwiftCBOR.CBOR.tagged(_, cborElement) = cbor,
              case let SwiftCBOR.CBOR.tagged(_, childElement) = cborElement,
              case let SwiftCBOR.CBOR.array(array) = childElement,
+             array.count == 4,
              case let SwiftCBOR.CBOR.byteString(protectedBytes) = array[0],
              let protected = try? SwiftCBOR.CBOR.decode(protectedBytes),
              case let SwiftCBOR.CBOR.map(unprotectedMap) = array[1],
