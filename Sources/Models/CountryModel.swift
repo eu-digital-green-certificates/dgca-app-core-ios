@@ -9,6 +9,7 @@ import Foundation
 
 public class CountryModel: Codable {
   public var code: String
+  public var debugModeEnabled = false
 
   public var name: String {
     get { l10n("country.\(code.uppercased())")}
@@ -21,6 +22,5 @@ public class CountryModel: Codable {
   enum CodingKeys: String, CodingKey {
     case code = "code"
   }
-
 
 }
