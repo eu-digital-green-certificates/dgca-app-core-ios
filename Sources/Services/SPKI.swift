@@ -75,7 +75,7 @@ enum SPKI {
             return .rsa2048
         }
         
-        if publicKeyType == kSecAttrKeyTypeRSA as String && publicKeySize == 2048 {
+        if publicKeyType == kSecAttrKeyTypeRSA as String && publicKeySize == 4096 {
             return .rsa4096
         }
 
@@ -94,25 +94,25 @@ enum SPKI {
         guard let spki = create(from: publicKey),
               let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data?
         else { return nil }
-        
+                
         // Generate a hash of the subject public key info
         var context = CC_SHA256_CTX()
         CC_SHA256_Init(&context)
         
         // Add the missing ASN1 header for public keys to re-create the subject public key info
-        _ = spki.asn1Header.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
-            CC_SHA256_Update(&context, bytes.baseAddress, CC_LONG(spki.asn1Header.count))
+        spki.asn1Header.withUnsafeBytes { bytes -> Void in
+            CC_SHA256_Update(&context, bytes.baseAddress, CC_LONG(bytes.count))
         }
         
         // Add the public key
-        _ = publicKeyData.withUnsafeBytes { ptr in
-            CC_SHA256_Update(&context, ptr.baseAddress, CC_LONG(publicKeyData.count))
+        publicKeyData.withUnsafeBytes { bytes -> Void in
+            CC_SHA256_Update(&context, bytes.baseAddress, CC_LONG(bytes.count))
         }
         
         var hash = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
         
-        _ = hash.withUnsafeMutableBytes { (ptr: UnsafeMutableRawBufferPointer) in
-            CC_SHA256_Final(ptr.bindMemory(to: UInt8.self).baseAddress, &context)
+        hash.withUnsafeMutableBytes { bytes -> Void in
+            CC_SHA256_Final(bytes.bindMemory(to: UInt8.self).baseAddress, &context)
         }
         
         return hash.base64EncodedString()
