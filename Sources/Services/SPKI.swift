@@ -109,7 +109,7 @@ enum SPKI {
             CC_SHA256_Update(&context, ptr.baseAddress, CC_LONG(publicKeyData.count))
         }
         
-        var hash = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+        var hash = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
         
         _ = hash.withUnsafeMutableBytes { (ptr: UnsafeMutableRawBufferPointer) in
             CC_SHA256_Final(ptr.bindMemory(to: UInt8.self).baseAddress, &context)
