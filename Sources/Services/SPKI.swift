@@ -3,19 +3,19 @@
  Based on https://github.com/datatheorem/TrustKit/blob/master/TrustKit/Pinning/TSKSPKIHashCache.m
  
  The MIT License (MIT)
-
+ 
  Copyright (c) 2015 Data Theorem, Inc.
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
+ 
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,7 +29,7 @@
 import CommonCrypto
 import Foundation
 
-enum SPKI {
+enum SPKI : CaseIterable {
     case rsa2048
     case rsa4096
     case ecDsaSecp256r1
@@ -65,36 +65,43 @@ enum SPKI {
         }
     }
     
-    static func create(from publicKey: SecKey) -> Self? {
-        guard let publicKeyAttributes = SecKeyCopyAttributes(publicKey) as? [CFString: Any],
-              let publicKeyType = publicKeyAttributes[kSecAttrKeyType] as? String,
-              let publicKeySize = publicKeyAttributes[kSecAttrKeySizeInBits] as? Int
-              else { return nil }
-        
-        if publicKeyType == kSecAttrKeyTypeRSA as String && publicKeySize == 2048 {
-            return .rsa2048
+    var keyType: String {
+        switch self {
+        case .rsa2048, .rsa4096:
+            return kSecAttrKeyTypeRSA as String
+        case .ecDsaSecp256r1, .ecDsaSecp384r1:
+            return kSecAttrKeyTypeECSECPrimeRandom as String
         }
-        
-        if publicKeyType == kSecAttrKeyTypeRSA as String && publicKeySize == 4096 {
-            return .rsa4096
+    }
+    
+    var keySize: Int {
+        switch self {
+        case .rsa2048:
+            return 2048
+        case .rsa4096:
+            return 4096
+        case .ecDsaSecp256r1:
+            return 256
+        case .ecDsaSecp384r1:
+            return 384
         }
-
-        if publicKeyType == kSecAttrKeyTypeECSECPrimeRandom as String && publicKeySize == 256 {
-            return .ecDsaSecp256r1
-        }
-
-        if publicKeyType == kSecAttrKeyTypeECSECPrimeRandom as String && publicKeySize == 384 {
-            return .ecDsaSecp384r1
-        }
-        
-        return nil
     }
     
     static func extract(from publicKey: SecKey) -> Data? {
-        guard let spki = create(from: publicKey),
-              let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data?
-        else { return nil }
+        guard let keyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data?,
+              let keyAttributes = SecKeyCopyAttributes(publicKey) as? [CFString: Any],
+              let keyType = keyAttributes[kSecAttrKeyType] as? String,
+              let keySize = keyAttributes[kSecAttrKeySizeInBits] as? Int,
+              let spki = self.allCases.first(where: {
+                $0.keyType == keyType && $0.keySize == keySize
+              })
+        else {
+            #if DEBUG && targetEnvironment(simulator)
+            print("Failed to extract SPKI from the SSL certificate")
+            #endif
+            return nil
+        }
         
-        return spki.asn1Header + publicKeyData
+        return spki.asn1Header + keyData
     }
 }
