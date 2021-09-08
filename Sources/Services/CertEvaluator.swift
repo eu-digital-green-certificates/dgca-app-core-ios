@@ -34,7 +34,12 @@ public struct CertEvaluator: ServerTrustEvaluating {
 
   public func evaluate(_ trust: SecTrust, forHost host: String) throws {
     let hashes: [String] = trust.af.publicKeys.compactMap { key in
-        SPKI.extractSHA256(from: key)
+      guard
+        let der = SPKI.extract(from: key)
+      else {
+        return nil
+      }
+      return SHA256.digest(input: der as NSData).base64EncodedString()
     }
     for hash in (hashes + ["*"]) {
       if pubKeys.contains(hash) {

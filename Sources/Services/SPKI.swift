@@ -90,32 +90,11 @@ enum SPKI {
         return nil
     }
     
-    static func extractSHA256(from publicKey: SecKey) -> String? {
+    static func extract(from publicKey: SecKey) -> Data? {
         guard let spki = create(from: publicKey),
               let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data?
         else { return nil }
-                
-        // Generate a hash of the subject public key info
-        var context = CC_SHA256_CTX()
-        CC_SHA256_Init(&context)
         
-        // Add the missing ASN1 header for public keys to re-create the subject public key info
-        spki.asn1Header.withUnsafeBytes { bytes -> Void in
-            CC_SHA256_Update(&context, bytes.baseAddress, CC_LONG(bytes.count))
-        }
-        
-        // Add the public key
-        publicKeyData.withUnsafeBytes { bytes -> Void in
-            CC_SHA256_Update(&context, bytes.baseAddress, CC_LONG(bytes.count))
-        }
-        
-        var hash = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
-        
-        hash.withUnsafeMutableBytes { bytes -> Void in
-            CC_SHA256_Final(bytes.bindMemory(to: UInt8.self).baseAddress, &context)
-        }
-        
-        return hash.base64EncodedString()
+        return spki.asn1Header + publicKeyData
     }
 }
-
