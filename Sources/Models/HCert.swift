@@ -600,6 +600,11 @@ public struct HCert {
   
   static let qrLock = NSLock()
   
+  public var technicalVerification: HCertValidity = .invalid
+  public var issuerInvalidation: RuleValidationResult = .error
+  public var destinationAcceptence: RuleValidationResult = .error
+  public var travalerAcceptence: RuleValidationResult = .error
+
   public var fullName: String {
     let first = get(.firstName).string ?? ""
     let last = get(.lastName).string ?? ""
