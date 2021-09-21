@@ -31,11 +31,13 @@ import UIKit
 import Vision
 import AVFoundation
 import SwiftCBOR
+import SwiftyJSON
 
 public protocol ScanVCDelegate: AnyObject {
   func hCertScanned(_:HCert)
   func disableBackgroundDetection()
   func enableBackgroundDetection()
+  func ticketingInfoScanned(_ :TicketingQR)
 }
 
 open class ScanVC: UIViewController {
@@ -125,7 +127,18 @@ open class ScanVC: UIViewController {
     #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       // swiftlint:disable:next line_length
-      self.observationHandler(payloadS: "HC1:6BFA70$90T9WTWGSLKC 4X7923S%CA.48Y+6/AB3XK5F3 026003F3RD6Z*B1JC X8Y50.FK8ZKO/EZKEZ967L6C56..DX%DZJC2/D:+9 QE5$CLPCG/D0.CHY8ITAUIAI3DG8DXFF 8DXEDU3EI3DAWE1Z9CN9IB85T9JPCT3E5JDOA73467463W5-A67:EDOL9WEQDD+Q6TW6FA7C466KCK9E2H9G:6V6BEM6Q$D.UDRYA 96NF6L/5QW6307B$D% D3IA4W5646946%96X47XJC$+D3KC.SCXJCCWENF6OF63W5CA7746WJCT3E0ZA%JCIQEAZAWJC0FD6A5AIA%G7X+AQB9F+ALG7$X85+8+*81IA3H87+8/R8/A8+M986APH9$59/Y9WA627B873 3K9UD5M3JFG.BOO3L-GE828UE0T46/*JSTLE4MEJRX797NEXF5I$2+.LGOJXF24D2WR9 W8WQT:HHJ$7:TKP2RT+J:G4V5GT7E")
+//      self.observationHandler(payloadS: "HC1:6BFA70$90T9WTWGSLKC 4X7923S%CA.48Y+6/AB3XK5F3 026003F3RD6Z*B1JC X8Y50.FK8ZKO/EZKEZ967L6C56..DX%DZJC2/D:+9 QE5$CLPCG/D0.CHY8ITAUIAI3DG8DXFF 8DXEDU3EI3DAWE1Z9CN9IB85T9JPCT3E5JDOA73467463W5-A67:EDOL9WEQDD+Q6TW6FA7C466KCK9E2H9G:6V6BEM6Q$D.UDRYA 96NF6L/5QW6307B$D% D3IA4W5646946%96X47XJC$+D3KC.SCXJCCWENF6OF63W5CA7746WJCT3E0ZA%JCIQEAZAWJC0FD6A5AIA%G7X+AQB9F+ALG7$X85+8+*81IA3H87+8/R8/A8+M986APH9$59/Y9WA627B873 3K9UD5M3JFG.BOO3L-GE828UE0T46/*JSTLE4MEJRX797NEXF5I$2+.LGOJXF24D2WR9 W8WQT:HHJ$7:TKP2RT+J:G4V5GT7E")
+      self.observationHandler(payloadS: """
+        {
+        "protocol": "DCCVALIDATION",
+        "protocolVersion": "1.0.0",
+        "serviceIdentity": "https://dgca-booking-demo-eu-test.cfapps.eu10.hana.ondemand.com/identity",
+        "token": "eyJ0eXAiOiJKV1QiLCJraWQiOiJiUzhEMi9XejV0WT0iLCJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJWYWxpZGF0aW9uIERlY29yYXRvciBEZXJ2aWNlIiwiZXhwIjoxNjMxOTAwMDgyLCJzdWIiOiIyOTQwMzUzZC02YWQ2LTRkNDgtYTIzOS01ZDgxOTAxZTJmM2UifQ.0uNIFNO39UsjYpICY4TTqOnbUOXtOQXPHgsPouM1cBq4QD_eKIGjcMetM3fM00LPUJRURX5aL7LRq189otLw_Q",
+        "consent": "Please confirm to start the DCC Exchange flow. If you not confirm, the flow is aborted.",
+        "subject": "2940353d-6ad6-4d48-a239-5d81901e2f3e",
+        "serviceProvider": "Booking Demo"
+      }
+""")
 //        HC1:NCF/Y43088D0000MIU%LJJKDO51FY0TZGD7FU5WG72 73*ZKHJPMH2FTF-6FOZ31:911K-441526+6UNAB1J48K%7TORRP018O3K32IF8H7R7ZV4MS FR2SPQ-DI7P%B7E6U$/76OATWJ%QAJ5LE.IF240213*JC/EP6C98IJ9HZ QX-53IGJ8KQR3 THF%B5 5JB7/HVIZ5XZ7JXABM1ZP1JM0BJQXZUG2EI782X9GU6OKNQS8GQCNRCQA4WGAL35TCL5R41C57W46+E J4KJDU4R 00XZPPNP0QMAVG0.TYQGBKOF1G%TKFB62.O/Y807UI%A4/EHS8K%O9SS017J47V5WKXQKEJEWTU8SLMIDU7RR19XK54RV$9ELJQTAFP1858EC65QH5EQB:N8ARAQA23EG7T% NI-TVZH:$5/GH+PC0-DKIT2F6.2OK:U%9T$UKMCLU4DGYT3TNBZMN1WLORN:UOQBI05 9ME8PQBORKDM4
     }
     #else
@@ -239,9 +252,14 @@ extension ScanVC {
   }
 
   func observationHandler(payloadS: String?) {
+    let decoder = JSONDecoder()
+    
     if var hCert = HCert(from: payloadS ?? "", applicationType: applicationType) {
       hCert.ruleCountryCode = getSelectedCountryCode()
       delegate?.hCertScanned(hCert)
+      
+    } else if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData) {
+      delegate?.ticketingInfoScanned(ticketing)
     }
   }
 
