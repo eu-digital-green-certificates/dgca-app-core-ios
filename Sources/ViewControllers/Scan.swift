@@ -227,7 +227,7 @@ extension ScanVC {
         for barcode in barcodes {
           guard
             let potentialQRCode = barcode as? VNBarcodeObservation,
-            [.Aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
+            [.aztec, .qr, .dataMatrix].contains(potentialQRCode.symbology),
             potentialQRCode.confidence > 0.9
           else { return }
 
