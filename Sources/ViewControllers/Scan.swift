@@ -270,7 +270,7 @@ extension ScanVC {
       delegate?.hCertScanned(hCert)
       return
     }
-    if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData) && applicationType == .wallet {
+    if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData), applicationType == .wallet {
       delegate?.ticketingInfoScanned(ticketing)
     }
   }
