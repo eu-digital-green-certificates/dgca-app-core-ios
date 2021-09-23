@@ -236,7 +236,7 @@ extension ScanVC {
           } else {
             guard
               let potentialCode = barcode as? VNBarcodeObservation,
-              [.aztec, .QR, .DataMatrix].contains(potentialCode.symbology),
+              [.aztec, .qr, .dataMatrix].contains(potentialCode.symbology),
               potentialCode.confidence > 0.9
             else { return }
             potentialQRCode = potentialCode
