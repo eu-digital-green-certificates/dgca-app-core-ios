@@ -53,4 +53,5 @@ public struct ValidationService : Codable {
   public var type               : String
   public var name               : String
   public var serviceEndpoint    : String
+  public var isSelected         : Bool = false
 }

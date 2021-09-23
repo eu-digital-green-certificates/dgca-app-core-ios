@@ -604,6 +604,7 @@ public struct HCert {
   public var issuerInvalidation: RuleValidationResult = .error
   public var destinationAcceptence: RuleValidationResult = .error
   public var travalerAcceptence: RuleValidationResult = .error
+  public var isSelected: Bool = false
 
   public var fullName: String {
     let first = get(.firstName).string ?? ""
