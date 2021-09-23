@@ -225,19 +225,21 @@ extension ScanVC {
         camView.layer.sublayers?.removeSubrange(1...)
 
         for barcode in barcodes {
-          let potentialQRCode: VNBarcodeObservation?
+          var potentialQRCode: VNBarcodeObservation
           if #available(iOS 15, *) {
             guard
-              let potentialQRCode = barcode,
+              let potentialCode = barcode as? VNBarcodeObservation,
               [.aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
               potentialQRCode.confidence > 0.9
             else { return }
+            potentialQRCode = potentialCode
           } else {
             guard
-              let potentialQRCode = barcode,
+              let potentialCode = barcode as? VNBarcodeObservation,
               [.Aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
               potentialQRCode.confidence > 0.9
             else { return }
+            potentialQRCode = potentialCode
           }
 
           print(potentialQRCode.symbology)
