@@ -229,15 +229,15 @@ extension ScanVC {
           if #available(iOS 15, *) {
             guard
               let potentialCode = barcode as? VNBarcodeObservation,
-              [.aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
-              potentialQRCode.confidence > 0.9
+              [.aztec, .QR, .DataMatrix].contains(potentialCode.symbology),
+              potentialCode.confidence > 0.9
             else { return }
             potentialQRCode = potentialCode
           } else {
             guard
               let potentialCode = barcode as? VNBarcodeObservation,
-              [.Aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
-              potentialQRCode.confidence > 0.9
+              [.Aztec, .QR, .DataMatrix].contains(potentialCode.symbology),
+              potentialCode.confidence > 0.9
             else { return }
             potentialQRCode = potentialCode
           }
