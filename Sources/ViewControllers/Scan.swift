@@ -238,11 +238,22 @@ extension ScanVC {
         camView.layer.sublayers?.removeSubrange(1...)
 
         for barcode in barcodes {
-          guard
-            let potentialQRCode = barcode as? VNBarcodeObservation,
-            [.Aztec, .QR, .DataMatrix].contains(potentialQRCode.symbology),
-            potentialQRCode.confidence > 0.9
-          else { return }
+          var potentialQRCode: VNBarcodeObservation
+          if #available(iOS 15, *) {
+            guard
+              let potentialCode = barcode as? VNBarcodeObservation,
+              [.Aztec, .QR, .DataMatrix].contains(potentialCode.symbology),
+              potentialCode.confidence > 0.9
+            else { return }
+            potentialQRCode = potentialCode
+          } else {
+            guard
+              let potentialCode = barcode as? VNBarcodeObservation,
+              [.aztec, .qr, .dataMatrix].contains(potentialCode.symbology),
+              potentialCode.confidence > 0.9
+            else { return }
+            potentialQRCode = potentialCode
+          }
 
           print(potentialQRCode.symbology)
           observationHandler(payloadS: potentialQRCode.payloadStringValue)
@@ -257,8 +268,9 @@ extension ScanVC {
     if var hCert = HCert(from: payloadS ?? "", applicationType: applicationType) {
       hCert.ruleCountryCode = getSelectedCountryCode()
       delegate?.hCertScanned(hCert)
-      
-    } else if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData) {
+      return
+    }
+    if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData) && applicationType == .wallet {
       delegate?.ticketingInfoScanned(ticketing)
     }
   }
