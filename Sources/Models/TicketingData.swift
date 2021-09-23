@@ -48,10 +48,30 @@ public struct TicketingQR : Codable {
   }
 }
 
+public struct ServerListResponse : Codable {
+  public var id                  : String
+  public var service             : [ValidationService]
+  public var verificationMethod  : [VerificationMethod]
+}
+
+
+public struct PublicKeyJWK : Codable {
+  public var kid : String
+  public var alg : String
+  public var x5c : String
+  public var use : String
+}
+
+public struct VerificationMethod : Codable {
+  public var id           : String
+  public var controller   : String
+  public var type         : String
+  public var publicKeyJwk : PublicKeyJWK
+}
+
 public struct ValidationService : Codable {
-  public var id                 : String
-  public var type               : String
-  public var name               : String
-  public var serviceEndpoint    : String
-//  public var isSelected         : Bool = false
+  public var id               : String
+  public var type             : String
+  public var name             : String
+  public var serviceEndpoint  : String
 }
