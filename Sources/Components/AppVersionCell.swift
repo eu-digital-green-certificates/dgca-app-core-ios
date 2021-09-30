@@ -34,7 +34,8 @@ public class AppVersionCell: UITableViewCell {
   public override func layoutSubviews() {
     super.layoutSubviews()
 
-    let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    let version = Bundle.main.releaseVersionNumber as? String ?? "-"
+    let buold = Bundle.main.buildVersionNumber as? String ?? "-"
     let format = l10n("app-version")
     versionLabel.text = String(format: format, version ?? "?")
     removeSectionSeparator()
