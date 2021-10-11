@@ -50,8 +50,8 @@ public struct TicketingQR : Codable {
 
 public struct ServerListResponse : Codable {
   public var id                  : String
-  public var service             : [ValidationService]
-  public var verificationMethod  : [VerificationMethod]
+  public var service             : [ValidationService]?
+  public var verificationMethod  : [VerificationMethod]?
 }
 
 
@@ -66,7 +66,8 @@ public struct VerificationMethod : Codable {
   public var id           : String
   public var controller   : String
   public var type         : String
-  public var publicKeyJwk : PublicKeyJWK
+  public var publicKeyJwk : PublicKeyJWK?
+  public var verificationMethods : [String]?
 }
 
 public struct ValidationService : Codable {
