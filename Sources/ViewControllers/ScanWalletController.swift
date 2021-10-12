@@ -13,10 +13,10 @@ import SwiftCBOR
 import SwiftyJSON
 
 public protocol ScanWalletDelegate: AnyObject {
-    func walletController(_ controller: ScanWalletController, didScan certificate: HCert)
+  func walletController(_ controller: ScanWalletController, didScanCertificate certificate: HCert)
+  func walletController(_ controller: ScanWalletController, didScanInfo info: TicketingQR)
   func disableBackgroundDetection()
   func enableBackgroundDetection()
-  func ticketingInfoScanned(_ :TicketingQR)
 }
 
 open class ScanWalletController: UIViewController {
@@ -36,6 +36,7 @@ open class ScanWalletController: UIViewController {
   private let countryCodeView = UIPickerView()
   private let countryCodeLabel = UILabel()
   private var countryItems: [CountryModel] = []
+    
   //Selected country code
   private var selectedCounty: CountryModel? {
     set {
@@ -61,7 +62,6 @@ open class ScanWalletController: UIViewController {
   
   open override func viewDidLoad() {
     super.viewDidLoad()
-    
     camView = UIView(frame: .zero)
     camView.translatesAutoresizingMaskIntoConstraints = false
     camView.isUserInteractionEnabled = false
@@ -127,19 +127,15 @@ open class ScanWalletController: UIViewController {
     captureSession?.startRunning()
   }
   
-    func createDismissButton() {
+  func createDismissButton() {
        let button = UIButton(frame: .zero)
        button.translatesAutoresizingMaskIntoConstraints = false
        button.backgroundColor = .clear
        button.setAttributedTitle(
          NSAttributedString(
            string: l10n("btn.cancel"),
-           attributes: [
-             .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
-             .foregroundColor: UIColor.white
-           ]
-         ), for: .normal
-       )
+           attributes: [.font: UIFont.systemFont(ofSize: 22, weight: .semibold),
+             .foregroundColor: UIColor.white]), for: .normal)
        button.addTarget(self, action: #selector(dismissScaner), for: .touchUpInside)
        view.addSubview(button)
         
@@ -175,17 +171,13 @@ extension ScanWalletController  {
   private func setupCameraLiveView() {
     captureSession?.sessionPreset = .hd1280x720
     
-    let videoDevice = AVCaptureDevice
-      .default(.builtInWideAngleCamera, for: .video, position: .back)
+    let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
     
-    guard
-      let device = videoDevice,
+    guard let device = videoDevice,
       let videoDeviceInput = try? AVCaptureDeviceInput(device: device),
       captureSession?.canAddInput(videoDeviceInput) == true
     else {
-      showAlert(
-        withTitle: l10n("err.cam"),
-        message: l10n("err.cam.desc"))
+      showAlert( withTitle: l10n("err.cam"), message: l10n("err.cam.desc"))
       return
     }
     
@@ -208,15 +200,13 @@ extension ScanWalletController  {
         for barcode in barcodes {
           var potentialQRCode: VNBarcodeObservation
           if #available(iOS 15, *) {
-            guard
-              let potentialCode = barcode as? VNBarcodeObservation,
+            guard let potentialCode = barcode as? VNBarcodeObservation,
               [.Aztec, .QR, .DataMatrix].contains(potentialCode.symbology),
               potentialCode.confidence > 0.9
             else { return }
             potentialQRCode = potentialCode
           } else {
-            guard
-              let potentialCode = barcode as? VNBarcodeObservation,
+            guard let potentialCode = barcode as? VNBarcodeObservation,
               [.aztec, .qr, .dataMatrix].contains(potentialCode.symbology),
               potentialCode.confidence > 0.9
             else { return }
@@ -235,29 +225,23 @@ extension ScanWalletController  {
     
     if var hCert = HCert(from: payloadS ?? "", applicationType: applicationType) {
       hCert.ruleCountryCode = getSelectedCountryCode()
-      delegate?.walletController(self, didScan: hCert)
+      delegate?.walletController(self, didScanCertificate: hCert)
       return
-    }
-    if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData), applicationType == .wallet {
-      delegate?.ticketingInfoScanned(ticketing)
+    } else if let payloadData = (payloadS ?? "").data(using: .utf8),
+        let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData), applicationType == .wallet {
+        delegate?.walletController(self, didScanInfo: ticketing)
+    } else {
+        //TODO Add error callback
     }
   }
-  
 }
 
 extension ScanWalletController: AVCaptureVideoDataOutputSampleBufferDelegate {
-  public func captureOutput(
-    _ output: AVCaptureOutput,
-    didOutput sampleBuffer: CMSampleBuffer,
-    from connection: AVCaptureConnection
-  ) {
+  public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
+    from connection: AVCaptureConnection) {
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
     
-    let imageRequestHandler = VNImageRequestHandler(
-      cvPixelBuffer: pixelBuffer,
-      orientation: .right
-    )
-    
+    let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .right)
     do {
       try imageRequestHandler.perform([detectBarcodeRequest])
     } catch {
@@ -268,9 +252,8 @@ extension ScanWalletController: AVCaptureVideoDataOutputSampleBufferDelegate {
 
 extension ScanWalletController {
   private func configurePreviewLayer() {
-    guard let captureSession = captureSession else {
-      return
-    }
+    guard let captureSession = captureSession else { return }
+      
     let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     cameraPreviewLayer.videoGravity = .resizeAspectFill
     cameraPreviewLayer.connection?.videoOrientation = .portrait
@@ -318,16 +301,20 @@ extension ScanWalletController {
     self.countryItems = list
     self.countryCodeView.reloadAllComponents()
     guard self.countryItems.count > 0 else { return }
-    if let selected = self.selectedCounty, let indexOfCountry = self.countryItems.firstIndex(where: {$0.code == selected.code}) {
+      
+    if let selected = self.selectedCounty,
+        let indexOfCountry = self.countryItems.firstIndex(where: {$0.code == selected.code}) {
       countryCodeView.selectRow(indexOfCountry, inComponent: 0, animated: false)
     } else {
       self.selectedCounty = self.countryItems.first
       countryCodeView.selectRow(0, inComponent: 0, animated: false)
     }
   }
+    
   public func setVisibleCountrySelection(visible: Bool) {
     self.countryCodeView.isHidden = !visible
   }
+    
   public func getSelectedCountryCode() -> String? {
     return self.selectedCounty?.code
   }
