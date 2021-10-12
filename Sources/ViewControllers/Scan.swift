@@ -201,7 +201,7 @@ extension ScanVC {
     case .denied, .restricted:
       showPermissionsAlert()
     default:
-      return
+      break
     }
   }
   

@@ -33,9 +33,6 @@ open class ScanWalletController: UIViewController {
   }
   
   var camView: UIView!
-  private let countryCodeView = UIPickerView()
-  private let countryCodeLabel = UILabel()
-  private var countryItems: [CountryModel] = []
     
   //Selected country code
   private var selectedCounty: CountryModel? {
@@ -49,7 +46,6 @@ open class ScanWalletController: UIViewController {
     }
     get {
       let userDefaults = UserDefaults.standard
-      //      let selected = try? userDefaults.getObject(forKey: Constants.userDefaultsCountryKey, castTo: CountryModel.self)
       do {
         let selected = try userDefaults.getObject(forKey: Constants.userDefaultsCountryKey, castTo: CountryModel.self)
         return selected
@@ -72,34 +68,7 @@ open class ScanWalletController: UIViewController {
       camView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       camView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
-    
-    countryCodeView.translatesAutoresizingMaskIntoConstraints = false
-    countryCodeView.backgroundColor = .white.withAlphaComponent(0.8)
-    countryCodeView.dataSource = self
-    countryCodeView.delegate = self
-    countryCodeView.isHidden = true
-    view.addSubview(countryCodeView)
-    
-    NSLayoutConstraint.activate([
-      countryCodeView.leftAnchor.constraint(equalTo: view.leftAnchor),
-      countryCodeView.rightAnchor.constraint(equalTo: view.rightAnchor),
-      countryCodeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      countryCodeView.heightAnchor.constraint(equalToConstant: 150)
-    ])
-    
-    countryCodeLabel.translatesAutoresizingMaskIntoConstraints = false
-    countryCodeLabel.backgroundColor = .clear
-    countryCodeLabel.text = l10n("scanner.select.country")
-    countryCodeLabel.textAlignment = .center
-    countryCodeView.addSubview(countryCodeLabel)
-    
-    NSLayoutConstraint.activate([
-      countryCodeLabel.leftAnchor.constraint(equalTo: countryCodeView.leftAnchor),
-      countryCodeLabel.rightAnchor.constraint(equalTo: countryCodeView.rightAnchor),
-      countryCodeLabel.topAnchor.constraint(equalTo: countryCodeView.topAnchor),
-      countryCodeLabel.heightAnchor.constraint(equalToConstant: 30)
-    ])
-    
+        
     view.backgroundColor = .init(white: 0, alpha: 1)
 #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -231,7 +200,7 @@ extension ScanWalletController  {
         let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData), applicationType == .wallet {
         delegate?.walletController(self, didScanInfo: ticketing)
     } else {
-        //TODO Add error callback
+        //TODO Add error handler
     }
   }
 }
@@ -277,44 +246,9 @@ extension ScanWalletController {
   }
 }
 
-extension ScanWalletController: UIPickerViewDataSource, UIPickerViewDelegate {
-  public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-    return 1
-  }
-  
-  public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    if countryItems.count == 0 { return 1 }
-    return countryItems.count
-  }
-  
-  public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    if countryItems.count == 0 { return l10n("scaner.no.countrys") }
-    return countryItems[row].name
-  }
-  public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    self.selectedCounty = countryItems[row]
-  }
-}
 
 extension ScanWalletController {
-  public func setListOfRuleCounties(list: [CountryModel]) {
-    self.countryItems = list
-    self.countryCodeView.reloadAllComponents()
-    guard self.countryItems.count > 0 else { return }
-      
-    if let selected = self.selectedCounty,
-        let indexOfCountry = self.countryItems.firstIndex(where: {$0.code == selected.code}) {
-      countryCodeView.selectRow(indexOfCountry, inComponent: 0, animated: false)
-    } else {
-      self.selectedCounty = self.countryItems.first
-      countryCodeView.selectRow(0, inComponent: 0, animated: false)
-    }
-  }
-    
-  public func setVisibleCountrySelection(visible: Bool) {
-    self.countryCodeView.isHidden = !visible
-  }
-    
+
   public func getSelectedCountryCode() -> String? {
     return self.selectedCounty?.code
   }
