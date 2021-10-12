@@ -32,16 +32,21 @@ import Vision
 import AVFoundation
 import SwiftCBOR
 
-public protocol ScanVCDelegate: AnyObject {
-  func hCertScanned(_:HCert)
+public protocol ScanCertificateDelegate: AnyObject {
+  func scanController(_ controller: ScanCertificateController, didScanCertificate certificate: HCert)
   func disableBackgroundDetection()
   func enableBackgroundDetection()
 }
 
-open class ScanVC: UIViewController {
+open class ScanCertificateController: UIViewController {
+    
+  private enum Constants {
+    static let userDefaultsCountryKey = "UDCountryKey"
+  }
+
   var captureSession: AVCaptureSession?
-  public weak var delegate: ScanVCDelegate?
-  public var applicationType: AppType = .verifier
+  public weak var delegate: ScanCertificateDelegate?
+  public let applicationType: AppType = .verifier
   
   lazy var detectBarcodeRequest = VNDetectBarcodesRequest { request, error in
     guard error == nil else {
@@ -52,9 +57,10 @@ open class ScanVC: UIViewController {
   }
 
   var camView: UIView!
-  private var countryCodeView = UIPickerView()
-  private var countryCodeLabel = UILabel()
+  private let countryCodeView = UIPickerView()
+  private let countryCodeLabel = UILabel()
   private var countryItems: [CountryModel] = []
+  
   //Selected country code
   private var selectedCounty: CountryModel? {
     set {
@@ -67,7 +73,6 @@ open class ScanVC: UIViewController {
     }
     get {
       let userDefaults = UserDefaults.standard
-//      let selected = try? userDefaults.getObject(forKey: Constants.userDefaultsCountryKey, castTo: CountryModel.self)
       do {
         let selected = try userDefaults.getObject(forKey: Constants.userDefaultsCountryKey, castTo: CountryModel.self)
         return selected
@@ -120,7 +125,6 @@ open class ScanVC: UIViewController {
       countryCodeLabel.heightAnchor.constraint(equalToConstant: 30)
     ])
     
-    
     view.backgroundColor = .init(white: 0, alpha: 1)
     #if targetEnvironment(simulator)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -135,6 +139,7 @@ open class ScanVC: UIViewController {
     #endif
     SquareViewFinder.create(from: self)
   }
+  
 
   public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
@@ -150,15 +155,11 @@ open class ScanVC: UIViewController {
     let button = UIButton(frame: .zero)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.backgroundColor = .clear
-    button.setAttributedTitle(
-      NSAttributedString(
-        string: l10n("btn.cancel"),
+    button.setAttributedTitle(NSAttributedString(string: l10n("btn.cancel"),
         attributes: [
-          .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
-          .foregroundColor: UIColor.white
-        ]
-      ), for: .normal
-    )
+        .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
+        .foregroundColor: UIColor.white
+      ]), for: .normal)
     button.addTarget(self, action: #selector(cancel), for: .touchUpInside)
     view.addSubview(button)
     NSLayoutConstraint.activate([
@@ -167,13 +168,12 @@ open class ScanVC: UIViewController {
     ])
   }
 
-  @IBAction
-  func cancel() {
+  @IBAction func cancel() {
     navigationController?.popViewController(animated: true)
   }
 }
 
-extension ScanVC {
+extension ScanCertificateController {
   private func checkPermissions() {
     switch AVCaptureDevice.authorizationStatus(for: .video) {
     case .notDetermined:
@@ -252,18 +252,14 @@ extension ScanVC {
   func observationHandler(payloadS: String?) {
     if var hCert = HCert(from: payloadS ?? "", applicationType: applicationType) {
       hCert.ruleCountryCode = getSelectedCountryCode()
-      delegate?.hCertScanned(hCert)
+      delegate?.scanController(self, didScanCertificate: hCert)
     }
   }
-
 }
 
-extension ScanVC: AVCaptureVideoDataOutputSampleBufferDelegate {
-  public func captureOutput(
-    _ output: AVCaptureOutput,
-    didOutput sampleBuffer: CMSampleBuffer,
-    from connection: AVCaptureConnection
-  ) {
+extension ScanCertificateController: AVCaptureVideoDataOutputSampleBufferDelegate {
+  public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
+    from connection: AVCaptureConnection) {
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
     let imageRequestHandler = VNImageRequestHandler(
@@ -279,11 +275,10 @@ extension ScanVC: AVCaptureVideoDataOutputSampleBufferDelegate {
   }
 }
 
-extension ScanVC {
+extension ScanCertificateController {
   private func configurePreviewLayer() {
-    guard let captureSession = captureSession else {
-      return
-    }
+    guard let captureSession = captureSession else { return }
+    
     let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     cameraPreviewLayer.videoGravity = .resizeAspectFill
     cameraPreviewLayer.connection?.videoOrientation = .portrait
@@ -307,7 +302,7 @@ extension ScanVC {
   }
 }
 
-extension ScanVC: UIPickerViewDataSource, UIPickerViewDelegate {
+extension ScanCertificateController: UIPickerViewDataSource, UIPickerViewDelegate {
   public func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 1
   }
@@ -321,35 +316,33 @@ extension ScanVC: UIPickerViewDataSource, UIPickerViewDelegate {
     if countryItems.count == 0 { return l10n("scaner.no.countrys") }
     return countryItems[row].name
   }
+  
   public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     self.selectedCounty = countryItems[row]
   }
 }
 
-extension ScanVC {
+extension ScanCertificateController {
   public func setListOfRuleCounties(list: [CountryModel]) {
     self.countryItems = list
     self.countryCodeView.reloadAllComponents()
     guard self.countryItems.count > 0 else { return }
-    if let selected = self.selectedCounty, let indexOfCountry = self.countryItems.firstIndex(where: {$0.code == selected.code}) {
-      countryCodeView.selectRow(indexOfCountry, inComponent: 0, animated: false)
+    
+    if let selected = self.selectedCounty,
+      let indexOfCountry = self.countryItems.firstIndex(where: {$0.code == selected.code}) {
+        countryCodeView.selectRow(indexOfCountry, inComponent: 0, animated: false)
     } else {
       self.selectedCounty = self.countryItems.first
       countryCodeView.selectRow(0, inComponent: 0, animated: false)
     }
   }
+  
   public func setVisibleCountrySelection(visible: Bool) {
     self.countryCodeView.isHidden = !visible
   }
+  
   public func getSelectedCountryCode() -> String? {
     return self.selectedCounty?.code
   }
 }
-
-extension ScanVC {
-  private enum Constants {
-    static let userDefaultsCountryKey = "UDCountryKey"
-  }
-}
-
 #endif
