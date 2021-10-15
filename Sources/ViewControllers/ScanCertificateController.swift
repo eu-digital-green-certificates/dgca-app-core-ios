@@ -151,7 +151,7 @@ open class ScanCertificateController: UIViewController {
     captureSession?.startRunning()
   }
 
-  public func createBackButton() {
+  public func createCancelButton() {
     let button = UIButton(frame: .zero)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.backgroundColor = .clear
@@ -169,7 +169,7 @@ open class ScanCertificateController: UIViewController {
   }
 
   @IBAction func cancel() {
-    navigationController?.popViewController(animated: true)
+      self.dismiss(animated: true, completion: nil)
   }
 }
 

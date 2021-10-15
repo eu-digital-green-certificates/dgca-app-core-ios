@@ -94,7 +94,8 @@ public struct InfoSection {
   public var countryName: String?
   public var ruleValidationResult: RuleValidationResult = .open
   
-  public init(header: String, content: String, style: InfoSectionStyle = .normal, isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
+  public init(header: String, content: String, style: InfoSectionStyle = .normal,
+        isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
     self.header = header
     self.content = content
     self.countryName = countryName
@@ -125,9 +126,7 @@ public struct HCert {
   public static var debugPrintJsonErrors = true
   public static var config = HCertConfig()
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
-  public static let supportedPrefixes = [
-    "HC1:"
-  ]
+  public static let supportedPrefixes = [ "HC1:" ]
   
   public var appType: AppType = .verifier
   
@@ -151,7 +150,6 @@ public struct HCert {
   }
   
   public init?(from payload: String, errors: ParseErrors? = nil, applicationType: AppType = .verifier) {
-    
     let payload = payload
     if Self.checkCH1PreffixExist(payload) {
       fullPayloadString = payload
@@ -163,9 +161,7 @@ public struct HCert {
     }
     appType = applicationType
     
-    guard
-      let compressed = try? payloadString.fromBase45()
-    else {
+    guard let compressed = try? payloadString.fromBase45() else {
       errors?.errors.append(.base45)
       return nil
     }
@@ -174,14 +170,14 @@ public struct HCert {
     if cborData.isEmpty {
       errors?.errors.append(.zlib)
     }
-    guard
-      let headerStr = CBOR.header(from: cborData)?.toString(),
+    
+    guard let headerStr = CBOR.header(from: cborData)?.toString(),
       let bodyStr = CBOR.payload(from: cborData)?.toString(),
-      let kid = CBOR.kid(from: cborData)
-    else {
+      let kid = CBOR.kid(from: cborData) else {
       errors?.errors.append(.cbor)
       return nil
     }
+    
     kidStr = KID.string(from: kid)
     header = JSON(parseJSON: headerStr)
     var body = JSON(parseJSON: bodyStr)
@@ -232,18 +228,14 @@ public struct HCert {
   public mutating func makeSectionForRuleError(infoSections: InfoSection, for appType: AppType) {
     info.removeAll()
     info = []
-    info += [
-      InfoSection(
-        header: l10n("header.cert-type"),
-        content: certTypeString
-      )
-    ] + personIdentifiers
+    let hSection = InfoSection(header: l10n("header.cert-type"), content: certTypeString)
+    info += [hSection] + personIdentifiers
     if !isValid {
-      info += [
-        InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-      ]
+      let vSection = InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+      info += [vSection]
     }
-    if !isValid { return }
+    guard isValid else { return }
+      
     info += [infoSections]
     switch appType {
     case .verifier:
@@ -267,7 +259,6 @@ public struct HCert {
   }
 
   //
-  
   mutating func makeSections(for appType: AppType) {
     info.removeAll()
     switch appType {
@@ -293,286 +284,188 @@ public struct HCert {
   
   mutating func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
-      info = []
-      info += [
-        InfoSection(
-          header: l10n("header.cert-type"),
-          content: certTypeString
-        )
-      ] + personIdentifiers
+      info.removeAll()
+      let hSection = InfoSection( header: l10n("header.cert-type"), content: certTypeString)
+      info += [hSection] + personIdentifiers
       if !isValid {
-        info += [
-          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-        ]
+        let vSection = InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+        info += [vSection]
       }
       if !isValid { return }
     }
     if let last = get(.lastNameStandardized).string {
       info += [
-        InfoSection(
-          header: l10n("header.std-fn"),
-          content: last.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
+        InfoSection( header: l10n("header.std-fn"),
+          content: last.replacingOccurrences( of: "<", with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont)
       ]
     }
     if let first = get(.firstNameStandardized).string {
       info += [
-        InfoSection(
-          header: l10n("header.std-gn"),
-          content: first.replacingOccurrences(
-            of: "<",
-            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
-          style: .fixedWidthFont
-        )
+        InfoSection( header: l10n("header.std-gn"),
+          content: first.replacingOccurrences( of: "<", with: String.zeroWidthSpace + "<" + String.zeroWidthSpace),
+          style: .fixedWidthFont)
       ]
     }
     if let date = get(.dateOfBirth).string {
-      info += [
-        InfoSection(
-          header: l10n("header.dob"),
-          content: date
-        )
-      ]
+      info += [InfoSection( header: l10n("header.dob"), content: date)]
     }
     info += statement == nil ? [] : statement.info
-    info += [
-      InfoSection(
-        header: l10n("header.uvci"),
-        content: uvci,
-        style: .fixedWidthFont,
-        isPrivate: true
-      )
-    ]
+    info += [InfoSection(header: l10n("header.uvci"),content: uvci,style: .fixedWidthFont,isPrivate: true)]
     if issCode.count > 0 {
-      info += [
-        InfoSection(
-          header: l10n("issuer.country"),
-          content: l10n("country.\(issCode.uppercased())")
-        )
-      ]
+      info += [InfoSection(header: l10n("issuer.country"),content: l10n("country.\(issCode.uppercased())"))]
     }
   }
   
   mutating func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
       info = []
-      info += [
-        InfoSection(
-          header: l10n("header.cert-type"),
-          content: certTypeString
-        )
-      ] + personIdentifiers
+      info += [InfoSection( header: l10n("header.cert-type"),content: certTypeString)] + personIdentifiers
       if !isValid {
-        info += [
-          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-        ]
+        info += [InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))]
       }
     }
     var fullName = ""
     if let first = get(.firstName).string {
-         fullName = fullName + first.replacingOccurrences(
-          of: "<",
+         fullName = fullName + first.replacingOccurrences(of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
     if let last = get(.lastName).string {
       if !fullName.isEmpty {
-      fullName = fullName + " " + last.replacingOccurrences(
-       of: "<",
-       with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+          fullName = fullName + " " + last.replacingOccurrences( of: "<", with: String.zeroWidthSpace +
+            "<" + String.zeroWidthSpace)
       } else {
-        fullName = fullName + last.replacingOccurrences(
-         of: "<",
-         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+        fullName = fullName + last.replacingOccurrences(of: "<", with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
     }
 
     if fullName.isEmpty {
       if let first = get(.firstNameStandardized).string {
-           fullName = fullName + first.replacingOccurrences(
-            of: "<",
+           fullName = fullName + first.replacingOccurrences( of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
       if let last = get(.lastNameStandardized).string {
         if !fullName.isEmpty {
-        fullName = fullName + " " + last.replacingOccurrences(
-         of: "<",
+        fullName = fullName + " " + last.replacingOccurrences( of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         } else {
-          fullName = fullName + last.replacingOccurrences(
-           of: "<",
+          fullName = fullName + last.replacingOccurrences( of: "<",
            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         }
       }
     }
     
     if !fullName.isEmpty {
-      info += [
-        InfoSection(
-          header: l10n("section.name"),
-          content: fullName,
-          style: .fixedWidthFont
-        )
-      ]
+      info += [ InfoSection( header: l10n("section.name"), content: fullName, style: .fixedWidthFont ) ]
     }
     info += statement == nil ? [] : statement.walletInfo
     if issCode.count > 0 {
-      info += [
-        InfoSection(
-          header: l10n("issuer.country"),
-          content: l10n("country.\(issCode.uppercased())")
-        )
-      ]
+      info += [ InfoSection( header: l10n("issuer.country"), content: l10n("country.\(issCode.uppercased())") ) ]
     }
   }
   
   mutating func makeSectionsForTest(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
       info = []
-      info += [
-        InfoSection(
-          header: l10n("header.cert-type"),
-          content: certTypeString
-        )
-      ] + personIdentifiers
+      info += [InfoSection( header: l10n("header.cert-type"), content: certTypeString )] + personIdentifiers
       if !isValid {
-        info += [
-          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-        ]
+        info += [ InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " ")) ]
       }
     }
     var fullName = ""
     if let first = get(.firstName).string {
-         fullName = fullName + first.replacingOccurrences(
-          of: "<",
-          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+         fullName = fullName + first.replacingOccurrences(of: "<",
+            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
     if let last = get(.lastName).string {
       if !fullName.isEmpty {
-      fullName = fullName + " " + last.replacingOccurrences(
-       of: "<",
-       with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
+      fullName = fullName + " " + last.replacingOccurrences( of: "<",
+        with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       } else {
-        fullName = fullName + last.replacingOccurrences(
-         of: "<",
+        fullName = fullName + last.replacingOccurrences( of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
     }
 
     if fullName.isEmpty {
       if let first = get(.firstNameStandardized).string {
-           fullName = fullName + first.replacingOccurrences(
-            of: "<",
+           fullName = fullName + first.replacingOccurrences( of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
       if let last = get(.lastNameStandardized).string {
         if !fullName.isEmpty {
-        fullName = fullName + " " + last.replacingOccurrences(
-         of: "<",
+        fullName = fullName + " " + last.replacingOccurrences( of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         } else {
-          fullName = fullName + last.replacingOccurrences(
-           of: "<",
+          fullName = fullName + last.replacingOccurrences( of: "<",
            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         }
       }
     }
 
     if !fullName.isEmpty {
-      info += [
-        InfoSection(
-          header: l10n("section.name"),
-          content: fullName,
-          style: .fixedWidthFont
-        )
-      ]
+      let section = InfoSection(header: l10n("section.name"), content: fullName, style: .fixedWidthFont)
+      info += [section]
     }
     info += statement == nil ? [] : statement.walletInfo
+    let section = InfoSection( header: l10n("issuer.country"), content: l10n("country.\(issCode.uppercased())"))
     if issCode.count > 0 {
-      info += [
-        InfoSection(
-          header: l10n("issuer.country"),
-          content: l10n("country.\(issCode.uppercased())")
-        )
-      ]
+      info += [section]
     }
   }
 
   mutating func makeSectionsForRecovery(includeInvalidSection: Bool = true) {
     if includeInvalidSection {
       info = []
-      info += [
-        InfoSection(
-          header: l10n("header.cert-type"),
-          content: certTypeString
-        )
-      ] + personIdentifiers
+      let hSection = InfoSection( header: l10n("header.cert-type"), content: certTypeString)
+      info += [hSection] + personIdentifiers
       if !isValid {
-        info += [
-          InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
-        ]
+        let vSection = InfoSection(header: l10n("header.validity-errors"), content: validityFailures.joined(separator: " "))
+        info += [vSection]
       }
     }
     var fullName = ""
     if let first = get(.firstName).string {
-         fullName = fullName + first.replacingOccurrences(
-          of: "<",
+         fullName = fullName + first.replacingOccurrences( of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
     if let last = get(.lastName).string {
       if !fullName.isEmpty {
-      fullName = fullName + " " + last.replacingOccurrences(
-       of: "<",
+      fullName = fullName + " " + last.replacingOccurrences( of: "<",
        with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       } else {
-        fullName = fullName + last.replacingOccurrences(
-         of: "<",
+        fullName = fullName + last.replacingOccurrences( of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
     }
 
     if fullName.isEmpty {
       if let first = get(.firstNameStandardized).string {
-           fullName = fullName + first.replacingOccurrences(
-            of: "<",
+           fullName = fullName + first.replacingOccurrences( of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
       }
       if let last = get(.lastNameStandardized).string {
         if !fullName.isEmpty {
-        fullName = fullName + " " + last.replacingOccurrences(
-         of: "<",
+        fullName = fullName + " " + last.replacingOccurrences(of: "<",
          with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         } else {
-          fullName = fullName + last.replacingOccurrences(
-           of: "<",
+          fullName = fullName + last.replacingOccurrences( of: "<",
            with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
         }
       }
     }
 
     if !fullName.isEmpty {
-      info += [
-        InfoSection(
-          header: l10n("section.name"),
-          content: fullName,
-          style: .fixedWidthFont
-        )
-      ]
+      let nSection = InfoSection( header: l10n("section.name"), content: fullName, style: .fixedWidthFont)
+      info += [nSection]
     }
     info += statement == nil ? [] : statement.walletInfo
     if issCode.count > 0 {
-      info += [
-        InfoSection(
-          header: l10n("issuer.country"),
-          content: l10n("country.\(issCode.uppercased())")
-        )
-      ]
+      let iSection = InfoSection(header: l10n("issuer.country"), content: l10n("country.\(issCode.uppercased())"))
+      info += [iSection]
     }
   }
 
-  
   func get(_ attribute: AttributeKey) -> JSON {
     var object = body
     for key in attributeKeys[attribute] ?? [] {
@@ -622,32 +515,25 @@ public struct HCert {
   }
   
   var testStatements: [TestEntry] {
-    return get(.testStatements)
-      .array?
-      .compactMap {
-        TestEntry(body: $0)
-      } ?? []
+    return get(.testStatements).array?.compactMap {TestEntry(body: $0)} ?? []
   }
+  
   var vaccineStatements: [VaccinationEntry] {
-    return get(.vaccineStatements)
-      .array?
-      .compactMap {
-        VaccinationEntry(body: $0)
-      } ?? []
+    return get(.vaccineStatements).array?.compactMap { VaccinationEntry(body: $0) } ?? []
   }
+  
   var recoveryStatements: [RecoveryEntry] {
-    return get(.recoveryStatements)
-      .array?
-      .compactMap {
-        RecoveryEntry(body: $0)
-      } ?? []
+    return get(.recoveryStatements).array?.compactMap {RecoveryEntry(body: $0)} ?? []
   }
+  
   var statements: [HCertEntry] {
     testStatements + vaccineStatements + recoveryStatements
   }
+  
   public var statement: HCertEntry! {
     statements.last
   }
+  
   public var type: HCertType {
     if statement is VaccinationEntry {
       return .vaccine
@@ -655,25 +541,23 @@ public struct HCert {
     if statement is RecoveryEntry {
       return .recovery
     }
-    
     if statement is TestEntry {
       return .test
     }
     return .unknown
   }
+  
   public var validityFailures = [String]()
   public var isValid: Bool {
     validityFailures.isEmpty
   }
+  
   public var cryptographicallyValid: Bool {
     if !Self.config.checkSignatures {
       return true
     }
-    guard
-      let delegate = Self.publicKeyStorageDelegate
-    else {
-      return false
-    }
+    guard let delegate = Self.publicKeyStorageDelegate else { return false }
+    
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
       if !X509.isCertificateValid(cert: key) {
         return false
@@ -688,18 +572,23 @@ public struct HCert {
     }
     return false
   }
+  
   public var validity: HCertValidity {
     return isValid ? .valid : .invalid
   }
+  
   public var certHash: String {
     CBOR.hash(from: cborData)
   }
+  
   public var uvci: String {
     statement?.uvci ?? "empty"
   }
+  
   public var keyPair: SecKey! {
     Enclave.loadOrGenerateKey(with: uvci)
   }
+  
   public static var clock: Date {
     clockOverride ?? Date()
   }
