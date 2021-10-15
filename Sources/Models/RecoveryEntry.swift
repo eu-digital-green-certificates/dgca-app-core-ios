@@ -28,10 +28,10 @@
 import Foundation
 import SwiftyJSON
 
-struct RecoveryEntry: HCertEntry {
-  var typeAddon: String { "" }
+public struct RecoveryEntry: HCertEntry {
+    public var typeAddon: String { "" }
 
-  var info: [InfoSection] {
+    public var info: [InfoSection] {
     [
       InfoSection(
         header: l10n("recovery.disease"),
@@ -52,7 +52,7 @@ struct RecoveryEntry: HCertEntry {
     ]
   }
 
-  var walletInfo: [InfoSection] {
+    public var walletInfo: [InfoSection] {
     [
       InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
       InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
@@ -73,7 +73,7 @@ struct RecoveryEntry: HCertEntry {
     ]
   }
 
-  var validityFailures: [String] {
+    public var validityFailures: [String] {
     var fail = [String]()
     if validFrom > HCert.clock {
       fail.append(l10n("hcert.err.rec.future"))
@@ -123,5 +123,5 @@ struct RecoveryEntry: HCertEntry {
   var issuer: String
   var validFrom: Date
   var validUntil: Date
-  var uvci: String
+    public var uvci: String
 }

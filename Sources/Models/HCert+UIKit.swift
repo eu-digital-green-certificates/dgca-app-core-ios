@@ -36,15 +36,17 @@ extension HCert {
     return qrCodeRendered ?? renderQrCode()
   }
 
+  @discardableResult
   func renderQrCode() -> UIImage? {
     if let rendered = qrCodeRendered {
       return rendered
     }
     let code = makeQrCode()
+    let lock = NSLock()
     if let value = code {
-      Self.qrLock.lock()
+      lock.lock()
       cachedQrCodes[uvci] = value
-      Self.qrLock.unlock()
+      lock.unlock()
     }
     return code
   }
@@ -65,11 +67,9 @@ extension HCert {
   }
 
   func prefetchCode() {
-    guard qrCodeRendered == nil else {
-      return
-    }
+    guard qrCodeRendered == nil else { return }
     DispatchQueue.global(qos: .background).async {
-      _ = renderQrCode()
+      renderQrCode()
     }
   }
 }
