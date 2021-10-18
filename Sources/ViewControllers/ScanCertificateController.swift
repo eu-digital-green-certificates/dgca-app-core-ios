@@ -110,7 +110,6 @@ open class ScanCertificateController: UIViewController {
       countryCodeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       countryCodeView.heightAnchor.constraint(equalToConstant: 150)
     ])
-
     
     countryCodeLabel.translatesAutoresizingMaskIntoConstraints = false
     countryCodeLabel.backgroundColor = .clear
@@ -125,9 +124,9 @@ open class ScanCertificateController: UIViewController {
       countryCodeLabel.heightAnchor.constraint(equalToConstant: 30)
     ])
     
-    view.backgroundColor = .init(white: 0, alpha: 1)
+    view.backgroundColor = UIColor.black
     #if targetEnvironment(simulator)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
       // swiftlint:disable:next line_length
       self.observationHandler(payloadS: "HC1:6BFA70$90T9WTWGSLKC 4X7923S%CA.48Y+6/AB3XK5F3 026003F3RD6Z*B1JC X8Y50.FK8ZKO/EZKEZ967L6C56..DX%DZJC2/D:+9 QE5$CLPCG/D0.CHY8ITAUIAI3DG8DXFF 8DXEDU3EI3DAWE1Z9CN9IB85T9JPCT3E5JDOA73467463W5-A67:EDOL9WEQDD+Q6TW6FA7C466KCK9E2H9G:6V6BEM6Q$D.UDRYA 96NF6L/5QW6307B$D% D3IA4W5646946%96X47XJC$+D3KC.SCXJCCWENF6OF63W5CA7746WJCT3E0ZA%JCIQEAZAWJC0FD6A5AIA%G7X+AQB9F+ALG7$X85+8+*81IA3H87+8/R8/A8+M986APH9$59/Y9WA627B873 3K9UD5M3JFG.BOO3L-GE828UE0T46/*JSTLE4MEJRX797NEXF5I$2+.LGOJXF24D2WR9 W8WQT:HHJ$7:TKP2RT+J:G4V5GT7E")
 //        HC1:NCF/Y43088D0000MIU%LJJKDO51FY0TZGD7FU5WG72 73*ZKHJPMH2FTF-6FOZ31:911K-441526+6UNAB1J48K%7TORRP018O3K32IF8H7R7ZV4MS FR2SPQ-DI7P%B7E6U$/76OATWJ%QAJ5LE.IF240213*JC/EP6C98IJ9HZ QX-53IGJ8KQR3 THF%B5 5JB7/HVIZ5XZ7JXABM1ZP1JM0BJQXZUG2EI782X9GU6OKNQS8GQCNRCQA4WGAL35TCL5R41C57W46+E J4KJDU4R 00XZPPNP0QMAVG0.TYQGBKOF1G%TKFB62.O/Y807UI%A4/EHS8K%O9SS017J47V5WKXQKEJEWTU8SLMIDU7RR19XK54RV$9ELJQTAFP1858EC65QH5EQB:N8ARAQA23EG7T% NI-TVZH:$5/GH+PC0-DKIT2F6.2OK:U%9T$UKMCLU4DGYT3TNBZMN1WLORN:UOQBI05 9ME8PQBORKDM4
@@ -140,7 +139,6 @@ open class ScanCertificateController: UIViewController {
     SquareViewFinder.create(from: self)
   }
   
-
   public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     captureSession?.stopRunning()
@@ -149,27 +147,6 @@ open class ScanCertificateController: UIViewController {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     captureSession?.startRunning()
-  }
-
-  public func createCancelButton() {
-    let button = UIButton(frame: .zero)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.backgroundColor = .clear
-    button.setAttributedTitle(NSAttributedString(string: l10n("btn.cancel"),
-        attributes: [
-        .font: UIFont.systemFont(ofSize: 22, weight: .semibold),
-        .foregroundColor: UIColor.white
-      ]), for: .normal)
-    button.addTarget(self, action: #selector(cancel), for: .touchUpInside)
-    view.addSubview(button)
-    NSLayoutConstraint.activate([
-      button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
-      button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16.0)
-    ])
-  }
-
-  @IBAction func cancel() {
-      self.dismiss(animated: true, completion: nil)
   }
 }
 
@@ -197,14 +174,11 @@ extension ScanCertificateController {
     let videoDevice = AVCaptureDevice
       .default(.builtInWideAngleCamera, for: .video, position: .back)
 
-    guard
-      let device = videoDevice,
+    guard let device = videoDevice,
       let videoDeviceInput = try? AVCaptureDeviceInput(device: device),
       captureSession?.canAddInput(videoDeviceInput) == true
     else {
-      showAlert(
-        withTitle: l10n("err.cam"),
-        message: l10n("err.cam.desc"))
+      showAlert(withTitle: l10n("err.cam"), message: l10n("err.cam.desc"))
       return
     }
 
@@ -227,15 +201,13 @@ extension ScanCertificateController {
         for barcode in barcodes {
           var potentialQRCode: VNBarcodeObservation
           if #available(iOS 15, *) {
-            guard
-              let potentialCode = barcode as? VNBarcodeObservation,
+            guard let potentialCode = barcode as? VNBarcodeObservation,
               [.Aztec, .QR, .DataMatrix].contains(potentialCode.symbology),
               potentialCode.confidence > 0.9
             else { return }
             potentialQRCode = potentialCode
           } else {
-            guard
-              let potentialCode = barcode as? VNBarcodeObservation,
+            guard let potentialCode = barcode as? VNBarcodeObservation,
               [.aztec, .qr, .dataMatrix].contains(potentialCode.symbology),
               potentialCode.confidence > 0.9
             else { return }
@@ -262,10 +234,7 @@ extension ScanCertificateController: AVCaptureVideoDataOutputSampleBufferDelegat
     from connection: AVCaptureConnection) {
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
-    let imageRequestHandler = VNImageRequestHandler(
-      cvPixelBuffer: pixelBuffer,
-      orientation: .right
-    )
+    let imageRequestHandler = VNImageRequestHandler( cvPixelBuffer: pixelBuffer, orientation: .right)
 
     do {
       try imageRequestHandler.perform([detectBarcodeRequest])
@@ -295,10 +264,7 @@ extension ScanCertificateController {
   }
 
   private func showPermissionsAlert() {
-    showAlert(
-      withTitle: l10n("err.cam.perm"),
-      message: l10n("err.cam.perm.desc")
-    )
+    showAlert(withTitle: l10n("err.cam.perm"), message: l10n("err.cam.perm.desc"))
   }
 }
 
