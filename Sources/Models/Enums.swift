@@ -64,3 +64,15 @@ public enum RuleValidationResult: Int {
   case passed
   case open
 }
+public class ParseErrors {
+  var errors: [ParseError] = []
+}
+  
+public enum ParseError {
+  case base45
+  case prefix
+  case zlib
+  case cbor
+  case json(error: String)
+  case version
+}

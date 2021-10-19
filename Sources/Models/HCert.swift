@@ -33,18 +33,6 @@ public struct HCertConfig {
 }
 
 public struct HCert {
-  public class ParseErrors {
-    var errors: [ParseError] = []
-  }
-    
-  enum ParseError {
-    case base45
-    case prefix
-    case zlib
-    case cbor
-    case json(error: String)
-    case version
-  }
 
   public static let config = HCertConfig(prefetchAllCodes: false, checkSignatures: true)
   public static let supportedPrefixes = [ "HC1:" ]
@@ -62,26 +50,23 @@ public struct HCert {
   public let body: JSON
   public let iat: Date
   public let exp: Date
-  
   public var ruleCountryCode: String?
 
   public var dateOfBirth: String {
     return get(.dateOfBirth).string ?? ""
   }
-  var firstName: String {
+  public var firstName: String {
     return get(.firstName).string ?? ""
   }
   public var firstNameStandardized: String {
     return get(.firstNameStandardized).string ?? ""
   }
-  
-  var lastName: String {
+  public var lastName: String {
     return get(.lastName).string ?? ""
   }
   public var lastNameStandardized: String {
     return get(.lastNameStandardized).string ?? ""
   }
-  
   public var fullName: String {
     var fullName = ""
     fullName = fullName + firstName.replacingOccurrences(of: "<",
@@ -93,7 +78,6 @@ public struct HCert {
       fullName = fullName + lastName.replacingOccurrences(of: "<",
         with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
     }
-
     if fullName.isEmpty {
       fullName = fullName + firstNameStandardized.replacingOccurrences( of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace)
@@ -107,15 +91,12 @@ public struct HCert {
     }
     return fullName
   }
-
   public var certTypeString: String {
     certificateType.l10n + (statement == nil ? "" : " \(statement.typeAddon)")
   }
-  
   public var uvci: String {
     statement?.uvci ?? "empty"
   }
-
   public var certificateType: HCertType {
     if statement is VaccinationEntry {
       return .vaccine
@@ -128,27 +109,21 @@ public struct HCert {
     }
     return .unknown
   }
-
   var testStatements: [TestEntry] {
     return get(.testStatements).array?.compactMap {TestEntry(body: $0)} ?? []
   }
-
   var vaccineStatements: [VaccinationEntry] {
     return get(.vaccineStatements).array?.compactMap { VaccinationEntry(body: $0) } ?? []
   }
-
   var recoveryStatements: [RecoveryEntry] {
     return get(.recoveryStatements).array?.compactMap {RecoveryEntry(body: $0)} ?? []
   }
-
   var statements: [HCertEntry] {
     return testStatements + vaccineStatements + recoveryStatements
   }
-
   public var statement: HCertEntry! {
     return statements.last
   }
-
   public var cryptographicallyValid: Bool {
     if !Self.config.checkSignatures {
       return true
@@ -163,21 +138,18 @@ public struct HCert {
     }
     return false
   }
-
   public var certHash: String {
     CBOR.hash(from: cborData)
   }
-
   public var keyPair: SecKey! {
     Enclave.loadOrGenerateKey(with: uvci)
   }
-
   public static var clock: Date {
     clockOverride ?? Date()
   }
   public static var clockOverride: Date?
 
-  static func parsePrefix(_ payloadString: String) -> String {
+  static private func parsePrefix(_ payloadString: String) -> String {
     var payloadString = payloadString
     Self.supportedPrefixes.forEach({ supportedPrefix in
       if payloadString.starts(with: supportedPrefix) {
@@ -258,5 +230,4 @@ public struct HCert {
     }
     return object
   }
-  
 }

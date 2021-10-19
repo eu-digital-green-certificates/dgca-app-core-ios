@@ -213,7 +213,6 @@ extension ScanCertificateController {
             else { return }
             potentialQRCode = potentialCode
           }
-
           print(potentialQRCode.symbology)
           observationHandler(payloadS: potentialQRCode.payloadStringValue)
         }
