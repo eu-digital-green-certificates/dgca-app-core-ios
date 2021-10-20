@@ -14,7 +14,7 @@ import SwiftyJSON
 
 public protocol ScanWalletDelegate: AnyObject {
   func walletController(_ controller: ScanWalletController, didScanCertificate certificate: HCert)
-  func walletController(_ controller: ScanWalletController, didScanInfo info: TicketingQR)
+  func walletController(_ controller: ScanWalletController, didScanInfo info: CheckInQR)
   func disableBackgroundDetection()
   func enableBackgroundDetection()
 }
@@ -197,7 +197,7 @@ extension ScanWalletController  {
       delegate?.walletController(self, didScanCertificate: hCert)
       return
     } else if let payloadData = (payloadS ?? "").data(using: .utf8),
-        let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData), applicationType == .wallet {
+        let ticketing = try? decoder.decode(CheckInQR.self, from: payloadData), applicationType == .wallet {
         delegate?.walletController(self, didScanInfo: ticketing)
     } else {
         //TODO Add error handler
