@@ -37,7 +37,7 @@ public protocol ScanVCDelegate: AnyObject {
   func hCertScanned(_:HCert)
   func disableBackgroundDetection()
   func enableBackgroundDetection()
-  func ticketingInfoScanned(_ :TicketingQR)
+  func ticketingInfoScanned(_ :CheckInQR)
 }
 
 open class ScanVC: UIViewController {
@@ -134,9 +134,9 @@ open class ScanVC: UIViewController {
   "protocolVersion": "1.0.0",
   "serviceIdentity": "https://dgca-booking-demo-eu-test.cfapps.eu10.hana.ondemand.com/api/identity",
   "privacyUrl": "https://validation-decorator.example",
-  "token": "eyJ0eXAiOiJKV1QiLCJraWQiOiJiUzhEMi9XejV0WT0iLCJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJodHRwczovL2RnY2EtYm9va2luZy1kZW1vLWV1LXRlc3QuY2ZhcHBzLmV1MTAuaGFuYS5vbmRlbWFuZC5jb20vYXBpL2lkZW50aXR5IiwiZXhwIjoxNjMzOTY4NTMwLCJzdWIiOiI3MWQ0NGQ2My02NjcyLTQ3NGYtODVlMS0yMTE5N2I5YzUzZDIifQ.HpnSGXPLjZLMpvF-ime0_VJcM0_2pOfQefScRzR_HqfWcmID87idO8VbCyNBsIcgkT2XGsW4WGYOisIankqq4g",
+  "token": "eyJ0eXAiOiJKV1QiLCJraWQiOiJiUzhEMi9XejV0WT0iLCJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJodHRwczovL2RnY2EtYm9va2luZy1kZW1vLWV1LXRlc3QuY2ZhcHBzLmV1MTAuaGFuYS5vbmRlbWFuZC5jb20vYXBpL2lkZW50aXR5IiwiZXhwIjoxNjM0NzMwMDc4LCJzdWIiOiJkNTVmZTZmZC01YTA3LTQ3ZjItYWJmZS0wZWRhNGZmYWQxNTYifQ.s7HOw99TpxotjnrH3JDC76GDEkcvCPchOXN_b6BwGlkJnuh8HJOKhpfzDjSKGVp6r_tLKZ-ybisAEEfS_YSVQg",
   "consent": "Please confirm to start the DCC Exchange flow. If you not confirm, the flow is aborted.",
-  "subject": "71d44d63-6672-474f-85e1-21197b9c53d2",
+  "subject": "d55fe6fd-5a07-47f2-abfe-0eda4ffad156",
   "serviceProvider": "Booking Demo"
 }
 """)
@@ -271,7 +271,7 @@ extension ScanVC {
       delegate?.hCertScanned(hCert)
       return
     }
-    if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(TicketingQR.self, from: payloadData), applicationType == .wallet {
+    if let payloadData = (payloadS ?? "").data(using: .utf8), let ticketing = try? decoder.decode(CheckInQR.self, from: payloadData), applicationType == .wallet {
       delegate?.ticketingInfoScanned(ticketing)
     }
   }
