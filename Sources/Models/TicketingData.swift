@@ -28,7 +28,7 @@
 
 import Foundation
 
-public struct TicketingQR : Codable {
+public struct CheckInQR : Codable {
   public var protocolName    : String
   public var protocolVersion : String
   public var serviceIdentity : String
