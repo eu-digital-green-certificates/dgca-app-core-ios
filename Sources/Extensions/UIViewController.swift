@@ -60,6 +60,7 @@ public extension UIViewController {
 
     present(alert, animated: true, completion: nil)
   }
+    
   func showAlert(
     title: String? = nil,
     subtitle: String? = nil,
@@ -78,6 +79,12 @@ public extension UIViewController {
     }
 
     present(alert, animated: true, completion: nil)
+  }
+    
+  func showInfoAlert(withTitle title: String, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "OK", style: .default))
+    self.present(alertController, animated: true)
   }
 }
 #endif

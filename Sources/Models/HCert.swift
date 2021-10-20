@@ -28,14 +28,26 @@ import Foundation
 import SwiftyJSON
 
 public struct HCertConfig {
+  public static let supportedPrefixes = [ "HC1:" ]
   public let prefetchAllCodes: Bool
   public let checkSignatures: Bool
+  
+  private func checkCH1PreffixExist(_ payloadString: String?) -> Bool {
+    guard let payloadString = payloadString  else { return false }
+    
+    for prfix in HCertConfig.supportedPrefixes {
+      if payloadString.starts(with: prfix) {
+        return true
+      }
+    }
+    return false
+  }
+
 }
 
 public struct HCert {
 
   public static let config = HCertConfig(prefetchAllCodes: false, checkSignatures: true)
-  public static let supportedPrefixes = [ "HC1:" ]
   
   public static var debugPrintJsonErrors = true
   public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
@@ -124,6 +136,7 @@ public struct HCert {
   public var statement: HCertEntry! {
     return statements.last
   }
+  
   public var cryptographicallyValid: Bool {
     if !Self.config.checkSignatures {
       return true
@@ -138,6 +151,7 @@ public struct HCert {
     }
     return false
   }
+  
   public var certHash: String {
     CBOR.hash(from: cborData)
   }
@@ -150,51 +164,42 @@ public struct HCert {
   public static var clockOverride: Date?
 
   static private func parsePrefix(_ payloadString: String) -> String {
-    var payloadString = payloadString
-    Self.supportedPrefixes.forEach({ supportedPrefix in
-      if payloadString.starts(with: supportedPrefix) {
-        payloadString = String(payloadString.dropFirst(supportedPrefix.count))
+    for prfix in HCertConfig.supportedPrefixes {
+      if payloadString.starts(with: prfix) {
+        let str = String(payloadString.dropFirst(prfix.count))
+        return str
       }
-    })
+    }
     return payloadString
   }
 
-  static private func checkCH1PreffixExist(_ payloadString: String?) -> Bool {
-    guard let payloadString = payloadString  else { return false }
-    var foundPrefix = false
-    Self.supportedPrefixes.forEach { supportedPrefix in
-      if payloadString.starts(with: supportedPrefix) { foundPrefix = true }
-    }
-    return foundPrefix
-  }
   
-  public init?(from payload: String, errors: ParseErrors? = nil, applicationType: AppType = .verifier) {
-    let payload = payload
-    if Self.checkCH1PreffixExist(payload) {
+  public init(from payload: String, applicationType: AppType = .verifier) throws {
+    if checkCH1PreffixExist(payload) {
       fullPayloadString = payload
       payloadString = Self.parsePrefix(payload)
     } else {
-      let supportedPrefixesString = Self.supportedPrefixes.first ?? ""
+      let supportedPrefixesString = HCertConfig.supportedPrefixes.first ?? ""
       fullPayloadString = supportedPrefixesString + payload
       payloadString = payload
     }
     appType = applicationType
     
     guard let compressed = try? payloadString.fromBase45() else {
-      errors?.errors.append(.base45)
-      return nil
+      throw CertificateParsingError.parsing(errors: [ParseError.base45])
     }
     
+    var parsingErrors = [ParseError]()
     cborData = decompress(compressed)
     if cborData.isEmpty {
-      errors?.errors.append(.zlib)
+      parsingErrors.append(ParseError.zlib)
     }
     
     guard let headerStr = CBOR.header(from: cborData)?.toString(),
       let bodyStr = CBOR.payload(from: cborData)?.toString(),
       let kid = CBOR.kid(from: cborData) else {
-      errors?.errors.append(.cbor)
-      return nil
+        parsingErrors.append(ParseError.cbor)
+        throw CertificateParsingError.parsing(errors: parsingErrors)
     }
     
     kidStr = KID.string(from: kid)
@@ -208,13 +213,14 @@ public struct HCert {
     }
     if body[ClaimKey.euDgcV1.rawValue].exists() {
       self.body = body[ClaimKey.euDgcV1.rawValue]
-      if !parseBodyV1(errors: errors) {
-        return nil
+      let parseBodyErrors = parseBodyV1()
+      if !parseBodyErrors.isEmpty {
+        throw CertificateParsingError.parsing(errors: parsingErrors)
       }
     } else {
       print("Wrong EU_DGC Version!")
-      errors?.errors.append(.version)
-      return nil
+      parsingErrors.append(.version)
+      throw CertificateParsingError.parsing(errors: parsingErrors)
     }    
     #if os(iOS)
     if Self.config.prefetchAllCodes {
@@ -223,7 +229,7 @@ public struct HCert {
     #endif
   }
 
- func get(_ attribute: AttributeKey) -> JSON {
+ private func get(_ attribute: AttributeKey) -> JSON {
     var object = body
     for key in attributeKeys[attribute] ?? [] {
       object = object[key]

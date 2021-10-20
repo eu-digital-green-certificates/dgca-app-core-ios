@@ -64,6 +64,7 @@ public enum RuleValidationResult: Int {
   case passed
   case open
 }
+
 public class ParseErrors {
   var errors: [ParseError] = []
 }
@@ -75,4 +76,9 @@ public enum ParseError {
   case cbor
   case json(error: String)
   case version
+}
+
+public enum CertificateParsingError: Error {
+    case base45
+    case parsing(errors: [ParseError])
 }

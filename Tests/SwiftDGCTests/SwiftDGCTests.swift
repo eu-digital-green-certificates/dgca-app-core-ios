@@ -107,7 +107,6 @@ final class SwiftDGCTests: XCTestCase {
     }
     json = JSON(parseJSON: string)
     HCert.clockOverride = clock
-    let error = HCert.ParseErrors()
     let hcert = HCert(from: payloadString ?? "", errors: error)
     let errors = error.errors
 
@@ -127,9 +126,7 @@ final class SwiftDGCTests: XCTestCase {
         XCTAssert(expSchemaValidation != true, "unexpected version err for \(descr)")
       }
     }
-    guard let hcert = hcert else {
-      return
-    }
+    guard let hcert = hcert else { return }
     checkHcert(hcert: hcert)
   }
 

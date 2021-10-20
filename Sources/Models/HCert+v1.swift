@@ -29,32 +29,25 @@ import SwiftyJSON
 import JSONSchema
 
 extension HCert {
-  mutating func parseBodyV1(errors: ParseErrors? = nil) -> Bool {
+   func parseBodyV1() -> [ParseError] {
     guard let schema = JSON(parseJSON: euDgcSchemaV1).dictionaryObject, let bodyDict = body.dictionaryObject else {
-      errors?.errors.append(.json(error: "Validation failed"))
-      return false
+      return [.json(error: "Schema Validation failed")]
     }
-    
     guard let validation = try? validate(bodyDict, schema: schema) else {
-      errors?.errors.append(.json(error: "Validation failed"))
-      return false
+      return  [.json(error: "Body Validation failed")]
     }
       
-    validation.errors?.forEach { errors?.errors.append(.json(error: $0.description)) }
+    var bodyErrors = [ParseError]()
+       
+    validation.errors?.forEach { bodyErrors.append(.json(error: $0.description)) }
     #if DEBUG
     if Self.debugPrintJsonErrors {
-      validation.errors?.forEach {
-        print($0.description)
-      }
+      validation.errors?.forEach { print($0.description) }
       if !validation.valid {
-        return false
+        return bodyErrors
       }
-    }
-    #else
-    if !validation.valid {
-      return false
     }
     #endif
-    return true
+    return bodyErrors
   }
 }
