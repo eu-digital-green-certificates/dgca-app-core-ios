@@ -28,8 +28,8 @@
 import Foundation
 import UIKit
 
-class SquareViewFinder {
-  static func newView(from view: UIView? = nil) -> UIView {
+public class SquareViewFinder {
+  public static func newView(from view: UIView? = nil) -> UIView {
     let view = view ?? UIView(frame: .zero)
     view.frame = .zero
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -39,9 +39,8 @@ class SquareViewFinder {
   }
 
   public static func create(from controller: UIViewController) {
-    guard let view = controller.view else {
-      return
-    }
+    guard let view = controller.view else { return }
+      
     let guide = newView()
     let square = newView()
     let imgTopRight = newView(from: UIImageView(image: UIImage.fromBundle(named: "cam_top_right")))

@@ -26,33 +26,9 @@
 
 import Foundation
 import SwiftyJSON
-
-public struct HCertConfig {
-  public static let supportedPrefixes = [ "HC1:" ]
-  public let prefetchAllCodes: Bool
-  public let checkSignatures: Bool
-  
-  private func checkCH1PreffixExist(_ payloadString: String?) -> Bool {
-    guard let payloadString = payloadString  else { return false }
-    
-    for prfix in HCertConfig.supportedPrefixes {
-      if payloadString.starts(with: prfix) {
-        return true
-      }
-    }
-    return false
-  }
-
-}
+import JSONSchema
 
 public struct HCert {
-
-  public static let config = HCertConfig(prefetchAllCodes: false, checkSignatures: true)
-  
-  public static var debugPrintJsonErrors = true
-  public static var publicKeyStorageDelegate: PublicKeyStorageDelegate?
-
-  public let appType: AppType
   public let fullPayloadString: String
   public let payloadString: String
   public let cborData: Data
@@ -62,7 +38,7 @@ public struct HCert {
   public let body: JSON
   public let iat: Date
   public let exp: Date
-  public var ruleCountryCode: String?
+  public let ruleCountryCode: String?
 
   public var dateOfBirth: String {
     return get(.dateOfBirth).string ?? ""
@@ -79,6 +55,7 @@ public struct HCert {
   public var lastNameStandardized: String {
     return get(.lastNameStandardized).string ?? ""
   }
+  
   public var fullName: String {
     var fullName = ""
     fullName = fullName + firstName.replacingOccurrences(of: "<",
@@ -103,6 +80,7 @@ public struct HCert {
     }
     return fullName
   }
+  
   public var certTypeString: String {
     certificateType.l10n + (statement == nil ? "" : " \(statement.typeAddon)")
   }
@@ -138,10 +116,10 @@ public struct HCert {
   }
   
   public var cryptographicallyValid: Bool {
-    if !Self.config.checkSignatures {
+      if !VerificationManager.sharedManager.config.checkSignatures {
       return true
     }
-    guard let delegate = Self.publicKeyStorageDelegate else { return false }
+    guard let delegate = VerificationManager.sharedManager.publicKeyStorageDelegate else { return false }
     
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
       if !X509.isCertificateValid(cert: key) {
@@ -162,29 +140,19 @@ public struct HCert {
     clockOverride ?? Date()
   }
   public static var clockOverride: Date?
-
-  static private func parsePrefix(_ payloadString: String) -> String {
-    for prfix in HCertConfig.supportedPrefixes {
-      if payloadString.starts(with: prfix) {
-        let str = String(payloadString.dropFirst(prfix.count))
-        return str
-      }
-    }
-    return payloadString
-  }
-
   
-  public init(from payload: String, applicationType: AppType = .verifier) throws {
-    if checkCH1PreffixExist(payload) {
+    public init(from payload: String, ruleCountryCode: String? = nil) throws {
+        
+      if HCertConfig.checkCH1PreffixExist(payload) {
       fullPayloadString = payload
-      payloadString = Self.parsePrefix(payload)
+      payloadString = HCertConfig.parsePrefix(payload)
     } else {
-      let supportedPrefixesString = HCertConfig.supportedPrefixes.first ?? ""
-      fullPayloadString = supportedPrefixesString + payload
+      let supportedPrefix = HCertConfig.supportedPrefixes.first ?? ""
+      fullPayloadString = supportedPrefix + payload
       payloadString = payload
     }
-    appType = applicationType
-    
+        
+    self.ruleCountryCode = ruleCountryCode
     guard let compressed = try? payloadString.fromBase45() else {
       throw CertificateParsingError.parsing(errors: [ParseError.base45])
     }
@@ -194,7 +162,6 @@ public struct HCert {
     if cborData.isEmpty {
       parsingErrors.append(ParseError.zlib)
     }
-    
     guard let headerStr = CBOR.header(from: cborData)?.toString(),
       let bodyStr = CBOR.payload(from: cborData)?.toString(),
       let kid = CBOR.kid(from: cborData) else {
@@ -219,21 +186,44 @@ public struct HCert {
       }
     } else {
       print("Wrong EU_DGC Version!")
-      parsingErrors.append(.version)
+      parsingErrors.append(.version(error: "Wrong EU_DGC Version!"))
       throw CertificateParsingError.parsing(errors: parsingErrors)
-    }    
+    }
     #if os(iOS)
-    if Self.config.prefetchAllCodes {
+      if VerificationManager.sharedManager.config.prefetchAllCodes {
       prefetchCode()
     }
     #endif
   }
 
- private func get(_ attribute: AttributeKey) -> JSON {
+  private func get(_ attribute: AttributeKey) -> JSON {
     var object = body
     for key in attributeKeys[attribute] ?? [] {
       object = object[key]
     }
     return object
+  }
+}
+
+extension HCert {
+   private func parseBodyV1() -> [ParseError] {
+    guard let schema = JSON(parseJSON: euDgcSchemaV1).dictionaryObject, let bodyDict = body.dictionaryObject else {
+      return [.json(error: "Schema Validation failed")]
+    }
+     do {
+       var bodyErrors = [ParseError]()
+       let validation = try validate(bodyDict, schema: schema)
+       validation.errors?.forEach { bodyErrors.append(.json(error: $0.description)) }
+
+      #if DEBUG
+        if VerificationManager.sharedManager.config.debugPrintJsonErrors {
+          validation.errors?.forEach { print($0.description) }
+        }
+      #endif
+       return bodyErrors
+       
+     } catch {
+       return  [.json(error: "Body Validation failed")]
+     }
   }
 }

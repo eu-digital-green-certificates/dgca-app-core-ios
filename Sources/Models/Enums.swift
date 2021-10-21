@@ -75,10 +75,10 @@ public enum ParseError {
   case zlib
   case cbor
   case json(error: String)
-  case version
+  case version(error: String)
 }
 
 public enum CertificateParsingError: Error {
-    case base45
+    case unknown
     case parsing(errors: [ParseError])
 }

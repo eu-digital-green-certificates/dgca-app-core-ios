@@ -28,24 +28,24 @@
 
 import Foundation
 import SwiftyJSON
-import CertLogic
 
-class SectionBuilder {
-    var infoSection = [InfoSection]()
+public class SectionBuilder {
+    public var infoSection = [InfoSection]()
 
-    private let certificateValidity: CertificateValidity
+    private let validityState: ValidityState
     private let certificate: HCert
 
-    init(with cert: HCert, validity: CertificateValidity) {
+    public init(with cert: HCert, validity: ValidityState) {
       self.certificate = cert
-      self.certificateValidity = validity
+      self.validityState = validity
     }
 
-    func makeSections(for appType: AppType) {
+    public func makeSections(for appType: AppType) {
       infoSection.removeAll()
       switch appType {
       case .verifier:
           makeSectionsForVerifier()
+          
       case .wallet:
         switch certificate.certificateType {
         case .vaccine:
@@ -60,13 +60,13 @@ class SectionBuilder {
       }
     }
 
-    func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
+    public func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
       let hSection = InfoSection(header: l10n("header.cert-type"), content: certificate.certTypeString )
       infoSection += [hSection]
 
-      guard certificateValidity.isValid else {
+      guard validityState.isValid else {
         let vSection = InfoSection(header: l10n("header.validity-errors"),
-            content: certificateValidity.validityFailures.joined(separator: " "))
+            content: validityState.validityFailures.joined(separator: " "))
         infoSection += [vSection]
         return
       }
@@ -94,9 +94,9 @@ class SectionBuilder {
       if includeInvalidSection {
         let hSection = InfoSection( header: l10n("header.cert-type"), content: certificate.certTypeString )
         infoSection += [hSection]
-        if !certificateValidity.isValid {
+        if !validityState.isValid {
           let vSection = InfoSection(header: l10n("header.validity-errors"),
-              content: certificateValidity.validityFailures.joined(separator: " "))
+              content: validityState.validityFailures.joined(separator: " "))
           infoSection += [vSection]
           return
         }
@@ -123,9 +123,9 @@ class SectionBuilder {
       if includeInvalidSection {
         let cSection = InfoSection( header: l10n("header.cert-type"),content: certificate.certTypeString)
         infoSection += [cSection]
-        if !certificateValidity.isValid {
+        if !validityState.isValid {
           let hSection = InfoSection(header: l10n("header.validity-errors"),
-            content: certificateValidity.validityFailures.joined(separator: " "))
+            content: validityState.validityFailures.joined(separator: " "))
           infoSection += [hSection]
         }
       }
@@ -145,9 +145,9 @@ class SectionBuilder {
       if includeInvalidSection {
         let cSection = InfoSection(header: l10n("header.cert-type"), content: certificate.certTypeString)
         infoSection += [cSection]
-        if !certificateValidity.isValid {
+        if !validityState.isValid {
           let hSection = InfoSection(header: l10n("header.validity-errors"),
-              content: certificateValidity.validityFailures.joined(separator: " "))
+              content: validityState.validityFailures.joined(separator: " "))
           infoSection += [hSection]
         }
       }
@@ -167,9 +167,9 @@ class SectionBuilder {
       if includeInvalidSection {
         let hSection = InfoSection(header: l10n("header.cert-type"), content: certificate.certTypeString)
         infoSection += [hSection]
-        if !certificateValidity.isValid {
+        if !validityState.isValid {
           let vSection = InfoSection(header: l10n("header.validity-errors"),
-              content: certificateValidity.validityFailures.joined(separator: " "))
+              content: validityState.validityFailures.joined(separator: " "))
           infoSection += [vSection]
         }
       }

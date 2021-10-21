@@ -19,7 +19,7 @@
  * ---license-end
  */
 //  
-//  CertificateValidity.swift
+//  ValidityState.swift
 //  DGCAVerifier
 //  
 //  Created by Igor Khomiak on 18.10.2021.
@@ -28,34 +28,54 @@
 
 import Foundation
 import SwiftyJSON
-import CertLogic
 
-struct CertificateValidity {
-    static var invalid = CertificateValidity(technicalValidity: .invalid,
-        issuerValidity: .invalid,
-        destinationValidity: .invalid,
-        travalerValidity: .invalid,
-        allRulesValidity: .invalid,
-        validityFailures: [],
-        infoRulesSection: nil)
+public struct ValidityState {
+    public static var invalid = ValidityState()
     
-    let technicalValidity: HCertValidity
-    let issuerValidity: HCertValidity
-    let destinationValidity: HCertValidity
-    let travalerValidity: HCertValidity
-    let allRulesValidity: HCertValidity
-    let validityFailures: [String]
-    var infoRulesSection: InfoSection?
+    public let technicalValidity: HCertValidity
+    public let issuerValidity: HCertValidity
+    public let destinationValidity: HCertValidity
+    public let travalerValidity: HCertValidity
+    public let allRulesValidity: HCertValidity
+    public let validityFailures: [String]
+    public var infoRulesSection: InfoSection?
+    
+    public init() {
+        self.technicalValidity = .invalid
+        self.issuerValidity = .invalid
+        self.destinationValidity = .invalid
+        self.travalerValidity = .invalid
+        self.allRulesValidity = .invalid
+        self.validityFailures = []
+        self.infoRulesSection = nil
+    }
+    
+    public init(
+        technicalValidity: HCertValidity,
+        issuerValidity: HCertValidity,
+        destinationValidity: HCertValidity,
+        travalerValidity: HCertValidity,
+        allRulesValidity: HCertValidity,
+        validityFailures: [String],
+        infoRulesSection: InfoSection?) {
+            self.technicalValidity = technicalValidity
+            self.issuerValidity = issuerValidity
+            self.destinationValidity = destinationValidity
+            self.travalerValidity = travalerValidity
+            self.allRulesValidity = allRulesValidity
+            self.validityFailures = validityFailures
+            self.infoRulesSection = infoRulesSection
+    }
     
     private var validity: HCertValidity {
       return validityFailures.isEmpty ? .valid : .invalid
     }
     
-    var isValid: Bool {
+    public var isValid: Bool {
       return validityFailures.isEmpty
     }
 
-    var issuerInvalidation: RuleValidationResult {
+    public var issuerInvalidation: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch issuerValidity {
           case .valid:
@@ -68,7 +88,7 @@ struct CertificateValidity {
         return ruleResult
     }
     
-    var destinationAcceptence: RuleValidationResult {
+    public var destinationAcceptence: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch destinationValidity {
           case .valid:
@@ -81,7 +101,7 @@ struct CertificateValidity {
         return ruleResult
     }
     
-    var travalerAcceptence: RuleValidationResult {
+    public var travalerAcceptence: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch travalerValidity {
           case .valid:
