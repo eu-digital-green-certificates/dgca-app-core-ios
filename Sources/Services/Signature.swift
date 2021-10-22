@@ -51,7 +51,7 @@ struct Signature {
       &error
     )
     if let err = error?.takeUnretainedValue().localizedDescription {
-      print(err)
+        DGCLogger.logError(err)
     }
     error?.release()
 

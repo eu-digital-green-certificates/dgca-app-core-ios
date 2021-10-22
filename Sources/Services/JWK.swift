@@ -66,10 +66,8 @@ struct JWK {
     let keyReference = SecKeyCreateWithData(keyData as CFData, attributes as CFDictionary, &error)
     let errorString = error?.takeUnretainedValue().localizedDescription ?? l10n("err.misc")
     error?.release()
-    guard
-      let key = keyReference
-    else {
-      print(errorString)
+    guard let key = keyReference else {
+      DGCLogger.logError(errorString)
       return nil
     }
 

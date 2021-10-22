@@ -80,7 +80,7 @@ final class SwiftDGCTests: XCTestCase {
   }
 
   func testCountry(dir: String, for countryName: String) {
-    print("Testing", countryName)
+    DGCLogger.logInfo("Testing\(countryName)")"
     guard isDir(path: "\(dir)/2DCode/raw") else {
       return
     }

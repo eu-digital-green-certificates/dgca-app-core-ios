@@ -29,7 +29,7 @@ import UIKit
 
 extension HCert {
   var qrCodeRendered: UIImage? {
-    cachedQrCodes[uvci]
+      VerificationManager.cachedQrCodes[uvci]
   }
 
   public var qrCode: UIImage? {
@@ -45,7 +45,7 @@ extension HCert {
     let lock = NSLock()
     if let value = code {
       lock.lock()
-      cachedQrCodes[uvci] = value
+        VerificationManager.cachedQrCodes[uvci] = value
       lock.unlock()
     }
     return code
@@ -74,5 +74,4 @@ extension HCert {
   }
 }
 
-var cachedQrCodes = [String: UIImage]()
 #endif

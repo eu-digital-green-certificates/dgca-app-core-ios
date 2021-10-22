@@ -25,7 +25,6 @@
 //
 
 #if os(iOS)
-import Foundation
 import UIKit
 
 public class SquareViewFinder {

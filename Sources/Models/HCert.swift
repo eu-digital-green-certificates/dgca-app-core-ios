@@ -185,12 +185,12 @@ public struct HCert {
         throw CertificateParsingError.parsing(errors: parsingErrors)
       }
     } else {
-      print("Wrong EU_DGC Version!")
+      DGCLogger.logInfo("Wrong EU_DGC Version!")
       parsingErrors.append(.version(error: "Wrong EU_DGC Version!"))
       throw CertificateParsingError.parsing(errors: parsingErrors)
     }
     #if os(iOS)
-      if VerificationManager.sharedManager.config.prefetchAllCodes {
+    if VerificationManager.sharedManager.config.prefetchAllCodes {
       prefetchCode()
     }
     #endif
@@ -217,7 +217,7 @@ extension HCert {
 
       #if DEBUG
         if VerificationManager.sharedManager.config.debugPrintJsonErrors {
-          validation.errors?.forEach { print($0.description) }
+          validation.errors?.forEach { DGCLogger.logInfo($0.description) }
         }
       #endif
        return bodyErrors
