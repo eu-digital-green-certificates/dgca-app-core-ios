@@ -49,7 +49,7 @@ public struct CheckInQR : Codable {
 }
 
 public struct ServerListResponse : Codable {
-  public var id                  : String
+  public var id                  : String?
   public var service             : [ValidationService]?
   public var verificationMethod  : [VerificationMethod]?
 }
