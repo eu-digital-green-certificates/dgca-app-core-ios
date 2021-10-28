@@ -84,6 +84,7 @@ public struct HCert {
   public var certTypeString: String {
     certificateType.l10n + (statement == nil ? "" : " \(statement.typeAddon)")
   }
+    
   public var uvci: String {
     statement?.uvci ?? "empty"
   }
