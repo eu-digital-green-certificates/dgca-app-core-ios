@@ -34,11 +34,7 @@ public struct KID {
     return Data(kidBytes.prefix(8)).base64EncodedString()
   }
   public static func from(_ encodedCert: String) -> KidBytes {
-    guard
-      let data = Data(base64Encoded: encodedCert)
-    else {
-      return []
-    }
+    guard let data = Data(base64Encoded: encodedCert) else { return [] }
     return .init(SHA256.digest(input: data as NSData).uint.prefix(8))
   }
 }

@@ -8,15 +8,15 @@
 import Foundation
 import SwiftyJSON
 
-public struct InfoSection {
-  public var header: String
-  public var content: String
-  public var style = InfoSectionStyle.normal
-  public var isPrivate = false
+public class InfoSection {
+  public let header: String
+  public let content: String
+  public let style: InfoSectionStyle
+  public let isPrivate: Bool
   public var sectionItems: [InfoSection] = []
   public var isExpanded: Bool = false
   public var countryName: String?
-  public var ruleValidationResult: RuleValidationResult = .open
+  public let ruleValidationResult: RuleValidationResult
   
   public init(header: String, content: String, style: InfoSectionStyle = .normal,
         isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {

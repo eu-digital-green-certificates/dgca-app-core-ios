@@ -13,6 +13,6 @@ public class VerificationManager {
     public static var cachedQrCodes = [String: UIImage]()
 
     public var config = HCertConfig()
-    public var publicKeyStorageDelegate: PublicKeyStorageDelegate?
+    public var publicKeyEncoder: PublicKeyStorageDelegate?
 
 }

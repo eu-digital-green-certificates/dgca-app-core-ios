@@ -33,11 +33,7 @@ public struct Config {
   }
 
   public static func load() -> JSON {
-    guard
-      let path = Bundle.main.resourcePath
-    else {
-      return .null
-    }
+    guard let path = Bundle.main.resourcePath else { return .null }
 
     let context = "context.jsonc"
     let fileURL = URL(fileURLWithPath: path + "/\(context)")

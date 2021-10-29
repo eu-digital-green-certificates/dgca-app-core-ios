@@ -64,5 +64,4 @@ public struct CertEvaluator: ServerTrustEvaluating {
   public init(pubKeys: [String]) {
     self.pubKeys = pubKeys
   }
-
 }

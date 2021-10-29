@@ -9,7 +9,6 @@ import Foundation
 
 public class HCertConfig {
   public static let supportedPrefixes = [ "HC1:" ]
-
   public let prefetchAllCodes: Bool
   public let checkSignatures: Bool
   public let debugPrintJsonErrors: Bool
@@ -45,5 +44,4 @@ public class HCertConfig {
     }
     return payloadString
   }
-
 }

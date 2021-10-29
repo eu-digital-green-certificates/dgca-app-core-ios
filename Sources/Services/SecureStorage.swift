@@ -39,7 +39,7 @@ public struct SecureStorage<T: Codable> {
     appropriateFor: nil,
     create: true
   )
-  var fileName: String
+  let  fileName: String
   var path: URL! { URL(string: documents.absoluteString + "\(fileName).db") }
   let secureStorageKey = Enclave.loadOrGenerateKey(with: "secureStorageKey")
 

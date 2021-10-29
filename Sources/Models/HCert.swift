@@ -120,7 +120,7 @@ public struct HCert {
       if !VerificationManager.sharedManager.config.checkSignatures {
       return true
     }
-    guard let delegate = VerificationManager.sharedManager.publicKeyStorageDelegate else { return false }
+    guard let delegate = VerificationManager.sharedManager.publicKeyEncoder else { return false }
     
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
       if !X509.isCertificateValid(cert: key) {
