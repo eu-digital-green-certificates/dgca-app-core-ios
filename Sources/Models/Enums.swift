@@ -37,7 +37,7 @@ public enum HCertType: String {
   case unknown
 }
 
-public enum HCertValidity: String {
+public enum HCertValidity {
   case valid
   case invalid
   case ruleInvalid
