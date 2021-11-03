@@ -29,7 +29,7 @@ import Foundation
 
 public typealias KidBytes = [UInt8]
 
-public struct KID {
+public class KID {
   public static func string(from kidBytes: KidBytes) -> String {
     return Data(kidBytes.prefix(8)).base64EncodedString()
   }

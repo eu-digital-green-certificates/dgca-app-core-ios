@@ -28,7 +28,7 @@
 
 import Foundation
 
-struct JWK {
+class JWK {
   public static func ecFrom(x numX: String, y numY: String) -> SecKey? {
     var xBytes: Data?
     var yBytes: Data?

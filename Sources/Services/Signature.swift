@@ -28,7 +28,7 @@
 
 import Foundation
 
-struct Signature {
+class Signature {
   public static func verify(_ signature: Data, for data: Data, with publicKey: SecKey) -> Bool {
     var signature = signature
     var alg: SecKeyAlgorithm

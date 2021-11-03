@@ -39,7 +39,7 @@ public struct SecureStorage<T: Codable> {
     appropriateFor: nil,
     create: true
   )
-  let  fileName: String
+  let fileName: String
   var path: URL! { URL(string: documents.absoluteString + "\(fileName).db") }
   let secureStorageKey = Enclave.loadOrGenerateKey(with: "secureStorageKey")
 
@@ -68,18 +68,14 @@ public struct SecureStorage<T: Codable> {
       return
     }
 
-    guard
-      let (data, signature) = read(),
-      let key = secureStorageKey,
+    guard let (data, signature) = read(), let key = secureStorageKey,
       Enclave.verify(data: data, signature: signature, with: key).0
     else {
       completion?(nil)
       return
     }
     Enclave.decrypt(data: data, with: key) { decrypted, err in
-      guard
-        let decrypted = decrypted,
-        err == nil,
+      guard let decrypted = decrypted, err == nil,
         let data = try? JSONDecoder().decode(T.self, from: decrypted)
       else {
         completion?(nil)
@@ -90,8 +86,7 @@ public struct SecureStorage<T: Codable> {
   }
 
   public func save(_ instance: T, completion: ((Bool) -> Void)? = nil) {
-    guard
-      let data = try? JSONEncoder().encode(instance),
+    guard let data = try? JSONEncoder().encode(instance),
       let key = secureStorageKey,
       let encrypted = Enclave.encrypt(data: data, with: key).0
     else {
@@ -99,10 +94,7 @@ public struct SecureStorage<T: Codable> {
       return
     }
     Enclave.sign(data: encrypted, with: key) { signature, err in
-      guard
-        let signature = signature,
-        err == nil
-      else {
+      guard let signature = signature, err == nil else {
         completion?(false)
         return
       }
@@ -112,22 +104,15 @@ public struct SecureStorage<T: Codable> {
   }
 
   func write(data: Data, signature: Data) -> Bool {
-    guard
-      let rawData = try? JSONEncoder().encode(SecureDB(data: data, signature: signature)),
-      (try? rawData.write(to: path)) != nil
-    else {
-      return false
-    }
+    guard let rawData = try? JSONEncoder().encode(SecureDB(data: data, signature: signature)),
+      (try? rawData.write(to: path)) != nil else { return false }
     return true
   }
 
   func read() -> (Data, Data)? {
-    guard
-      let rawData = try? Data(contentsOf: path, options: [.uncached]),
+    guard let rawData = try? Data(contentsOf: path, options: [.uncached]),
       let result = try? JSONDecoder().decode(SecureDB.self, from: rawData)
-    else {
-      return nil
-    }
+    else { return nil }
     return (result.data, result.signature)
   }
 }

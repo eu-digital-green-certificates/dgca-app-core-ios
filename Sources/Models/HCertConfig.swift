@@ -8,12 +8,14 @@
 import Foundation
 
 public class HCertConfig {
+  public static let `default` = HCertConfig()
   public static let supportedPrefixes = [ "HC1:" ]
+    
   public let prefetchAllCodes: Bool
   public let checkSignatures: Bool
   public let debugPrintJsonErrors: Bool
 
-  public init() {
+  init() { // default
     self.prefetchAllCodes = false
     self.checkSignatures = true
     self.debugPrintJsonErrors = true

@@ -35,23 +35,29 @@ enum TestResult: String {
 
 public struct TestEntry: HCertEntry {
     public var typeAddon: String { "" }
+    public let uvci: String
+
+    private let diseaseTargeted: String
+    private let type: String
+    private let sampleTime: Date
+    private let resultNegative: Bool
+    private let testCenter: String
+    private let countryCode: String
+    private let issuer: String
 
     public var info: [InfoSection] {
-    [
-      InfoSection(header: l10n("test.sample-date-time"), content: sampleTime.dateTimeStringUtc),
+      [InfoSection(header: l10n("test.sample-date-time"), content: sampleTime.dateTimeStringUtc),
       InfoSection(header: l10n("test.test-result"),
         content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")),
       InfoSection( header: l10n("test.disease"), content: l10n("disease." + diseaseTargeted,
         or: "\(l10n("disease.unknown")): \(diseaseTargeted)") ),
       InfoSection( header: l10n("test.center"), content: testCenter, isPrivate: true),
       InfoSection( header: l10n("test.country"), content: country(for: countryCode), isPrivate: true),
-      InfoSection( header: l10n("test.issuer"), content: issuer, isPrivate: true )
-    ]
+      InfoSection( header: l10n("test.issuer"), content: issuer, isPrivate: true )]
   }
 
     public var walletInfo: [InfoSection] {
-    [
-      InfoSection(header: l10n("test.test-result"),
+      [InfoSection(header: l10n("test.test-result"),
         content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")),
       InfoSection(header: l10n("test.sample-date-time"), content: sampleTime.dateTimeStringUtc),
       InfoSection(header: l10n("test.type"), content: type),
@@ -109,12 +115,4 @@ public struct TestEntry: HCertEntry {
     self.uvci = uvci
   }
 
-  let diseaseTargeted: String
-  let type: String
-  let sampleTime: Date
-  let resultNegative: Bool
-  let testCenter: String
-  let countryCode: String
-  let issuer: String
-  public let uvci: String
 }

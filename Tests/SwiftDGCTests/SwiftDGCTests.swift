@@ -66,8 +66,8 @@ final class SwiftDGCTests: XCTestCase {
       XCTAssert(false, "l10n failed")
       return
     }
-      VerificationManager.sharedManager.config = HCertConfig(prefetchAllCodes: false, checkSignatures: true, debugPrintJsonErrors: false)
-      VerificationManager.sharedManager.publicKeyEncoder = self
+    CoreManager.shared.config = HCertConfig(prefetchAllCodes: false, checkSignatures: true, debugPrintJsonErrors: false)
+    CoreManager.publicKeyEncoder = self
     guard var path = bundle.resourcePath else { return }
     path += "/dgc-testdata"
     let contents = ls(path: path).filter {

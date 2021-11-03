@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public class InfoSection {
+public struct InfoSection {
   public let header: String
   public let content: String
   public let style: InfoSectionStyle

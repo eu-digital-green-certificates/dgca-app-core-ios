@@ -27,7 +27,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct Config {
+public class Config {
   public static func merge(_ old: JSON, with new: JSON) -> JSON {
     old.mergeAndOverride(other: new)
   }

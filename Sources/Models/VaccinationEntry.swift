@@ -29,12 +29,24 @@ import Foundation
 import SwiftyJSON
 
 public struct VaccinationEntry: HCertEntry {
-    public var typeAddon: String {
+    
+  public var typeAddon: String {
     let format = l10n("vaccine.x-of-x")
     return .localizedStringWithFormat(format, doseNumber, dosesTotal)
   }
+  public let uvci: String
+    
+  private let diseaseTargeted: String
+  private let vaccineOrProphylaxis: String
+  private let medicalProduct: String
+  private let manufacturer: String
+  private let countryCode: String
+  private let issuer: String
+  private let doseNumber: Int
+  private let dosesTotal: Int
+  private let date: Date
 
-    public var info: [InfoSection] {
+  public var info: [InfoSection] {
     [InfoSection(header: l10n("vaccine.date"), content: date.localDateString),
       InfoSection( header: l10n("vaccine.disease"),
         content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
@@ -53,11 +65,10 @@ public struct VaccinationEntry: HCertEntry {
     ]
   }
   
-    public var walletInfo: [InfoSection] {
-    [
-      InfoSection( header: l10n("vaccine.date"), content: date.localDateString ),
+  public var walletInfo: [InfoSection] {
+    [InfoSection( header: l10n("vaccine.date"), content: date.localDateString ),
       InfoSection( header: l10n("vaccine.disease"),
- content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)") ),
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)") ),
       InfoSection( header: l10n("vaccine.manufacturer"),
         content: l10n("vac.man." + manufacturer, or: "\(l10n("vac.man.unknown")): \(manufacturer)"),
         isPrivate: true ),
@@ -73,7 +84,6 @@ public struct VaccinationEntry: HCertEntry {
       InfoSection(header: l10n("vaccine.issuer"), content: issuer, isPrivate: true)]
   }
 
-  
     public var validityFailures: [String] {
     var fail = [String]()
     if date > HCert.clock {
@@ -82,7 +92,7 @@ public struct VaccinationEntry: HCertEntry {
     return fail
   }
 
-  enum Fields: String {
+  private enum Fields: String {
     case diseaseTargeted = "tg"
     case vaccineOrProphylaxis = "vp"
     case medicalProduct = "mp"
@@ -122,15 +132,4 @@ public struct VaccinationEntry: HCertEntry {
     self.dosesTotal = dosesTotal
     self.date = date
   }
-
-    let diseaseTargeted: String
-    let vaccineOrProphylaxis: String
-    let medicalProduct: String
-    let manufacturer: String
-    let countryCode: String
-    let issuer: String
-    public let uvci: String
-    let doseNumber: Int
-    let dosesTotal: Int
-    let date: Date
 }

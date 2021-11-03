@@ -88,18 +88,20 @@ public struct HCert {
   public var uvci: String {
     statement?.uvci ?? "empty"
   }
+    
   public var certificateType: HCertType {
-    if statement is VaccinationEntry {
-      return .vaccine
-    }
-    if statement is RecoveryEntry {
-      return .recovery
-    }
-    if statement is TestEntry {
-      return .test
-    }
-    return .unknown
+    switch statement {
+    case is VaccinationEntry:
+        return .vaccine
+    case is RecoveryEntry:
+        return .recovery
+    case is TestEntry:
+        return .test
+    default:
+        return .unknown
+      }
   }
+  
   var testStatements: [TestEntry] {
     return get(.testStatements).array?.compactMap {TestEntry(body: $0)} ?? []
   }
@@ -117,10 +119,10 @@ public struct HCert {
   }
   
   public var cryptographicallyValid: Bool {
-      if !VerificationManager.sharedManager.config.checkSignatures {
+    if !CoreManager.shared.config.checkSignatures {
       return true
     }
-    guard let delegate = VerificationManager.sharedManager.publicKeyEncoder else { return false }
+    guard let delegate = CoreManager.publicKeyEncoder else { return false }
     
     for key in delegate.getEncodedPublicKeys(for: kidStr) {
       if !X509.isCertificateValid(cert: key) {
@@ -191,7 +193,7 @@ public struct HCert {
       throw CertificateParsingError.parsing(errors: parsingErrors)
     }
     #if os(iOS)
-    if VerificationManager.sharedManager.config.prefetchAllCodes {
+    if CoreManager.shared.config.prefetchAllCodes {
       prefetchCode()
     }
     #endif
@@ -217,7 +219,7 @@ extension HCert {
        validation.errors?.forEach { bodyErrors.append(.json(error: $0.description)) }
 
       #if DEBUG
-        if VerificationManager.sharedManager.config.debugPrintJsonErrors {
+        if CoreManager.shared.config.debugPrintJsonErrors {
           validation.errors?.forEach { DGCLogger.logInfo($0.description) }
         }
       #endif

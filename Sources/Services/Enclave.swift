@@ -27,7 +27,7 @@
 
 import Foundation
 
-public struct Enclave {
+public class Enclave {
   static let encryptAlg = SecKeyAlgorithm.eciesEncryptionCofactorVariableIVX963SHA256AESGCM
   static let signAlg = SecKeyAlgorithm.ecdsaSignatureMessageX962SHA512
 

@@ -27,7 +27,7 @@
 import Foundation
 import Alamofire
 
-public struct CertEvaluator: ServerTrustEvaluating {
+public class CertEvaluator: ServerTrustEvaluating {
   class CertError: Error {}
 
   let pubKeys: [String]

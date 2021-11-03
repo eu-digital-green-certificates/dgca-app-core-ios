@@ -30,6 +30,15 @@ import SwiftyJSON
 
 public struct RecoveryEntry: HCertEntry {
     public var typeAddon: String { "" }
+    public let uvci: String
+    
+    private let diseaseTargeted: String
+    private let firstPositiveDate: String
+    private let countryCode: String
+    private let issuer: String
+    private let validFrom: Date
+    private let validUntil: Date
+
 
     public var info: [InfoSection] {
     [InfoSection( header: l10n("recovery.disease"),
@@ -50,14 +59,14 @@ public struct RecoveryEntry: HCertEntry {
    }
 
     public var validityFailures: [String] {
-        var fail = [String]()
-        if validFrom > HCert.clock {
-          fail.append(l10n("hcert.err.rec.future"))
-        }
-        if validUntil < HCert.clock {
-          fail.append(l10n("hcert.err.rec.past"))
-        }
-        return fail
+      var fail = [String]()
+      if validFrom > HCert.clock {
+        fail.append(l10n("hcert.err.rec.future"))
+      }
+      if validUntil < HCert.clock {
+        fail.append(l10n("hcert.err.rec.past"))
+      }
+      return fail
     }
 
     enum Fields: String {
@@ -93,11 +102,4 @@ public struct RecoveryEntry: HCertEntry {
     self.uvci = uvci
   }
 
-  let diseaseTargeted: String
-  let firstPositiveDate: String
-  let countryCode: String
-  let issuer: String
-  let validFrom: Date
-  let validUntil: Date
-  public let uvci: String
 }
