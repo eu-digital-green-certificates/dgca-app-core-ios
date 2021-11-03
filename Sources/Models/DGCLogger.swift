@@ -1,4 +1,3 @@
-//
 /*-
  * ---license-start
  * eu-digital-green-certificates / dgca-verifier-app-ios
