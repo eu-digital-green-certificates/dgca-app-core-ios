@@ -26,7 +26,7 @@
 
 import Foundation
 
-public class HCertConfig {
+public struct HCertConfig {
   public static let `default` = HCertConfig()
   public static let supportedPrefixes = [ "HC1:" ]
     

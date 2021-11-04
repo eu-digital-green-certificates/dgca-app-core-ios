@@ -41,7 +41,7 @@ final class COSETests: XCTestCase {
     
     extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
     
-    var jsonHeader=header.asJSONDict;
+    var jsonHeader = header.asJSONDict;
  
     if(jsonHeader["1"] == nil){ XCTAssert(false)}
     else {XCTAssert(jsonHeader["1"] as! Int8 == -7);};
@@ -71,7 +71,7 @@ final class COSETests: XCTestCase {
     var body = "";
     
     extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
-    var jsonHeader=header.asJSONDict;
+    var jsonHeader = header.asJSONDict;
   
     XCTAssert(jsonHeader["1"] as! Int8 == -7);
     XCTAssert(Data(bytes:(jsonHeader["4"] as! [UInt8])).hexString == Data(bytes:kid).hexString);
@@ -97,7 +97,7 @@ final class COSETests: XCTestCase {
     var body = "";
     
     extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
-    var jsonHeader=header.asJSONDict;
+    var jsonHeader = header.asJSONDict;
     XCTAssert(jsonHeader["1"] as! Int8 == -7);
     XCTAssert(Data(bytes:(jsonHeader["4"] as! [UInt8])).hexString == Data(bytes:kid).hexString);
     XCTAssert( Data(bytes:kid).base64EncodedString() == "2Rk3X8HntrI=");
@@ -124,7 +124,7 @@ final class COSETests: XCTestCase {
         var body = "";
         
         extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
-        var jsonHeader=header.asJSONDict;
+        var jsonHeader = header.asJSONDict;
         XCTAssert(jsonHeader["1"] as! Int8 == -7);
         XCTAssert(jsonHeader.count==1);
         XCTAssert( Data(bytes:kid).base64EncodedString() == "DEsVUSvpFAE=");
