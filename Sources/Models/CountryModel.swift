@@ -26,7 +26,7 @@
 
 import Foundation
 
-public struct CountryModel: Codable {
+public class CountryModel: Codable {
   public let code: String
   public var debugModeEnabled: Bool
 
@@ -44,7 +44,7 @@ public struct CountryModel: Codable {
   }
   
   // Init Rule from JSON Data
-  public init(from decoder: Decoder) throws {
+  required public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     code = try container.decode(String.self, forKey: .code)
     debugModeEnabled = try container.decodeIfPresent(Bool.self, forKey: .debugModeEnabled) ?? false
