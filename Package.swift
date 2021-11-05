@@ -49,7 +49,7 @@ let package = Package(
         // Copy Tests/ExampleTests/Resources directories as-is.
         // Use to retain directory structure.
         // Will be at top level in bundle.
-        .copy("dgc-testdata"),
+        //.copy("dgc-testdata"),
         .process("en.lproj/Localizable.strings")
       ])
   ]
