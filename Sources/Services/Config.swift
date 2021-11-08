@@ -37,9 +37,7 @@ public class Config {
 
     let context = "context.jsonc"
     let fileURL = URL(fileURLWithPath: path + "/\(context)")
-    guard let fileContents = try? Data(contentsOf: fileURL) else {
-      return .null
-    }
+    guard let fileContents = try? Data(contentsOf: fileURL) else { return .null }
     let string = String(data: fileContents, encoding: .utf8) ?? ""
     return JSON(parseJSONC: string)
   }

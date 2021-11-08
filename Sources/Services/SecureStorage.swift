@@ -56,10 +56,10 @@ public class SecureStorage<T: Codable> {
     load { [unowned self] result in
       if result != nil {
         completion?(result)
-        return
-      }
-      self.save(fallback) { _ in
-        self.load(completion: completion)
+      } else {
+          self.save(fallback) { _ in
+            self.load(completion: completion)
+          }
       }
     }
   }

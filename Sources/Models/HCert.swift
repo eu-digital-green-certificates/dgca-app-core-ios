@@ -144,9 +144,8 @@ public struct HCert {
   }
   public static var clockOverride: Date?
   
-    public init(from payload: String, ruleCountryCode: String? = nil) throws {
-        
-      if HCertConfig.checkCH1PreffixExist(payload) {
+  public init(from payload: String, ruleCountryCode: String? = nil) throws {
+    if HCertConfig.checkCH1PreffixExist(payload) {
       fullPayloadString = payload
       payloadString = HCertConfig.parsePrefix(payload)
     } else {
