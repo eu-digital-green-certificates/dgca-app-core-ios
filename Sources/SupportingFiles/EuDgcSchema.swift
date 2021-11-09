@@ -340,4 +340,3 @@ public let euDgcSchemaV1 = """
   }
 }
 """
-// swiftlint:enable line_length

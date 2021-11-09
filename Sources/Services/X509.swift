@@ -27,7 +27,7 @@
 import Foundation
 import ASN1Decoder
 
-public struct X509 {
+public class X509 {
   
   static let OID_TEST = "1.3.6.1.4.1.1847.2021.1.1"
   static let OID_ALT_TEST = "1.3.6.1.4.1.0.1847.2021.1.1"

@@ -32,16 +32,18 @@ struct SecureDB: Codable {
   let signature: Data
 }
 
-public struct SecureStorage<T: Codable> {
-  let documents: URL! = try? FileManager.default.url(
-    for: .documentDirectory,
-    in: .userDomainMask,
-    appropriateFor: nil,
-    create: true
-  )
-  var fileName: String
-  var path: URL! { URL(string: documents.absoluteString + "\(fileName).db") }
-  let secureStorageKey = Enclave.loadOrGenerateKey(with: "secureStorageKey")
+public class SecureStorage<T: Codable> {
+  
+  lazy var databaseURL: URL = {
+    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+    let documentsDirectory = paths[0]
+    let urlPath = URL(fileURLWithPath: documentsDirectory)
+    let prodURL = urlPath.appendingPathComponent("\(fileName).db")
+    return prodURL
+  }()
+  
+  let fileName: String
+  lazy var secureStorageKey = Enclave.loadOrGenerateKey(with: "secureStorageKey")
 
   public init(fileName: String) {
     self.fileName = fileName
@@ -51,35 +53,31 @@ public struct SecureStorage<T: Codable> {
    Loads encrypted db and overrides it with an empty one if that fails.
    */
   public func loadOverride(fallback: T, completion: ((T?) -> Void)? = nil) {
-    load { result in
+    load { [unowned self] result in
       if result != nil {
         completion?(result)
-        return
-      }
-      save(fallback) { _ in
-        load(completion: completion)
+      } else {
+          self.save(fallback) { _ in
+            self.load(completion: completion)
+          }
       }
     }
   }
 
   public func load(completion: ((T?) -> Void)? = nil) {
-    if !FileManager.default.fileExists(atPath: path.path) {
+    if !FileManager.default.fileExists(atPath: databaseURL.path) {
       completion?(nil)
       return
     }
 
-    guard
-      let (data, signature) = read(),
-      let key = secureStorageKey,
+    guard let (data, signature) = read(), let key = secureStorageKey,
       Enclave.verify(data: data, signature: signature, with: key).0
     else {
       completion?(nil)
       return
     }
     Enclave.decrypt(data: data, with: key) { decrypted, err in
-      guard
-        let decrypted = decrypted,
-        err == nil,
+      guard let decrypted = decrypted, err == nil,
         let data = try? JSONDecoder().decode(T.self, from: decrypted)
       else {
         completion?(nil)
@@ -90,44 +88,33 @@ public struct SecureStorage<T: Codable> {
   }
 
   public func save(_ instance: T, completion: ((Bool) -> Void)? = nil) {
-    guard
-      let data = try? JSONEncoder().encode(instance),
+    guard let data = try? JSONEncoder().encode(instance),
       let key = secureStorageKey,
       let encrypted = Enclave.encrypt(data: data, with: key).0
     else {
       completion?(false)
       return
     }
-    Enclave.sign(data: encrypted, with: key) { signature, err in
-      guard
-        let signature = signature,
-        err == nil
-      else {
+    Enclave.sign(data: encrypted, with: key) { [unowned self] signature, err in
+      guard let signature = signature, err == nil else {
         completion?(false)
         return
       }
-      let success = write(data: encrypted, signature: signature)
+      let success = self.write(data: encrypted, signature: signature)
       completion?(success)
     }
   }
 
   func write(data: Data, signature: Data) -> Bool {
-    guard
-      let rawData = try? JSONEncoder().encode(SecureDB(data: data, signature: signature)),
-      (try? rawData.write(to: path)) != nil
-    else {
-      return false
-    }
+    guard let rawData = try? JSONEncoder().encode(SecureDB(data: data, signature: signature)),
+      (try? rawData.write(to: databaseURL)) != nil else { return false }
     return true
   }
 
   func read() -> (Data, Data)? {
-    guard
-      let rawData = try? Data(contentsOf: path, options: [.uncached]),
+    guard let rawData = try? Data(contentsOf: databaseURL, options: [.uncached]),
       let result = try? JSONDecoder().decode(SecureDB.self, from: rawData)
-    else {
-      return nil
-    }
+    else { return nil }
     return (result.data, result.signature)
   }
 }

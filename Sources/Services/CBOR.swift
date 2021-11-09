@@ -52,9 +52,8 @@ enum CborType: UInt8 {
     }
 }
 
-public struct CBOR {
+public class CBOR {
     static func unwrap(data: Data) -> UnwrappedCBOR? {
-        
         let type = CborType.from(data: data);
         let decoder = SwiftCBOR.CBORDecoder(input: data.uint)
         

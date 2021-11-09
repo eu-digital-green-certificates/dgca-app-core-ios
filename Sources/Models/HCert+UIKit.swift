@@ -29,22 +29,24 @@ import UIKit
 
 extension HCert {
   var qrCodeRendered: UIImage? {
-    cachedQrCodes[uvci]
+      CoreManager.cachedQrCodes[uvci]
   }
 
   public var qrCode: UIImage? {
     return qrCodeRendered ?? renderQrCode()
   }
 
+  @discardableResult
   func renderQrCode() -> UIImage? {
     if let rendered = qrCodeRendered {
       return rendered
     }
     let code = makeQrCode()
+    let lock = NSLock()
     if let value = code {
-      Self.qrLock.lock()
-      cachedQrCodes[uvci] = value
-      Self.qrLock.unlock()
+      lock.lock()
+        CoreManager.cachedQrCodes[uvci] = value
+      lock.unlock()
     }
     return code
   }
@@ -65,14 +67,11 @@ extension HCert {
   }
 
   func prefetchCode() {
-    guard qrCodeRendered == nil else {
-      return
-    }
+    guard qrCodeRendered == nil else { return }
     DispatchQueue.global(qos: .background).async {
-      _ = renderQrCode()
+      renderQrCode()
     }
   }
 }
 
-var cachedQrCodes = [String: UIImage]()
 #endif

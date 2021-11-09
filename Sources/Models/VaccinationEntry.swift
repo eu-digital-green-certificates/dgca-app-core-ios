@@ -19,7 +19,7 @@
  * ---license-end
  */
 //  
-//  TestResult.swift
+//  VaccinationEntry.swift
 //
 //  
 //  Created by Yannick Spreen on 4/28/21.
@@ -28,90 +28,63 @@
 import Foundation
 import SwiftyJSON
 
-struct VaccinationEntry: HCertEntry {
-  var typeAddon: String {
+public struct VaccinationEntry: HCertEntry {
+    
+  public var typeAddon: String {
     let format = l10n("vaccine.x-of-x")
     return .localizedStringWithFormat(format, doseNumber, dosesTotal)
   }
+  public let uvci: String
+    
+  private let diseaseTargeted: String
+  private let vaccineOrProphylaxis: String
+  private let medicalProduct: String
+  private let manufacturer: String
+  private let countryCode: String
+  private let issuer: String
+  private let doseNumber: Int
+  private let dosesTotal: Int
+  private let date: Date
 
-  var info: [InfoSection] {
-    [
-      InfoSection(
-        header: l10n("vaccine.date"),
-        content: date.localDateString
-      ),
-      InfoSection(
-        header: l10n("vaccine.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("vaccine.manufacturer"),
+  public var info: [InfoSection] {
+    [InfoSection(header: l10n("vaccine.date"), content: date.localDateString),
+      InfoSection( header: l10n("vaccine.disease"),
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
+      InfoSection(header: l10n("vaccine.manufacturer"),
         content: l10n("vac.man." + manufacturer, or: "\(l10n("vac.man.unknown")): \(manufacturer)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.product"),
+        isPrivate: true ),
+      InfoSection(header: l10n("vaccine.product"),
         content: l10n("vac.product." + medicalProduct, or: "\(l10n("vac.product.unknown")): \(medicalProduct)"),
         isPrivate: true
       ),
-      InfoSection(
-        header: l10n("vaccine.type"),
+      InfoSection(header: l10n("vaccine.type"),
         content: l10n("vac.type." + vaccineOrProphylaxis, or: "\(l10n("vac.type.unknown")): \(vaccineOrProphylaxis)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
+        isPrivate: true),
+      InfoSection( header: l10n("vaccine.country"), content: country(for: countryCode), isPrivate: true),
+      InfoSection( header: l10n("vaccine.issuer"), content: issuer, isPrivate: true)
     ]
   }
   
-  var walletInfo: [InfoSection] {
-    [
-      InfoSection(
-        header: l10n("vaccine.date"),
-        content: date.localDateString
-      ),
-      InfoSection(
-        header: l10n("vaccine.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("vaccine.manufacturer"),
+  public var walletInfo: [InfoSection] {
+    [InfoSection( header: l10n("vaccine.date"), content: date.localDateString ),
+      InfoSection( header: l10n("vaccine.disease"),
+        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)") ),
+      InfoSection( header: l10n("vaccine.manufacturer"),
         content: l10n("vac.man." + manufacturer, or: "\(l10n("vac.man.unknown")): \(manufacturer)"),
-        isPrivate: true
-      ),
+        isPrivate: true ),
 //      InfoSection(
 //        header: l10n("vaccine.product"),
 //        content: l10n("vac.product." + medicalProduct, or: "\(l10n("vac.product.unknown")): \(medicalProduct)"),
 //        isPrivate: true
 //      ),
-      InfoSection(
-        header: l10n("vaccine.type"),
+      InfoSection(header: l10n("vaccine.type"),
         content: l10n("vac.type." + vaccineOrProphylaxis, or: "\(l10n("vac.type.unknown")): \(vaccineOrProphylaxis)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
-    ]
+        isPrivate: true),
+      InfoSection( header: l10n("vaccine.country"), content: country(for: countryCode), isPrivate: true),
+      InfoSection(header: l10n("vaccine.issuer"), content: issuer, isPrivate: true)]
   }
 
-  
-  var validityFailures: [String] {
+    public var validityFailures: [String] {
     var fail = [String]()
     if date > HCert.clock {
       fail.append(l10n("hcert.err.vac.future"))
@@ -119,7 +92,7 @@ struct VaccinationEntry: HCertEntry {
     return fail
   }
 
-  enum Fields: String {
+  private enum Fields: String {
     case diseaseTargeted = "tg"
     case vaccineOrProphylaxis = "vp"
     case medicalProduct = "mp"
@@ -159,15 +132,4 @@ struct VaccinationEntry: HCertEntry {
     self.dosesTotal = dosesTotal
     self.date = date
   }
-
-  var diseaseTargeted: String
-  var vaccineOrProphylaxis: String
-  var medicalProduct: String
-  var manufacturer: String
-  var countryCode: String
-  var issuer: String
-  var uvci: String
-  var doseNumber: Int
-  var dosesTotal: Int
-  var date: Date
 }

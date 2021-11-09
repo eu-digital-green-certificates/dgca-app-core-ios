@@ -30,11 +30,9 @@ import UIKit
 public extension UITableViewCell {
   func removeSectionSeparator() {
     for subview in subviews {
-      if
-        subview != contentView,
+      if subview != contentView,
         abs(subview.frame.width - frame.width) <= 0.1,
-        subview.frame.height < 2
-      {
+        subview.frame.height < 2 {
         subview.alpha = 0
       }
     }

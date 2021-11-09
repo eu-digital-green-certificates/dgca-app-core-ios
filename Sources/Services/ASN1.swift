@@ -95,5 +95,4 @@ public class ASN1 {
     }
     return [UInt8](data)
   }
-
 }
