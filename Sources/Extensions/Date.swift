@@ -87,7 +87,7 @@ extension Date {
     }
   }
   
-  init?(rfc3339DateTimeString str: String) {
+  public init?(rfc3339DateTimeString str: String) {
     var str = str
     let rfc3339DateTimeFormatter = DateFormatter()
 
