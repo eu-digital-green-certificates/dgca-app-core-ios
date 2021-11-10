@@ -28,7 +28,7 @@ import Foundation
 import SwiftyJSON
 import JSONSchema
 
-public struct HCert {
+public class HCert: Codable {
   public let fullPayloadString: String
   public let payloadString: String
   public let cborData: Data
@@ -38,7 +38,7 @@ public struct HCert {
   public let body: JSON
   public let iat: Date
   public let exp: Date
-  public let ruleCountryCode: String?
+  public var ruleCountryCode: String?
 
   public var dateOfBirth: String {
     return get(.dateOfBirth).string ?? ""

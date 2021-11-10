@@ -69,7 +69,7 @@ extension HCert {
   func prefetchCode() {
     guard qrCodeRendered == nil else { return }
     DispatchQueue.global(qos: .background).async {
-      renderQrCode()
+        self.renderQrCode()
     }
   }
 }
