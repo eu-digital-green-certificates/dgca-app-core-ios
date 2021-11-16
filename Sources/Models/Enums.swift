@@ -25,7 +25,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 enum ClaimKey: String {
   case hCert = "-260"

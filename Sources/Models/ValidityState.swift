@@ -27,7 +27,6 @@
         
 
 import Foundation
-import SwiftyJSON
 
 public struct ValidityState {
     public static var invalid = ValidityState()

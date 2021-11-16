@@ -25,7 +25,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 public class InfoSection {
   public let header: String

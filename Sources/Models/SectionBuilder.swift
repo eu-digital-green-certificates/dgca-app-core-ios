@@ -27,7 +27,6 @@
         
 
 import Foundation
-import SwiftyJSON
 
 public class SectionBuilder {
     public var infoSection = [InfoSection]()

@@ -25,7 +25,6 @@
 //
 
 import UIKit
-import SwiftyJSON
 
 public class CoreManager {
     public static var shared = CoreManager()
