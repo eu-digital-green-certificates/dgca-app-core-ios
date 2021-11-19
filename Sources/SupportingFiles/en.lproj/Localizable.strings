@@ -25,61 +25,55 @@
 
 */
 
-"enum.HCertType.test" = "Test Result";
-"enum.HCertType.vaccine" = "Vaccination";
-"enum.HCertType.recovery" = "Recovery";
-"enum.HCertValidity.valid" = "Valid";
-"enum.HCertValidity.invalid" = "Invalid";
-"enum.HCertValidity.ruleInvalid" = "Limited validity";
-"header.cert-type" = "Certificate Type";
-"header.dob" = "Date of Birth";
-"header.std-fn" = "Standardised Family Name";
-"header.std-gn" = "Standardised Given Name";
-"header.expires-at" = "Certificate Expiration";
-"header.uvci" = "Unique Certificate Identifier";
-"header.validity-errors" = "Reason for Invalidity";
-"recovery.disease" = "Targeted Disease";
-"recovery.valid-from" = "Valid from";
-"recovery.valid-until" = "Valid Until";
-"recovery.country" = "Country of Issuance";
-"recovery.issuer" = "Statement Issuer";
-"test.sample-date-time" = "Time of Sampling";
-"test.test-result" = "Test Result";
-"test.result.negative" = "Not Detected";
-"test.result.positive" = "Detected ⚠️";
-"test.disease" = "Targeted Disease";
-"test.center" = "Test Center";
-"test.country" = "Country of Test";
-"test.issuer" = "Test Issuer";
-"vaccine.x-of-x" = "%d of %d";
-"vaccine.date" = "Date of Vaccination";
-"vaccine.disease" = "Targeted Disease";
-"vaccine.manufacturer" = "Authorization Holder / Manufacturer";
-"vaccine.product" = "Medical Product";
-"vaccine.type" = "Vaccine or Prophylaxis";
-"vaccine.country" = "Country of Vaccination";
-"vaccine.issuer" = "Certificate Issuer";
-"err.alg-not-supported" = "Algorithm not supported.";
-"err.pub-key-irretrievable" = "Cannot retrieve public key.";
-"err.misc" = "Something went wrong.";
-"err.barcode" = "Barcode Error";
-"err.cam" = "Cannot Find Camera";
-"err.cam.desc" = "There seems to be a problem with the camera on your device.";
-"err.cam.perm" = "Camera Permissions";
-"err.cam.perm.desc" = "Please open Settings and grant permission for this app to use your camera.";
-"btn.cancel" = "Cancel";
-"info.outdated" = "Update Available";
-"info.outdated.body" = "This application is not up to date. Please open the App Store and download the newest version!";
 
-"hcert.err.empty" = "No entries in the certificate.";
-"hcert.err.crypto" = "Cryptographic signature not valid.";
-"hcert.err.exp" = "Certificate past expiration date.";
-"hcert.err.iat" = "Certificate issuance date is in the future.";
-"hcert.err.vac.future" = "Vaccination date is in the future.";
-"hcert.err.rec.future" = "Recovery statement is not valid yet.";
-"hcert.err.rec.past" = "Recovery statement is not valid anymore.";
-"hcert.err.tst.positive" = "The test result is positive.";
-"hcert.err.tst.future" = "Test date is in the future.";
+"Certificate Type" = "Certificate Type";
+"Date of Birth" = "Date of Birth";
+"Standardised Family Name" = "Standardised Family Name";
+"Standardised Given Name" = "Standardised Given Name";
+"Unique Certificate Identifier" = "Unique Certificate Identifier";
+"Reason for Invalidity" = "Reason for Invalidity";
+"Targeted Disease" = "Targeted Disease";
+"Valid from" = "Valid from";
+"Valid Until" = "Valid Until";
+"Country of Issuance" = "Country of Issuance";
+"Statement Issuer" = "Statement Issuer";
+"Time of Sampling" = "Time of Sampling";
+"Test Result" = "Test Result";
+"Not Detected" = "Not Detected";
+"Detected ⚠️" = "Detected ⚠️";
+"Targeted Disease" = "Targeted Disease";
+"Test Center" = "Test Center";
+"Country of Test" = "Country of Test";
+"Test Issuer" = "Test Issuer";
+"%d of %d" = "%d of %d";
+"Date of Vaccination" = "Date of Vaccination";
+"Targeted Disease" = "Targeted Disease";
+"Authorization Holder / Manufacturer" = "Authorization Holder / Manufacturer";
+"Medical Product" = "Medical Product";
+"Vaccine or Prophylaxis" = "Vaccine or Prophylaxis";
+"Country of Vaccination" = "Country of Vaccination";
+"Certificate Issuer" = "Certificate Issuer";
+"Algorithm not supported." = "Algorithm not supported.";
+"Cannot retrieve public key." = "Cannot retrieve public key.";
+"Something went wrong." = "Something went wrong.";
+"Barcode reading Error" = "Barcode reading Error";
+
+"No camera available" = "No camera available";
+"The app cannot access the camera" = "The app cannot access the camera.";
+"Camera Permissions" = "Camera Permissions";
+"Please open Settings and grant permission for this app to use your camera." = "Please open Settings and grant permission for this app to use your camera.";
+
+"Update available" = "Update available";
+"This version of the app is out of date." = "This version of the app is out of date. Please update from the AppStore to a newer version";
+
+"No entries in the certificate." = "No entries in the certificate.";
+"Cryptographic signature not valid." = "Cryptographic signature not valid.";
+"Certificate past expiration date." = "Certificate past expiration date.";
+"Certificate issuance date is in the future." = "Certificate issuance date is in the future.";
+"Vaccination date is in the future." = "Vaccination date is in the future.";
+"Recovery statement is not valid yet." = "Recovery statement is not valid yet.";
+"Recovery statement is not valid anymore." = "Recovery statement is not valid anymore.";
+"The test result is positive." = "The test result is positive.";
 
 "test.man.1232" = "Abbott Rapid Diagnostics, Panbio COVID-19 Ag Test";
 "test.man.1304" = "AMEDA Labordiagnostik GmbH, AMP Rapid Test SARS-CoV-2 Ag";
@@ -111,6 +105,7 @@
 
 "disease.840539006" = "COVID-19";
 "disease.unknown" = "Unknown";
+"Unknown" = "Unknown";
 
 "vac.man.ORG-100001699" = "AstraZeneca AB";
 "vac.man.ORG-100030215" = "Biontech Manufacturing GmbH";
@@ -126,7 +121,6 @@
 "vac.man.Vector-Institute" = "Vector Institute";
 "vac.man.Sinovac-Biotech" = "Sinovac Biotech";
 "vac.man.Bharat-Biotech" = "Bharat Biotech";
-"vac.man.unknown" = "Unknown";
 
 "vac.product.EU/1/20/1528" = "Comirnaty";
 "vac.product.EU/1/20/1507" = "COVID-19 Vaccine Moderna";
@@ -399,5 +393,4 @@
 "country.ZW" = "Zimbabwe";
 
 //County Code scanner
-"scaner.no.countrys" = "Country codes list empty";
-"scanner.select.country" = "Select Country of CertLogic Rule";
+"Country codes list empty" = "Country codes list empty";

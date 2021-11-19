@@ -62,7 +62,7 @@ final class SwiftDGCTests: XCTestCase {
 
     l10nModule = bundle
 
-    if l10n("btn.cancel") == "btn.cancel" {
+    if l10n("Cancel") == "Cancel" {
       XCTAssert(false, "l10n failed")
       return
     }
@@ -79,10 +79,8 @@ final class SwiftDGCTests: XCTestCase {
   }
 
   func testCountry(dir: String, for countryName: String) {
-    DGCLogger.logInfo("Testing\(countryName)")"
-    guard isDir(path: "\(dir)/2DCode/raw") else {
-      return
-    }
+    print("Testing\(countryName)")"
+    guard isDir(path: "\(dir)/2DCode/raw") else { return }
     for file in ls(path: "\(dir)/2DCode/raw") {
       let path = "\(dir)/2DCode/raw/\(file)"
       try? test(jsonFile: path)
@@ -141,10 +139,10 @@ final class SwiftDGCTests: XCTestCase {
     }
     if expExpired == true {
       XCTAssert(clock != nil, "clock not set for \(descr)")
-      XCTAssert(!hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose expired for \(descr)")
+      XCTAssert(!hcert.validityFailures.contains(l10n("Certificate past expiration date.")), "cose expired for \(descr)")
     } else if expExpired == false {
       XCTAssert(clock != nil, "clock not set for \(descr)")
-      XCTAssert(hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose not expired for \(descr)")
+      XCTAssert(hcert.validityFailures.contains(l10n("Certificate past expiration date.")), "cose not expired for \(descr)")
     }
   }
 

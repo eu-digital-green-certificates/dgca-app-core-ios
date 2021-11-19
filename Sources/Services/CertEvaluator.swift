@@ -43,7 +43,7 @@ public class CertEvaluator: ServerTrustEvaluating {
     }
     for hash in (hashes + ["*"]) {
       if pubKeys.contains(hash) {
-        DGCLogger.logInfo("SSL Pubkey matches. ✅")
+        print("SSL Pubkey matches. ✅")
         return
       }
     }
@@ -56,9 +56,9 @@ public class CertEvaluator: ServerTrustEvaluating {
       throw Self.CertError()
     }
     let str1 = pubKeys.joined(separator: "\n")
-    DGCLogger.logInfo("FATAL: None of the hashes matched our public keys! These keys were loaded: \(str1)")
+    print("FATAL: None of the hashes matched our public keys! These keys were loaded: \(str1)")
     let str2 = hashes.joined(separator: "\n")
-    DGCLogger.logInfo("The server returned this chain: \(str2)")
+    print("The server returned this chain: \(str2)")
   }
 
   public init(pubKeys: [String]) {

@@ -41,30 +41,31 @@ public struct RecoveryEntry: HCertEntry {
 
 
     public var info: [InfoSection] {
-    [InfoSection( header: l10n("recovery.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
-      InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
-      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
-      InfoSection( header: l10n("recovery.country"), content: country(for: countryCode), isPrivate: true ),
-      InfoSection( header: l10n("recovery.issuer"), content: issuer, isPrivate: true ) ]
+      let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
+      return [InfoSection( header: l10n("Targeted Disease"), content: strContent),
+        InfoSection(header: l10n("Valid from"), content: validFrom.localDateString),
+        InfoSection(header: l10n("Valid Until"), content: validUntil.localDateString),
+        InfoSection( header: l10n("Country of Issuance"), content: country(for: countryCode), isPrivate: true ),
+        InfoSection( header: l10n("Statement Issuer"), content: issuer, isPrivate: true ) ]
     }
-
+  
     public var walletInfo: [InfoSection] {
-    [InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
-      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
-      InfoSection( header: l10n("recovery.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
-      InfoSection( header: l10n("recovery.country"), content: country(for: countryCode), isPrivate: true),
-      InfoSection( header: l10n("recovery.issuer"), content: issuer, isPrivate: true )]
+      let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
+
+      return [InfoSection(header: l10n("Valid from"), content: validFrom.localDateString),
+        InfoSection(header: l10n("Valid Until"), content: validUntil.localDateString),
+        InfoSection( header: l10n("Targeted Disease"), content: strContent),
+        InfoSection( header: l10n("Country of Issuance"), content: country(for: countryCode), isPrivate: true),
+        InfoSection( header: l10n("Statement Issuer"), content: issuer, isPrivate: true )]
    }
 
     public var validityFailures: [String] {
       var fail = [String]()
       if validFrom > HCert.clock {
-        fail.append(l10n("hcert.err.rec.future"))
+        fail.append(l10n("Recovery statement is not valid yet."))
       }
       if validUntil < HCert.clock {
-        fail.append(l10n("hcert.err.rec.past"))
+        fail.append(l10n("Recovery statement is not valid anymore."))
       }
       return fail
     }

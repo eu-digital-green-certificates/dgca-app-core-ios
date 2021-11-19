@@ -51,7 +51,7 @@ class Signature {
       &error
     )
     if let err = error?.takeUnretainedValue().localizedDescription {
-        DGCLogger.logError(err)
+        print(err)
     }
     error?.release()
 
