@@ -25,22 +25,22 @@
 
 */
 
-"enum.HCertType.test" = "Test Result";
-"enum.HCertType.vaccine" = "Vaccination";
+"enum.HCertType.test" = "Testergebnis";
+"enum.HCertType.vaccine" = "Impfung";
 "enum.HCertType.recovery" = "Recovery";
-"enum.HCertValidity.valid" = "Valid";
-"enum.HCertValidity.invalid" = "Invalid";
-"enum.HCertValidity.ruleInvalid" = "Limited validity";
+"enum.HCertValidity.valid" = "Genesung";
+"enum.HCertValidity.invalid" = "Ungültig";
+"enum.HCertValidity.ruleInvalid" = "Begrenzte Gültigkeit";
 
-"Certificate Type" = "Certificate Type";
-"Date of Birth" = "Date of Birth";
-"Standardised Family Name" = "Standardised Family Name";
-"Standardised Given Name" = "Standardised Given Name";
-"Unique Certificate Identifier" = "Unique Certificate Identifier";
-"Reason for Invalidity" = "Reason for Invalidity";
-"Targeted Disease" = "Targeted Disease";
-"Valid from" = "Valid from";
-"Valid Until" = "Valid Until";
+"Certificate Type" = "Zertifikatstyp";
+"Date of Birth" = "Geburtsdatum";
+"Standardised Family Name" = "Standardisierter Familienname";
+"Standardised Given Name" = "Standardisierter Vorname";
+"Unique Certificate Identifier" = "Eindeutige Zertifikatskennung";
+"Reason for Invalidity" = "Grund der Invalidität";
+"Targeted Disease" = "Krankheit";
+"Valid from" = "Gültig ab";
+"Valid Until" = "Gültig bis";
 "Country of Issuance" = "Country of Issuance";
 "Statement Issuer" = "Statement Issuer";
 "Time of Sampling" = "Time of Sampling";
