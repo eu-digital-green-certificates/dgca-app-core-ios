@@ -46,10 +46,9 @@ public struct VaccinationEntry: HCertEntry {
   private let date: Date
 
   public var info: [InfoSection] {
-    let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
-
     return [InfoSection(header: l10n("Date of Vaccination"), content: date.localDateString),
-      InfoSection( header: l10n("Targeted Disease"), content: strContent),
+      InfoSection( header: l10n("Targeted Disease"),
+            content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
       InfoSection(header: l10n("Authorization Holder / Manufacturer"),
         content: l10n("vac.man." + manufacturer, or: "\(l10n("Unknown")): \(manufacturer)"), isPrivate: true ),
       InfoSection(header: l10n("Medical Product"),
@@ -64,10 +63,9 @@ public struct VaccinationEntry: HCertEntry {
   }
   
   public var walletInfo: [InfoSection] {
-    let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
-
     return [InfoSection( header: l10n("Date of Vaccination"), content: date.localDateString ),
-      InfoSection( header: l10n("Targeted Disease"), content: strContent),
+      InfoSection( header: l10n("Targeted Disease"),
+            content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
       InfoSection( header: l10n("Authorization Holder / Manufacturer"),
         content: l10n("vac.man." + manufacturer, or: "\(l10n("Unknown")): \(manufacturer)"), isPrivate: true ),
       InfoSection(header: l10n("Vaccine or Prophylaxis"),
@@ -76,7 +74,7 @@ public struct VaccinationEntry: HCertEntry {
       InfoSection(header: l10n("Certificate Issuer"), content: issuer, isPrivate: true)]
   }
 
-    public var validityFailures: [String] {
+  public var validityFailures: [String] {
     var fail = [String]()
     if date > HCert.clock {
       fail.append(l10n("Vaccination date is in the future."))

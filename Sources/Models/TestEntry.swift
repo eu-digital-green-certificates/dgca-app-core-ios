@@ -46,23 +46,19 @@ public struct TestEntry: HCertEntry {
     private let issuer: String
 
     public var info: [InfoSection] {
-      let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
-
       return [InfoSection( header: l10n("Time of Sampling"), content: sampleTime.dateTimeStringUtc),
       InfoSection( header: l10n("Test Result"), content: resultNegative ? l10n("Not Detected") : l10n("Detected ⚠️")),
-      InfoSection( header: l10n("Targeted Disease"), content: strContent),
+      InfoSection( header: l10n("Targeted Disease"), content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
       InfoSection( header: l10n("Test Center"), content: testCenter, isPrivate: true),
       InfoSection( header: l10n("Country of Test"), content: country(for: countryCode), isPrivate: true),
       InfoSection( header: l10n("Test Issuer"), content: issuer, isPrivate: true )]
   }
 
     public var walletInfo: [InfoSection] {
-      let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
-
       return [InfoSection( header: l10n("Test Result"), content: resultNegative ? l10n("Not Detected") : l10n("Detected ⚠️")),
       InfoSection( header: l10n("Time of Sampling"), content: sampleTime.dateTimeStringUtc),
       InfoSection( header: l10n("Type of Test"), content: type),
-      InfoSection( header: l10n("Targeted Disease"), content: strContent),
+      InfoSection( header: l10n("Targeted Disease"), content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
       InfoSection( header: l10n("Test Center"), content: testCenter, isPrivate: true),
       InfoSection( header: l10n("Country of Test"),content: country(for: countryCode), isPrivate: true),
       InfoSection( header: l10n("Test Issuer"),content: issuer, isPrivate: true)

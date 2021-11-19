@@ -41,8 +41,8 @@ public struct RecoveryEntry: HCertEntry {
 
 
     public var info: [InfoSection] {
-      let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
-      return [InfoSection( header: l10n("Targeted Disease"), content: strContent),
+      return [InfoSection( header: l10n("Targeted Disease"),
+          content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
         InfoSection(header: l10n("Valid from"), content: validFrom.localDateString),
         InfoSection(header: l10n("Valid Until"), content: validUntil.localDateString),
         InfoSection( header: l10n("Country of Issuance"), content: country(for: countryCode), isPrivate: true ),
@@ -50,11 +50,10 @@ public struct RecoveryEntry: HCertEntry {
     }
   
     public var walletInfo: [InfoSection] {
-      let strContent = String(format: l10n("%@ or %@: %@"), l10n("disease." + diseaseTargeted), l10n("Unknown"), "\(diseaseTargeted)")
-
       return [InfoSection(header: l10n("Valid from"), content: validFrom.localDateString),
         InfoSection(header: l10n("Valid Until"), content: validUntil.localDateString),
-        InfoSection( header: l10n("Targeted Disease"), content: strContent),
+        InfoSection( header: l10n("Targeted Disease"),
+            content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
         InfoSection( header: l10n("Country of Issuance"), content: country(for: countryCode), isPrivate: true),
         InfoSection( header: l10n("Statement Issuer"), content: issuer, isPrivate: true )]
    }
