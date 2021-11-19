@@ -25,6 +25,12 @@
 
 */
 
+"enum.HCertType.test" = "Test Result";
+"enum.HCertType.vaccine" = "Vaccination";
+"enum.HCertType.recovery" = "Recovery";
+"enum.HCertValidity.valid" = "Valid";
+"enum.HCertValidity.invalid" = "Invalid";
+"enum.HCertValidity.ruleInvalid" = "Limited validity";
 
 "Certificate Type" = "Certificate Type";
 "Date of Birth" = "Date of Birth";
