@@ -102,7 +102,7 @@ public class Enclave {
 
   static func encrypt(data: Data, with key: SecKey) -> (Data?, String?) {
     guard let publicKey = SecKeyCopyPublicKey(key) else {
-      return (nil, l10n"Cannot retrieve public key."))
+      return (nil, l10n("Cannot retrieve public key."))
     }
     guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, encryptAlg) else {
       return (nil, l10n("Algorithm not supported."))
