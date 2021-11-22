@@ -41,45 +41,45 @@
 "Targeted Disease" = "Krankheit";
 "Valid from" = "Gültig ab";
 "Valid Until" = "Gültig bis";
-"Country of Issuance" = "Country of Issuance";
-"Statement Issuer" = "Statement Issuer";
-"Time of Sampling" = "Time of Sampling";
-"Test Result" = "Test Result";
-"Not Detected" = "Not Detected";
-"Detected ⚠️" = "Detected ⚠️";
-"Targeted Disease" = "Targeted Disease";
-"Test Center" = "Test Center";
-"Country of Test" = "Country of Test";
-"Test Issuer" = "Test Issuer";
-"%d of %d" = "%d of %d";
-"Date of Vaccination" = "Date of Vaccination";
-"Targeted Disease" = "Targeted Disease";
-"Authorization Holder / Manufacturer" = "Authorization Holder / Manufacturer";
-"Medical Product" = "Medical Product";
-"Vaccine or Prophylaxis" = "Vaccine or Prophylaxis";
-"Country of Vaccination" = "Country of Vaccination";
-"Certificate Issuer" = "Certificate Issuer";
-"Algorithm not supported." = "Algorithm not supported.";
-"Cannot retrieve public key." = "Cannot retrieve public key.";
-"Something went wrong." = "Something went wrong.";
-"Barcode reading Error" = "Barcode reading Error";
+"Country of Issuance" = "Ausgabeland";
+"Statement Issuer" = "Erklärung Emittent";
+"Time of Sampling" = "Zeitpunkt der Probeentnahme";
+"Test Result" = "Testergebnis";
+"Not Detected" = "Negativ-Test";
+"Detected ⚠️" = "Positiv-Test ⚠️";
+"Targeted Disease" = "Gezielte Krankheit";
+"Test Center" = "Testzentrum";
+"Country of Test" = "Land der Prüfung";
+"Test Issuer" = "Test-Emittent";
+"%d of %d" = "%d von %d";
+"Date of Vaccination" = "Datum der Impfung";
+"Targeted Disease" = "Gezielte Krankheit";
+"Authorization Holder / Manufacturer" = "Zulassungsinhaber / Hersteller";
+"Medical Product" = "Medizinprodukt";
+"Vaccine or Prophylaxis" = "Impfstoff oder Prophylaxe";
+"Country of Vaccination" = "Impfland";
+"Certificate Issuer" = "Zertifikatsaussteller";
+"Algorithm not supported." = "Algorithmus nicht unterstützt.";
+"Cannot retrieve public key." = "Öffentlicher Schlüssel kann nicht abgerufen werden.";
+"Something went wrong." = "Etwas ist schief gelaufen. Bitte versuche es erneut.";
 
-"No camera available" = "No camera available";
-"The app cannot access the camera" = "The app cannot access the camera.";
-"Camera Permissions" = "Camera Permissions";
-"Please open Settings and grant permission for this app to use your camera." = "Please open Settings and grant permission for this app to use your camera.";
+"Barcode reading Error" = "Barcode-Lesefehler";
+"No camera available" = "Keine Kamera verfügbar";
+"The app cannot access the camera" = "Die App kann nicht auf die Kamera zugreifen.";
+"Camera Permissions" = "Kameraberechtigungen";
+"Please open Settings and grant permission for this app to use your camera." = "Bitte öffnen Sie die Einstellungen und erteilen Sie dieser App die Erlaubnis, Ihre Kamera zu verwenden.";
 
-"Update available" = "Update available";
-"This version of the app is out of date." = "This version of the app is out of date. Please update from the AppStore to a newer version";
+"Update available" = "Update verfügbar";
+"This version of the app is out of date." = "Diese Version der App ist veraltet. Bitte aktualisieren Sie über den AppStore auf eine neuere Version.";
 
-"No entries in the certificate." = "No entries in the certificate.";
-"Cryptographic signature not valid." = "Cryptographic signature not valid.";
-"Certificate past expiration date." = "Certificate past expiration date.";
-"Certificate issuance date is in the future." = "Certificate issuance date is in the future.";
-"Vaccination date is in the future." = "Vaccination date is in the future.";
-"Recovery statement is not valid yet." = "Recovery statement is not valid yet.";
-"Recovery statement is not valid anymore." = "Recovery statement is not valid anymore.";
-"The test result is positive." = "The test result is positive.";
+"No entries in the certificate." = "Keine Einträge im Zertifikat.";
+"Cryptographic signature not valid." = "Kryptografische Signatur nicht gültig.";
+"Certificate past expiration date." = "Zertifikat nach Ablauf der Gültigkeit.";
+"Certificate issuance date is in the future." = "Ausstellungsdatum des Zertifikats liegt in der Zukunft.";
+"Vaccination date is in the future." = "Das Datum der Impfung liegt in der Zukunft.";
+"Recovery statement is not valid yet." = "Die Einziehungsanordnung ist noch nicht gültig.";
+"Recovery statement is not valid anymore." = "Wiederherstellungserklärung ist nicht mehr gültig.";
+"The test result is positive." = "Das Testergebnis ist positiv.";
 
 "test.man.1232" = "Abbott Rapid Diagnostics, Panbio COVID-19 Ag Test";
 "test.man.1304" = "AMEDA Labordiagnostik GmbH, AMP Rapid Test SARS-CoV-2 Ag";
@@ -107,11 +107,11 @@
 "test.man.1218" = "Siemens Healthineers, CLINITEST Rapid Covid-19 Antigen Test";
 "test.man.1278" = "Xiamen Boson Biotech Co. Ltd, Rapid SARS-CoV-2 Antigen Test Card";
 "test.man.1343" = "Zhejiang Orient Gene Biotech, Coronavirus Ag Rapid Test Cassette (Swab)";
-"test.man.unknown" = "Unknown";
+"test.man.unknown" = "Unbekannt";
 
 "disease.840539006" = "COVID-19";
-"disease.unknown" = "Unknown";
-"Unknown" = "Unknown";
+"disease.unknown" = "Unbekannt";
+"Unknown" = "Unbekannt";
 
 "vac.man.ORG-100001699" = "AstraZeneca AB";
 "vac.man.ORG-100030215" = "Biontech Manufacturing GmbH";
@@ -139,13 +139,13 @@
 "vac.product.BBIBP-CorV" = "BBIBP-CorV";
 "vac.product.Inactivated-SARS-CoV-2-Vero-Cell" = "Inactivated SARS-CoV-2 (Vero Cell)";
 "vac.product.CoronaVac" = "CoronaVac";
-"vac.product.Covaxin" = "Covaxin (also known as BBV152 A, B, C)";
-"vac.product.unknown" = "Unknown";
+"vac.product.Covaxin" = "Covaxin (auch bekannt als BBV152 A, B, C)";
+"vac.product.unknown" = "Unbekannt";
 
-"vac.type.1119349007" = "SARS-CoV-2 mRNA vaccine";
-"vac.type.1119305005" = "SARS-CoV-2 antigen vaccine";
-"vac.type.J07BX03" = "covid-19 vaccines";
-"vac.type.unknown" = "Unknown";
+"vac.type.1119349007" = "SARS-CoV-2 mRNA Impfung";
+"vac.type.1119305005" = "SARS-CoV-2 Antigen-Impfstoff";
+"vac.type.J07BX03" = "Covid-19 Impfung";
+"vac.type.unknown" = "Unbekannt";
 
 "country.AF" = "Afghanistan";
 "country.AX" = "Åland Islands";
@@ -399,4 +399,4 @@
 "country.ZW" = "Zimbabwe";
 
 //County Code scanner
-"Country codes list empty" = "Country codes list empty";
+"Country codes list empty" = "Liste der Ländercodes leer";
