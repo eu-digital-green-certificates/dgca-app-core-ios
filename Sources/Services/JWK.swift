@@ -64,7 +64,7 @@ class JWK {
     ]
     var error: Unmanaged<CFError>?
     let keyReference = SecKeyCreateWithData(keyData as CFData, attributes as CFDictionary, &error)
-    let errorString = error?.takeUnretainedValue().localizedDescription ?? l10n("Something went wrong.")
+      let errorString = error?.takeUnretainedValue().localizedDescription ?? "Something went wrong.".localized
     error?.release()
     guard let key = keyReference else {
         print(errorString)

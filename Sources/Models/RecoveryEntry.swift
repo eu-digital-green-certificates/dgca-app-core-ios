@@ -41,30 +41,30 @@ public struct RecoveryEntry: HCertEntry {
 
 
     public var info: [InfoSection] {
-      return [InfoSection( header: l10n("Targeted Disease"),
+        return [InfoSection( header: "Targeted Disease".localized,
           content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
-        InfoSection(header: l10n("Valid from"), content: validFrom.localDateString),
-        InfoSection(header: l10n("Valid Until"), content: validUntil.localDateString),
-        InfoSection( header: l10n("Country of Issuance"), content: country(for: countryCode), isPrivate: true ),
-        InfoSection( header: l10n("Statement Issuer"), content: issuer, isPrivate: true ) ]
+                InfoSection(header: "Valid from".localized, content: validFrom.localDateString),
+                InfoSection(header: "Valid Until".localized, content: validUntil.localDateString),
+                InfoSection( header: "Country of Issuance".localized, content: country(for: countryCode), isPrivate: true ),
+                InfoSection( header: "Statement Issuer".localized, content: issuer, isPrivate: true ) ]
     }
   
     public var walletInfo: [InfoSection] {
-      return [InfoSection(header: l10n("Valid from"), content: validFrom.localDateString),
-        InfoSection(header: l10n("Valid Until"), content: validUntil.localDateString),
-        InfoSection( header: l10n("Targeted Disease"),
+        return [InfoSection(header: "Valid from".localized, content: validFrom.localDateString),
+                InfoSection(header: "Valid Until".localized, content: validUntil.localDateString),
+                InfoSection( header: "Targeted Disease".localized,
             content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
-        InfoSection( header: l10n("Country of Issuance"), content: country(for: countryCode), isPrivate: true),
-        InfoSection( header: l10n("Statement Issuer"), content: issuer, isPrivate: true )]
+                InfoSection( header: "Country of Issuance".localized, content: country(for: countryCode), isPrivate: true),
+                InfoSection( header: "Statement Issuer".localized, content: issuer, isPrivate: true )]
    }
 
     public var validityFailures: [String] {
       var fail = [String]()
       if validFrom > HCert.clock {
-        fail.append(l10n("Recovery statement is not valid yet."))
+          fail.append("Recovery statement is not valid yet.".localized)
       }
       if validUntil < HCert.clock {
-        fail.append(l10n("Recovery statement is not valid anymore."))
+          fail.append("Recovery statement is not valid anymore.".localized)
       }
       return fail
     }

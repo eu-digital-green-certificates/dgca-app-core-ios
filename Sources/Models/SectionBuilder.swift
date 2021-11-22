@@ -60,11 +60,11 @@ public class SectionBuilder {
     }
 
     public func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
-      let hSection = InfoSection(header: l10n("Certificate Type"), content: certificate.certTypeString )
+        let hSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString )
       infoSection += [hSection]
 
       guard validityState.isValid else {
-        let vSection = InfoSection(header: l10n("Reason for Invalidity"),
+          let vSection = InfoSection(header: "Reason for Invalidity".localized,
             content: validityState.validityFailures.joined(separator: " "))
         infoSection += [vSection]
         return
@@ -91,72 +91,72 @@ public class SectionBuilder {
   // MARK: private section
     private func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
       if includeInvalidSection {
-        let hSection = InfoSection( header: l10n("Certificate Type"), content: certificate.certTypeString )
+          let hSection = InfoSection( header: "Certificate Type".localized, content: certificate.certTypeString )
         infoSection += [hSection]
         if !validityState.isValid {
-          let vSection = InfoSection(header: l10n("Reason for Invalidity"),
+            let vSection = InfoSection(header: "Reason for Invalidity".localized,
               content: validityState.validityFailures.joined(separator: " "))
           infoSection += [vSection]
           return
         }
       }
-      let hSection = InfoSection( header: l10n("Standardised Family Name"),
+        let hSection = InfoSection( header: "Standardised Family Name".localized,
           content: certificate.lastNameStandardized.replacingOccurrences( of: "<", with: String.zeroWidthSpace + "<" + String.zeroWidthSpace), style: .fixedWidthFont)
       infoSection += [hSection]
       
-      infoSection += [InfoSection( header: l10n("Standardised Given Name"),
+        infoSection += [InfoSection( header: "Standardised Given Name".localized,
           content: certificate.firstNameStandardized.replacingOccurrences( of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace), style: .fixedWidthFont)]
-      let sSection = InfoSection( header: l10n("Date of Birth"), content: certificate.dateOfBirth)
+        let sSection = InfoSection( header: "Date of Birth".localized, content: certificate.dateOfBirth)
       infoSection += [sSection]
       infoSection += certificate.statement == nil ? [] : certificate.statement.info
-      let uSection = InfoSection(header: l10n("Unique Certificate Identifier"),content: certificate.uvci,style: .fixedWidthFont,isPrivate: true)
+        let uSection = InfoSection(header: "Unique Certificate Identifier".localized, content: certificate.uvci,style: .fixedWidthFont,isPrivate: true)
       infoSection += [uSection]
       if !certificate.issCode.isEmpty {
-        let cSection = InfoSection(header: l10n("Issuer Country"),content: l10n("country.\(certificate.issCode.uppercased())"))
+          let cSection = InfoSection(header: "Issuer Country".localized, content: l10n("country.\(certificate.issCode.uppercased())"))
         infoSection += [cSection]
       }
     }
     
     private func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
       if includeInvalidSection {
-        let cSection = InfoSection( header: l10n("Certificate Type"),content: certificate.certTypeString)
+          let cSection = InfoSection( header: "Certificate Type".localized,content: certificate.certTypeString)
         infoSection += [cSection]
         if !validityState.isValid {
-          let hSection = InfoSection(header: l10n("Reason for Invalidity"),
+            let hSection = InfoSection(header: "Reason for Invalidity".localized,
             content: validityState.validityFailures.joined(separator: " "))
           infoSection += [hSection]
         }
       }
       let fullName = certificate.fullName
       if !fullName.isEmpty {
-        let sSection = InfoSection( header: l10n("Name"), content: fullName, style: .fixedWidthFont )
+          let sSection = InfoSection( header: "Name".localized, content: fullName, style: .fixedWidthFont )
         infoSection += [sSection]
       }
       infoSection += certificate.statement == nil ? [] : certificate.statement.walletInfo
       if certificate.issCode.count > 0 {
-        let cSection = InfoSection( header: l10n("Issuer Country"), content: l10n("country.\(certificate.issCode.uppercased())"))
+          let cSection = InfoSection( header: "Issuer Country".localized, content: l10n("country.\(certificate.issCode.uppercased())"))
         infoSection += [cSection]
       }
     }
     
     private func makeSectionsForTest(includeInvalidSection: Bool = true) {
       if includeInvalidSection {
-        let cSection = InfoSection(header: l10n("Certificate Type"), content: certificate.certTypeString)
+          let cSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString)
         infoSection += [cSection]
         if !validityState.isValid {
-          let hSection = InfoSection(header: l10n("Reason for Invalidity"),
+            let hSection = InfoSection(header: "Reason for Invalidity".localized,
               content: validityState.validityFailures.joined(separator: " "))
           infoSection += [hSection]
         }
       }
       let fullName = certificate.fullName
       if !fullName.isEmpty {
-        let section = InfoSection(header: l10n("Name"), content: fullName, style: .fixedWidthFont)
+          let section = InfoSection(header: "Name".localized, content: fullName, style: .fixedWidthFont)
         infoSection += [section]
       }
       infoSection += certificate.statement == nil ? [] : certificate.statement.walletInfo
-      let section = InfoSection( header: l10n("Issuer Country"), content: l10n("country.\(certificate.issCode.uppercased())"))
+        let section = InfoSection( header: "Issuer Country".localized, content: l10n("country.\(certificate.issCode.uppercased())"))
       if !certificate.issCode.isEmpty {
         infoSection += [section]
       }
@@ -164,22 +164,22 @@ public class SectionBuilder {
 
     private func makeSectionsForRecovery(includeInvalidSection: Bool = true) {
       if includeInvalidSection {
-        let hSection = InfoSection(header: l10n("Certificate Type"), content: certificate.certTypeString)
+          let hSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString)
         infoSection += [hSection]
         if !validityState.isValid {
-          let vSection = InfoSection(header: l10n("Reason for Invalidity"),
+            let vSection = InfoSection(header: "Reason for Invalidity".localized,
               content: validityState.validityFailures.joined(separator: " "))
           infoSection += [vSection]
         }
       }
       let fullName = certificate.fullName
       if !fullName.isEmpty {
-        let nSection = InfoSection( header: l10n("Name"), content: fullName, style: .fixedWidthFont)
+          let nSection = InfoSection( header: "Name".localized, content: fullName, style: .fixedWidthFont)
         infoSection += [nSection]
       }
       infoSection += certificate.statement == nil ? [] : certificate.statement.walletInfo
       if !certificate.issCode.isEmpty {
-        let iSection = InfoSection(header: l10n("Issuer Country"), content: l10n("country.\(certificate.issCode.uppercased())"))
+          let iSection = InfoSection(header: "Issuer Country".localized, content: l10n("country.\(certificate.issCode.uppercased())"))
         infoSection += [iSection]
       }
     }

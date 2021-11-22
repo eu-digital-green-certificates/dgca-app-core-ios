@@ -62,7 +62,7 @@ final class SwiftDGCTests: XCTestCase {
 
     l10nModule = bundle
 
-    if l10n("Cancel") == "Cancel" {
+      if "Cancel".localized == "Cancel" {
       XCTAssert(false, "l10n failed")
       return
     }
@@ -139,10 +139,10 @@ final class SwiftDGCTests: XCTestCase {
     }
     if expExpired == true {
       XCTAssert(clock != nil, "clock not set for \(descr)")
-      XCTAssert(!hcert.validityFailures.contains(l10n("Certificate past expiration date.")), "cose expired for \(descr)")
+        XCTAssert(!hcert.validityFailures.contains("Certificate past expiration date.".localized), "cose expired for \(descr)")
     } else if expExpired == false {
       XCTAssert(clock != nil, "clock not set for \(descr)")
-      XCTAssert(hcert.validityFailures.contains(l10n("Certificate past expiration date.")), "cose not expired for \(descr)")
+        XCTAssert(hcert.validityFailures.contains("Certificate past expiration date.".localized), "cose not expired for \(descr)")
     }
   }
 

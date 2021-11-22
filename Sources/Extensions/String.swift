@@ -31,7 +31,11 @@ public extension String {
     return String(self[index(startIndex, offsetBy: num)])
   }
 
-    static var zeroWidthSpace: String {
+  static var zeroWidthSpace: String {
     "\u{200B}"
+  }
+  
+  var localized: String {
+    return l10n(self)
   }
 }
