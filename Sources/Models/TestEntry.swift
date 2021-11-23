@@ -50,7 +50,7 @@ public struct TestEntry: HCertEntry {
           InfoSection( header: "Test Result".localized,
             content: resultNegative ? "Not Detected".localized : "Detected ⚠️".localized),
           InfoSection( header: "Targeted Disease".localized,
-            content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
+                    content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
                 InfoSection( header: "Test Center".localized, content: testCenter, isPrivate: true),
                 InfoSection( header: "Country of Test".localized, content: country(for: countryCode), isPrivate: true),
                 InfoSection( header: "Test Issuer".localized, content: issuer, isPrivate: true )]
@@ -62,7 +62,7 @@ public struct TestEntry: HCertEntry {
         InfoSection( header: "Time of Sampling".localized, content: sampleTime.dateTimeStringUtc),
         InfoSection( header: "Type of Test".localized, content: type),
         InfoSection( header: "Targeted Disease".localized,
-          content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
+            content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
         InfoSection( header: "Test Center".localized, content: testCenter, isPrivate: true),
         InfoSection( header: "Country of Test".localized,content: country(for: countryCode), isPrivate: true),
         InfoSection( header: "Test Issuer".localized, content: issuer, isPrivate: true)

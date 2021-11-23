@@ -28,9 +28,9 @@
 "enum.HCertType.test" = "Testergebnis";
 "enum.HCertType.vaccine" = "Impfung";
 "enum.HCertType.recovery" = "Recovery";
-"enum.HCertValidity.valid" = "Genesung";
-"enum.HCertValidity.invalid" = "Ungültig";
-"enum.HCertValidity.ruleInvalid" = "Begrenzte Gültigkeit";
+"Valid" = "Genesung";
+"Invalid" = "Ungültig";
+"Limited validity" = "Begrenzte Gültigkeit";
 
 "Certificate Type" = "Zertifikatstyp";
 "Date of Birth" = "Geburtsdatum";

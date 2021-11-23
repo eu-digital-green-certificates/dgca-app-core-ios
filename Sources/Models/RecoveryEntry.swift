@@ -42,7 +42,7 @@ public struct RecoveryEntry: HCertEntry {
 
     public var info: [InfoSection] {
         return [InfoSection( header: "Targeted Disease".localized,
-          content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
+                    content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
                 InfoSection(header: "Valid from".localized, content: validFrom.localDateString),
                 InfoSection(header: "Valid Until".localized, content: validUntil.localDateString),
                 InfoSection( header: "Country of Issuance".localized, content: country(for: countryCode), isPrivate: true ),
@@ -53,7 +53,7 @@ public struct RecoveryEntry: HCertEntry {
         return [InfoSection(header: "Valid from".localized, content: validFrom.localDateString),
                 InfoSection(header: "Valid Until".localized, content: validUntil.localDateString),
                 InfoSection( header: "Targeted Disease".localized,
-            content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")),
+                    content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
                 InfoSection( header: "Country of Issuance".localized, content: country(for: countryCode), isPrivate: true),
                 InfoSection( header: "Statement Issuer".localized, content: issuer, isPrivate: true )]
    }
