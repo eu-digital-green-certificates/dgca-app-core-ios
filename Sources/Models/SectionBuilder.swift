@@ -120,7 +120,7 @@ public class SectionBuilder {
     
     private func makeSectionsForVaccine(includeInvalidSection: Bool = true) {
       if includeInvalidSection {
-          let cSection = InfoSection( header: "Certificate Type".localized,content: certificate.certTypeString)
+          let cSection = InfoSection( header: "Certificate Type".localized, content: certificate.certTypeString)
         infoSection += [cSection]
         if !validityState.isValid {
             let hSection = InfoSection(header: "Reason for Invalidity".localized,

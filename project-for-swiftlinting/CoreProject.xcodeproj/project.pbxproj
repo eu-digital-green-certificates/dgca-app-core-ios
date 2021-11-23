@@ -104,13 +104,14 @@
 					};
 				};
 			};
-			buildConfigurationList = CEF91E39264719E60018888D /* Build configuration list for PBXProject "project-for-swiftlinting" */;
+			buildConfigurationList = CEF91E39264719E60018888D /* Build configuration list for PBXProject "CoreProject" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = CEF91E35264719E60018888D;
 			productRefGroup = CEF91E40264719E60018888D /* Products */;
@@ -342,7 +343,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CEF91E39264719E60018888D /* Build configuration list for PBXProject "project-for-swiftlinting" */ = {
+		CEF91E39264719E60018888D /* Build configuration list for PBXProject "CoreProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CEF91E45264719E60018888D /* Debug */,
