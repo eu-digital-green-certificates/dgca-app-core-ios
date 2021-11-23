@@ -27,6 +27,20 @@
 
 import Foundation
 
+public enum DataOperationError: Error {
+  case noInputData
+  case initializationError
+  case encodindFailure
+  case signingFailure
+  case dataError(description: String)
+}
+public enum DataOperationResult {
+  case success(Bool)
+  case failure(Error)
+}
+
+public typealias DataCompletionHandler = (DataOperationResult) -> Void
+
 struct SecureDB: Codable {
   let data: Data
   let signature: Data
@@ -52,63 +66,72 @@ public class SecureStorage<T: Codable> {
   /**
    Loads encrypted db and overrides it with an empty one if that fails.
    */
-  public func loadOverride(fallback: T, completion: ((T?) -> Void)? = nil) {
-    load { [unowned self] result in
-      if result != nil {
-        completion?(result)
-      } else {
-          self.save(fallback) { _ in
-            self.load(completion: completion)
-          }
+  public func loadOverride(fallback: T, completion: @escaping ((T?) -> Void)) {
+    if !FileManager.default.fileExists(atPath: databaseURL.path) {
+      self.save(fallback) { _ in
+        self.load(completion: completion)
       }
+    } else {
+      self.load(completion: completion)
     }
   }
 
-  public func load(completion: ((T?) -> Void)? = nil) {
+  public func loadStoredData(fallback: T, completion: @escaping ((T?) -> Void)) {
     if !FileManager.default.fileExists(atPath: databaseURL.path) {
-      completion?(nil)
-      return
-    }
+      self.save(fallback) { _ in
+        self.load(completion: completion)
+      }
 
-    guard let (data, signature) = read(), let key = secureStorageKey,
+    } else {
+      self.load(completion: completion)
+    }
+  }
+
+  public func load(completion: @escaping ((T?) -> Void)) {
+    guard let (data, signature) = read(),
+      let key = secureStorageKey,
       Enclave.verify(data: data, signature: signature, with: key).0
     else {
-      completion?(nil)
+      completion(nil)
       return
     }
     Enclave.decrypt(data: data, with: key) { decrypted, err in
       guard let decrypted = decrypted, err == nil,
         let data = try? JSONDecoder().decode(T.self, from: decrypted)
       else {
-        completion?(nil)
+        completion(nil)
         return
       }
-      completion?(data)
+      completion(data)
     }
   }
 
-  public func save(_ instance: T, completion: ((Bool) -> Void)? = nil) {
+  public func save(_ instance: T, completion: @escaping DataCompletionHandler) {
     guard let data = try? JSONEncoder().encode(instance),
       let key = secureStorageKey,
       let encrypted = Enclave.encrypt(data: data, with: key).0
     else {
-      completion?(false)
+      completion(.failure(DataOperationError.encodindFailure))
       return
     }
-    Enclave.sign(data: encrypted, with: key) { [unowned self] signature, err in
-      guard let signature = signature, err == nil else {
-        completion?(false)
+    Enclave.sign(data: encrypted, with: key, completion: { [unowned self] result, error in
+      guard let signature = result, error == nil else {
+        completion(.failure(DataOperationError.dataError(description: error!)))
         return
       }
-      let success = self.write(data: encrypted, signature: signature)
-      completion?(success)
-    }
+      self.write(data: encrypted, signature: signature, completion: completion)
+    })
   }
 
-  func write(data: Data, signature: Data) -> Bool {
-    guard let rawData = try? JSONEncoder().encode(SecureDB(data: data, signature: signature)),
-      (try? rawData.write(to: databaseURL)) != nil else { return false }
-    return true
+  func write(data: Data, signature: Data, completion: DataCompletionHandler) {
+    do {
+      let rawData = try JSONEncoder().encode(SecureDB(data: data, signature: signature))
+      try rawData.write(to: databaseURL)
+      completion(.success(true))
+    } catch {
+      completion(.failure(DataOperationError.encodindFailure))
+      return
+    }
   }
 
   func read() -> (Data, Data)? {
