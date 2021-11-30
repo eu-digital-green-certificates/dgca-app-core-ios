@@ -107,7 +107,7 @@ public class SectionBuilder {
         infoSection += [InfoSection( header: "Standardised Given Name".localized,
           content: certificate.firstNameStandardized.replacingOccurrences( of: "<",
           with: String.zeroWidthSpace + "<" + String.zeroWidthSpace), style: .fixedWidthFont)]
-        let sSection = InfoSection( header: "Date of Birth".localized, content: certificate.dateOfBirth)
+        let sSection = InfoSection( header: "Date of birth".localized, content: certificate.dateOfBirth)
       infoSection += [sSection]
       infoSection += certificate.statement == nil ? [] : certificate.statement.info
         let uSection = InfoSection(header: "Unique Certificate Identifier".localized, content: certificate.uvci,style: .fixedWidthFont,isPrivate: true)

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CEF91E3E264719E60018888D"
-               BuildableName = "project_for_swiftlinting.framework"
+               BuildableName = "CoreProject.framework"
                BlueprintName = "CoreProject"
                ReferencedContainer = "container:CoreProject.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CEF91E3E264719E60018888D"
-            BuildableName = "project_for_swiftlinting.framework"
+            BuildableName = "CoreProject.framework"
             BlueprintName = "CoreProject"
             ReferencedContainer = "container:CoreProject.xcodeproj">
          </BuildableReference>
