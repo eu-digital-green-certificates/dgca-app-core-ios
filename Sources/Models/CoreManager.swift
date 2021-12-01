@@ -1,6 +1,6 @@
 /*-
  * ---license-start
- * eu-digital-green-certificates / dgca-app-core-ios
+ * eu-digital-green-certificates / dgca-verifier-app-ios
  * ---
  * Copyright (C) 2021 T-Systems International GmbH and all other contributors
  * ---
@@ -18,27 +18,18 @@
  * ---license-end
  */
 //
-//  Config.swift
+//  CoreManager.swift
+//  
 //
+//  Created by Igor Khomiak on 21.10.2021.
 //
-//  Created by Yannick Spreen on 5/12/21.
-//
 
-import Foundation
-import SwiftyJSON
+import UIKit
 
-public class Config {
-  public static func merge(_ old: JSON, with new: JSON) -> JSON {
-    old.mergeAndOverride(other: new)
-  }
+public class CoreManager {
+    public static var shared = CoreManager()
+    public static var cachedQrCodes = [String: UIImage]()
+    public static var publicKeyEncoder: PublicKeyStorageDelegate?
 
-  public static func load() -> JSON {
-    guard let path = Bundle.main.resourcePath else { return .null }
-
-    let context = "context.jsonc"
-    let fileURL = URL(fileURLWithPath: path + "/\(context)")
-    guard let fileContents = try? Data(contentsOf: fileURL) else { return .null }
-    let string = String(data: fileContents, encoding: .utf8) ?? ""
-    return JSON(parseJSONC: string)
-  }
+    lazy public var config = HCertConfig.default
 }

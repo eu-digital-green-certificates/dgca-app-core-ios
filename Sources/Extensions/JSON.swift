@@ -24,6 +24,7 @@
 //  Created by Yannick Spreen on 5/12/21.
 //
 
+import Foundation
 import SwiftyJSON
 
 public extension JSON {

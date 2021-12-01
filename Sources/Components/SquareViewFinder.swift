@@ -25,11 +25,10 @@
 //
 
 #if os(iOS)
-import Foundation
 import UIKit
 
-class SquareViewFinder {
-  static func newView(from view: UIView? = nil) -> UIView {
+public class SquareViewFinder {
+  public static func newView(from view: UIView? = nil) -> UIView {
     let view = view ?? UIView(frame: .zero)
     view.frame = .zero
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -39,15 +38,14 @@ class SquareViewFinder {
   }
 
   public static func create(from controller: UIViewController) {
-    guard let view = controller.view else {
-      return
-    }
+    guard let view = controller.view else { return }
+      
     let guide = newView()
     let square = newView()
-    let imgTopRight = newView(from: UIImageView(image: UIImage.fromBundle(named: "cam_top_right")))
-    let imgTopLeft = newView(from: UIImageView(image: UIImage.fromBundle(named: "cam_top_left")))
-    let imgBottomRight = newView(from: UIImageView(image: UIImage.fromBundle(named: "cam_bottom_right")))
-    let imgBottomLeft = newView(from: UIImageView(image: UIImage.fromBundle(named: "cam_bottom_left")))
+    let imgTopRight = newView(from: UIImageView(image: UIImage(named: "cam_top_right")))
+    let imgTopLeft = newView(from: UIImageView(image: UIImage(named: "cam_top_left")))
+    let imgBottomRight = newView(from: UIImageView(image: UIImage(named: "cam_bottom_right")))
+    let imgBottomLeft = newView(from: UIImageView(image: UIImage(named: "cam_bottom_left")))
     let constraints = [
       guide.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       guide.trailingAnchor.constraint(equalTo: view.trailingAnchor),

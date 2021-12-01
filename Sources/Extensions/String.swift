@@ -26,12 +26,16 @@
 
 import Foundation
 
-extension String {
-  subscript(num: Int) -> String {
+public extension String {
+    subscript(num: Int) -> String {
     return String(self[index(startIndex, offsetBy: num)])
   }
 
   static var zeroWidthSpace: String {
     "\u{200B}"
+  }
+  
+  var localized: String {
+    return l10n(self)
   }
 }

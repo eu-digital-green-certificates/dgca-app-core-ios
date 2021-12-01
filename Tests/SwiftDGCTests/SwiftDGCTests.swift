@@ -62,19 +62,13 @@ final class SwiftDGCTests: XCTestCase {
 
     l10nModule = bundle
 
-    if l10n("btn.cancel") == "btn.cancel" {
+      if "Cancel".localized == "Cancel" {
       XCTAssert(false, "l10n failed")
       return
     }
-
-    HCert.publicKeyStorageDelegate = self
-    HCert.debugPrintJsonErrors = false
-
-    guard
-      var path = bundle.resourcePath
-    else {
-      return
-    }
+    CoreManager.shared.config = HCertConfig(prefetchAllCodes: false, checkSignatures: true, debugPrintJsonErrors: false)
+    CoreManager.publicKeyEncoder = self
+    guard var path = bundle.resourcePath else { return }
     path += "/dgc-testdata"
     let contents = ls(path: path).filter {
       isDir(path: "\(path)/\($0)") && !$0.hasPrefix(".")
@@ -85,10 +79,8 @@ final class SwiftDGCTests: XCTestCase {
   }
 
   func testCountry(dir: String, for countryName: String) {
-    print("Testing", countryName)
-    guard isDir(path: "\(dir)/2DCode/raw") else {
-      return
-    }
+    print("Testing\(countryName)")"
+    guard isDir(path: "\(dir)/2DCode/raw") else { return }
     for file in ls(path: "\(dir)/2DCode/raw") {
       let path = "\(dir)/2DCode/raw/\(file)"
       try? test(jsonFile: path)
@@ -107,30 +99,32 @@ final class SwiftDGCTests: XCTestCase {
     }
     json = JSON(parseJSON: string)
     HCert.clockOverride = clock
-    let error = HCert.ParseErrors()
-    let hcert = HCert(from: payloadString ?? "", errors: error)
-    let errors = error.errors
+      do {
+          let hcert = try HCert(from: payloadString ?? "")
+          checkHcert(hcert: hcert)
+      } catch let error as CertificateParsingError {
+          let errors = error.errors
 
-    for error in errors {
-      switch error {
-      case .base45:
-        XCTAssert(expB45decode != true, "unexpected base45 err for \(descr)")
-      case .prefix:
-        XCTAssert(expUnprefix != true, "unexpected prefix err for \(descr)")
-      case .zlib:
-        XCTAssert(expCompression != true, "unexpected zlib err for \(descr)")
-      case .cbor:
-        XCTAssert(expDecode != true, "unexpected cbor err for \(descr)")
-      case .json(error: let error):
-        XCTAssert(expSchemaValidation != true, "unexpected schema err for \(descr): \(error)")
-      case .version:
-        XCTAssert(expSchemaValidation != true, "unexpected version err for \(descr)")
+          for error in errors {
+            switch error {
+            case .base45:
+              XCTAssert(expB45decode != true, "unexpected base45 err for \(descr)")
+            case .prefix:
+              XCTAssert(expUnprefix != true, "unexpected prefix err for \(descr)")
+            case .zlib:
+              XCTAssert(expCompression != true, "unexpected zlib err for \(descr)")
+            case .cbor:
+              XCTAssert(expDecode != true, "unexpected cbor err for \(descr)")
+            case .json(error: let error):
+              XCTAssert(expSchemaValidation != true, "unexpected schema err for \(descr): \(error)")
+            case .version:
+              XCTAssert(expSchemaValidation != true, "unexpected version err for \(descr)")
+            }
+
+      } catch {
+          ()
       }
     }
-    guard let hcert = hcert else {
-      return
-    }
-    checkHcert(hcert: hcert)
   }
 
   func checkHcert(hcert: HCert) {
@@ -145,10 +139,10 @@ final class SwiftDGCTests: XCTestCase {
     }
     if expExpired == true {
       XCTAssert(clock != nil, "clock not set for \(descr)")
-      XCTAssert(!hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose expired for \(descr)")
+        XCTAssert(!hcert.validityFailures.contains("Certificate past expiration date.".localized), "cose expired for \(descr)")
     } else if expExpired == false {
       XCTAssert(clock != nil, "clock not set for \(descr)")
-      XCTAssert(hcert.validityFailures.contains(l10n("hcert.err.exp")), "cose not expired for \(descr)")
+        XCTAssert(hcert.validityFailures.contains("Certificate past expiration date.".localized), "cose not expired for \(descr)")
     }
   }
 

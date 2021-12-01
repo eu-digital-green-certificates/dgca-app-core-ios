@@ -19,7 +19,7 @@
  * ---license-end
  */
 //  
-//  TestResult.swift
+//  RecoveryEntry.swift
 //
 //  
 //  Created by Yannick Spreen on 4/28/21.
@@ -28,71 +28,56 @@
 import Foundation
 import SwiftyJSON
 
-struct RecoveryEntry: HCertEntry {
-  var typeAddon: String { "" }
+public struct RecoveryEntry: HCertEntry {
+    public var typeAddon: String { "" }
+    public let uvci: String
+    
+    private let diseaseTargeted: String
+    private let firstPositiveDate: String
+    private let countryCode: String
+    private let issuer: String
+    private let validFrom: Date
+    private let validUntil: Date
 
-  var info: [InfoSection] {
-    [
-      InfoSection(
-        header: l10n("recovery.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
-      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
-      InfoSection(
-        header: l10n("recovery.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("recovery.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
-    ]
-  }
 
-  var walletInfo: [InfoSection] {
-    [
-      InfoSection(header: l10n("recovery.valid-from"), content: validFrom.localDateString),
-      InfoSection(header: l10n("recovery.valid-until"), content: validUntil.localDateString),
-      InfoSection(
-        header: l10n("recovery.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("recovery.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("recovery.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
-    ]
-  }
-
-  var validityFailures: [String] {
-    var fail = [String]()
-    if validFrom > HCert.clock {
-      fail.append(l10n("hcert.err.rec.future"))
+    public var info: [InfoSection] {
+        return [InfoSection( header: "Targeted Disease".localized,
+                    content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
+                InfoSection(header: "Valid from".localized, content: validFrom.localDateString),
+                InfoSection(header: "Valid Until".localized, content: validUntil.localDateString),
+                InfoSection( header: "Country of Issuance".localized, content: country(for: countryCode), isPrivate: true ),
+                InfoSection( header: "Statement Issuer".localized, content: issuer, isPrivate: true ) ]
     }
-    if validUntil < HCert.clock {
-      fail.append(l10n("hcert.err.rec.past"))
-    }
-    return fail
-  }
+  
+    public var walletInfo: [InfoSection] {
+        return [InfoSection(header: "Valid from".localized, content: validFrom.localDateString),
+                InfoSection(header: "Valid Until".localized, content: validUntil.localDateString),
+                InfoSection( header: "Targeted Disease".localized,
+                    content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
+                InfoSection( header: "Country of Issuance".localized, content: country(for: countryCode), isPrivate: true),
+                InfoSection( header: "Statement Issuer".localized, content: issuer, isPrivate: true )]
+   }
 
-  enum Fields: String {
-    case diseaseTargeted = "tg"
-    case firstPositiveDate = "fr"
-    case countryCode = "co"
-    case issuer = "is"
-    case validFrom = "df"
-    case validUntil = "du"
-    case uvci = "ci"
-  }
+    public var validityFailures: [String] {
+      var fail = [String]()
+      if validFrom > HCert.clock {
+          fail.append("Recovery statement is not valid yet.".localized)
+      }
+      if validUntil < HCert.clock {
+          fail.append("Recovery statement is not valid anymore.".localized)
+      }
+      return fail
+    }
+
+    enum Fields: String {
+      case diseaseTargeted = "tg"
+      case firstPositiveDate = "fr"
+      case countryCode = "co"
+      case issuer = "is"
+      case validFrom = "df"
+      case validUntil = "du"
+      case uvci = "ci"
+    }
 
   init?(body: JSON) {
     guard
@@ -117,11 +102,4 @@ struct RecoveryEntry: HCertEntry {
     self.uvci = uvci
   }
 
-  var diseaseTargeted: String
-  var firstPositiveDate: String
-  var countryCode: String
-  var issuer: String
-  var validFrom: Date
-  var validUntil: Date
-  var uvci: String
 }

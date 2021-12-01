@@ -33,77 +33,51 @@ enum TestResult: String {
   case notDetected = "260415000"
 }
 
-struct TestEntry: HCertEntry {
-  var typeAddon: String { "" }
+public struct TestEntry: HCertEntry {
+    public var typeAddon: String { "" }
+    public let uvci: String
 
-  var info: [InfoSection] {
-    [
-      InfoSection(header: l10n("test.sample-date-time"), content: sampleTime.dateTimeStringUtc),
-      InfoSection(
-        header: l10n("test.test-result"),
-        content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")
-      ),
-      InfoSection(
-        header: l10n("test.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("test.center"),
-        content: testCenter,
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("test.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("test.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
+    private let diseaseTargeted: String
+    private let type: String
+    private let sampleTime: Date
+    private let resultNegative: Bool
+    private let testCenter: String
+    private let countryCode: String
+    private let issuer: String
+
+    public var info: [InfoSection] {
+        return [InfoSection( header: "Time of Sampling".localized, content: sampleTime.dateTimeStringUtc),
+          InfoSection( header: "Test Result".localized,
+            content: resultNegative ? "Not Detected".localized : "Detected ⚠️".localized),
+          InfoSection( header: "Targeted Disease".localized,
+                    content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
+                InfoSection( header: "Test Center".localized, content: testCenter, isPrivate: true),
+                InfoSection( header: "Country of Test".localized, content: country(for: countryCode), isPrivate: true),
+                InfoSection( header: "Test Issuer".localized, content: issuer, isPrivate: true )]
+  }
+
+    public var walletInfo: [InfoSection] {
+      return [InfoSection( header: "Test Result".localized,
+          content: resultNegative ? "Not Detected".localized : "Detected ⚠️".localized),
+        InfoSection( header: "Time of Sampling".localized, content: sampleTime.dateTimeStringUtc),
+        InfoSection( header: "Type of Test".localized, content: type),
+        InfoSection( header: "Targeted Disease".localized,
+            content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
+        InfoSection( header: "Test Center".localized, content: testCenter, isPrivate: true),
+        InfoSection( header: "Country of Test".localized,content: country(for: countryCode), isPrivate: true),
+        InfoSection( header: "Test Issuer".localized, content: issuer, isPrivate: true)
     ]
   }
 
-  var walletInfo: [InfoSection] {
-    [
-      InfoSection(
-        header: l10n("test.test-result"),
-        content: resultNegative ? l10n("test.result.negative") : l10n("test.result.positive")
-      ),
-      InfoSection(header: l10n("test.sample-date-time"), content: sampleTime.dateTimeStringUtc),
-      InfoSection(header: l10n("test.type"), content: type),
-      InfoSection(
-        header: l10n("test.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("test.center"),
-        content: testCenter,
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("test.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("test.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
-    ]
-  }
-
-  var validityFailures: [String] {
-    var fail = [String]()
-    if !resultNegative {
-      fail.append(l10n("hcert.err.tst.positive"))
-    }
-    if sampleTime > HCert.clock {
-      fail.append(l10n("hcert.err.tst.future"))
-    }
-    return fail
+  public var validityFailures: [String] {
+      var fail = [String]()
+      if !resultNegative {
+        fail.append("The test result is positive.".localized)
+      }
+      if sampleTime > HCert.clock {
+        fail.append("Test date is in the future.".localized)
+      }
+      return fail
   }
 
   enum Fields: String {
@@ -141,12 +115,4 @@ struct TestEntry: HCertEntry {
     self.uvci = uvci
   }
 
-  var diseaseTargeted: String
-  var type: String
-  var sampleTime: Date
-  var resultNegative: Bool
-  var testCenter: String
-  var countryCode: String
-  var issuer: String
-  var uvci: String
 }

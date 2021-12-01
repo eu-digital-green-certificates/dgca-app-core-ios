@@ -32,8 +32,8 @@ public extension UIViewController {
   func showInputDialog(
     title: String? = nil,
     subtitle: String? = nil,
-    actionTitle: String? = l10n("btn.okay"),
-    cancelTitle: String? = l10n("btn.cancel"),
+    actionTitle: String? = "OK".localized,
+    cancelTitle: String? = "Cancel".localized,
     inputPlaceholder: String? = nil,
     inputKeyboardType: UIKeyboardType = UIKeyboardType.default,
     capitalization: UITextAutocapitalizationType? = nil,
@@ -57,13 +57,13 @@ public extension UIViewController {
     alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { _ in
       handler?(nil)
     })
-
     present(alert, animated: true, completion: nil)
   }
+    
   func showAlert(
     title: String? = nil,
     subtitle: String? = nil,
-    actionTitle: String? = l10n("btn.okay"),
+    actionTitle: String? = "OK".localized,
     cancelTitle: String? = nil,
     handler: ((Bool) -> Void)? = nil
   ) {
@@ -76,8 +76,13 @@ public extension UIViewController {
         handler?(false)
       })
     }
-
     present(alert, animated: true, completion: nil)
+  }
+    
+  func showInfoAlert(withTitle title: String, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "OK", style: .default))
+    self.present(alertController, animated: true)
   }
 }
 #endif

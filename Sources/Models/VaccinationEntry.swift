@@ -19,107 +19,69 @@
  * ---license-end
  */
 //  
-//  TestResult.swift
+//  VaccinationEntry.swift
 //
-//  
 //  Created by Yannick Spreen on 4/28/21.
 //  
 
 import Foundation
 import SwiftyJSON
 
-struct VaccinationEntry: HCertEntry {
-  var typeAddon: String {
-    let format = l10n("vaccine.x-of-x")
+public struct VaccinationEntry: HCertEntry {
+    
+  public var typeAddon: String {
+    let format = "%d of %d".localized
     return .localizedStringWithFormat(format, doseNumber, dosesTotal)
   }
+  public let uvci: String
+    
+  private let diseaseTargeted: String
+  private let vaccineOrProphylaxis: String
+  private let medicalProduct: String
+  private let manufacturer: String
+  private let countryCode: String
+  private let issuer: String
+  private let doseNumber: Int
+  private let dosesTotal: Int
+  private let date: Date
 
-  var info: [InfoSection] {
-    [
-      InfoSection(
-        header: l10n("vaccine.date"),
-        content: date.localDateString
+  public var info: [InfoSection] {
+    return [InfoSection(header: "Date of Vaccination".localized, content: date.localDateString),
+      InfoSection( header: "Targeted Disease".localized,
+                content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
+            InfoSection(header: "Authorization Holder / Manufacturer".localized,
+                content: l10n("vac.man." + manufacturer, or: "\("Unknown".localized): \(manufacturer)"), isPrivate: true ),
+            InfoSection(header: "Medical Product".localized,
+                content: l10n("vac.product." + medicalProduct, or: "\("Unknown".localized): \(medicalProduct)"), isPrivate: true
       ),
-      InfoSection(
-        header: l10n("vaccine.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("vaccine.manufacturer"),
-        content: l10n("vac.man." + manufacturer, or: "\(l10n("vac.man.unknown")): \(manufacturer)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.product"),
-        content: l10n("vac.product." + medicalProduct, or: "\(l10n("vac.product.unknown")): \(medicalProduct)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.type"),
-        content: l10n("vac.type." + vaccineOrProphylaxis, or: "\(l10n("vac.type.unknown")): \(vaccineOrProphylaxis)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
+      InfoSection(header: "Vaccine or Prophylaxis".localized,
+        content: l10n("vac.type." + vaccineOrProphylaxis, or: "\("Unknown".localized): \(vaccineOrProphylaxis)"), isPrivate: true),
+      InfoSection( header: "Country of Vaccination".localized, content: country(for: countryCode), isPrivate: true),
+      InfoSection( header: "Certificate Issuer".localized, content: issuer, isPrivate: true)
     ]
   }
   
-  var walletInfo: [InfoSection] {
-    [
-      InfoSection(
-        header: l10n("vaccine.date"),
-        content: date.localDateString
-      ),
-      InfoSection(
-        header: l10n("vaccine.disease"),
-        content: l10n("disease." + diseaseTargeted, or: "\(l10n("disease.unknown")): \(diseaseTargeted)")
-      ),
-      InfoSection(
-        header: l10n("vaccine.manufacturer"),
-        content: l10n("vac.man." + manufacturer, or: "\(l10n("vac.man.unknown")): \(manufacturer)"),
-        isPrivate: true
-      ),
-//      InfoSection(
-//        header: l10n("vaccine.product"),
-//        content: l10n("vac.product." + medicalProduct, or: "\(l10n("vac.product.unknown")): \(medicalProduct)"),
-//        isPrivate: true
-//      ),
-      InfoSection(
-        header: l10n("vaccine.type"),
-        content: l10n("vac.type." + vaccineOrProphylaxis, or: "\(l10n("vac.type.unknown")): \(vaccineOrProphylaxis)"),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.country"),
-        content: country(for: countryCode),
-        isPrivate: true
-      ),
-      InfoSection(
-        header: l10n("vaccine.issuer"),
-        content: issuer,
-        isPrivate: true
-      )
-    ]
+  public var walletInfo: [InfoSection] {
+    return [InfoSection( header: "Date of Vaccination".localized, content: date.localDateString ),
+      InfoSection( header: "Targeted Disease".localized,
+                content: l10n("disease." + diseaseTargeted, or: "\("Unknown".localized): \(diseaseTargeted)")),
+            InfoSection( header: "Authorization Holder / Manufacturer".localized,
+                content: l10n("vac.man." + manufacturer, or: "\("Unknown".localized): \(manufacturer)"), isPrivate: true ),
+            InfoSection(header: "Vaccine or Prophylaxis".localized,
+                content: l10n("vac.type." + vaccineOrProphylaxis, or: "\("Unknown".localized): \(vaccineOrProphylaxis)"), isPrivate: true),
+            InfoSection( header: "Country of Vaccination".localized, content: country(for: countryCode), isPrivate: true),
+            InfoSection(header: "Certificate Issuer".localized, content: issuer, isPrivate: true)]
   }
 
-  
-  var validityFailures: [String] {
+  public var validityFailures: [String] {
     var fail = [String]()
     if date > HCert.clock {
-      fail.append(l10n("hcert.err.vac.future"))
+      fail.append("Vaccination date is in the future.".localized)
     }
     return fail
   }
 
-  enum Fields: String {
+  private enum Fields: String {
     case diseaseTargeted = "tg"
     case vaccineOrProphylaxis = "vp"
     case medicalProduct = "mp"
@@ -159,15 +121,4 @@ struct VaccinationEntry: HCertEntry {
     self.dosesTotal = dosesTotal
     self.date = date
   }
-
-  var diseaseTargeted: String
-  var vaccineOrProphylaxis: String
-  var medicalProduct: String
-  var manufacturer: String
-  var countryCode: String
-  var issuer: String
-  var uvci: String
-  var doseNumber: Int
-  var dosesTotal: Int
-  var date: Date
 }

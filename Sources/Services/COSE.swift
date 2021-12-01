@@ -27,10 +27,10 @@
 import Foundation
 import SwiftCBOR
 
-public struct COSE {
-    public static func verify(_cbor:Data, with derPubKeyB64: String) -> Bool {
-        guard let sign = CBOR.unwrap(data: _cbor)?.signatureBytes else {return false};
-        guard let bytes = signedPayloadBytes(from: _cbor) ?? nil else { return false };
+public class COSE {
+    public static func verify(_ cbor:Data, with derPubKeyB64: String) -> Bool {
+        guard let sign = CBOR.unwrap(data: cbor)?.signatureBytes else {return false};
+        guard let bytes = signedPayloadBytes(from: cbor) ?? nil else { return false };
         guard let key = X509.pubKey(from: derPubKeyB64) else {
            return false
          }

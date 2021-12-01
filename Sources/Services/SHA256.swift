@@ -30,8 +30,7 @@
 import Foundation
 import CommonCrypto
 
-public struct SHA256 {
-
+public class SHA256 {
   public static func digest(input: NSData) -> Data {
     if #available(iOS 13.0, *) {
       return iOS13Digest(input: input)
@@ -62,5 +61,4 @@ public struct SHA256 {
   private func hexString(_ iterator: Array<UInt8>.Iterator) -> String {
     return iterator.map { String(format: "%02x", $0) }.joined()
   }
-
 }

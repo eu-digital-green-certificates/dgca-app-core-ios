@@ -28,7 +28,6 @@
 
 import Foundation
 
-// swiftlint:disable line_length
 public let euDgcSchemaV1 = """
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -340,4 +339,3 @@ public let euDgcSchemaV1 = """
   }
 }
 """
-// swiftlint:enable line_length

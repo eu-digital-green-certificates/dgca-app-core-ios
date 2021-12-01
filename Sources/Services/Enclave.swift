@@ -27,7 +27,7 @@
 
 import Foundation
 
-public struct Enclave {
+public class Enclave {
   static let encryptAlg = SecKeyAlgorithm.eciesEncryptionCofactorVariableIVX963SHA256AESGCM
   static let signAlg = SecKeyAlgorithm.ecdsaSignatureMessageX962SHA512
 
@@ -93,7 +93,7 @@ public struct Enclave {
     return result
   }
 
-  static func loadOrGenerateKey(with name: String) -> SecKey? {
+  public static func loadOrGenerateKey(with name: String) -> SecKey? {
     if let key = loadKey(with: name) {
       return key
     }
@@ -102,10 +102,10 @@ public struct Enclave {
 
   static func encrypt(data: Data, with key: SecKey) -> (Data?, String?) {
     guard let publicKey = SecKeyCopyPublicKey(key) else {
-      return (nil, l10n("err.pub-key-irretrievable"))
+        return (nil, "Cannot retrieve public key.".localized)
     }
     guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, encryptAlg) else {
-      return (nil, l10n("err.alg-not-supported"))
+        return (nil, "Algorithm not supported.".localized)
     }
     var error: Unmanaged<CFError>?
     let cipherData = SecKeyCreateEncryptedData(
@@ -127,7 +127,7 @@ public struct Enclave {
 
   static func syncDecrypt(data: Data, with key: SecKey) -> (Data?, String?) {
     guard SecKeyIsAlgorithmSupported(key, .decrypt, encryptAlg) else {
-      return (nil, l10n("err.alg-not-supported"))
+        return (nil, "Algorithm not supported.".localized)
     }
     var error: Unmanaged<CFError>?
     let clearData = SecKeyCreateDecryptedData(
@@ -142,10 +142,10 @@ public struct Enclave {
 
   static func verify(data: Data, signature: Data, with key: SecKey) -> (Bool, String?) {
     guard let publicKey = SecKeyCopyPublicKey(key) else {
-      return (false, l10n("err.pub-key-irretrievable"))
+        return (false, "Cannot retrieve public key.".localized)
     }
     guard SecKeyIsAlgorithmSupported(publicKey, .verify, signAlg) else {
-      return (false, l10n("err.alg-not-supported"))
+        return (false, "Algorithm not supported.".localized)
     }
     var error: Unmanaged<CFError>?
     let isValid = SecKeyVerifySignature(
@@ -178,7 +178,7 @@ public struct Enclave {
   ) -> (Data?, String?) {
     let algorithm = algorithm ?? signAlg
     guard SecKeyIsAlgorithmSupported(key, .sign, algorithm) else {
-      return (nil, l10n("err.alg-not-supported"))
+        return (nil, "Algorithm not supported.".localized)
     }
     var error: Unmanaged<CFError>?
     let signature = SecKeyCreateSignature(

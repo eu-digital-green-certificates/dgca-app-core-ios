@@ -27,7 +27,7 @@
 import Foundation
 import Alamofire
 
-public struct CertEvaluator: ServerTrustEvaluating {
+public class CertEvaluator: ServerTrustEvaluating {
   class CertError: Error {}
 
   let pubKeys: [String]
@@ -43,9 +43,7 @@ public struct CertEvaluator: ServerTrustEvaluating {
     }
     for hash in (hashes + ["*"]) {
       if pubKeys.contains(hash) {
-        #if DEBUG && targetEnvironment(simulator)
         print("SSL Pubkey matches. ✅")
-        #endif
         return
       }
     }
@@ -57,14 +55,13 @@ public struct CertEvaluator: ServerTrustEvaluating {
     if failure && 0 < 1 { // silence unreachable warning
       throw Self.CertError()
     }
-    print("\nFATAL: None of the hashes matched our public keys! These keys were loaded:")
-    print(pubKeys.joined(separator: "\n"))
-    print("\nThe server returned this chain:")
-    print(hashes.joined(separator: "\n"))
+    let str1 = pubKeys.joined(separator: "\n")
+    print("FATAL: None of the hashes matched our public keys! These keys were loaded: \(str1)")
+    let str2 = hashes.joined(separator: "\n")
+    print("The server returned this chain: \(str2)")
   }
 
   public init(pubKeys: [String]) {
     self.pubKeys = pubKeys
   }
-
 }

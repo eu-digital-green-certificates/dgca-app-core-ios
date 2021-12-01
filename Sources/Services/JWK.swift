@@ -28,7 +28,7 @@
 
 import Foundation
 
-struct JWK {
+class JWK {
   public static func ecFrom(x numX: String, y numY: String) -> SecKey? {
     var xBytes: Data?
     var yBytes: Data?
@@ -64,13 +64,11 @@ struct JWK {
     ]
     var error: Unmanaged<CFError>?
     let keyReference = SecKeyCreateWithData(keyData as CFData, attributes as CFDictionary, &error)
-    let errorString = error?.takeUnretainedValue().localizedDescription ?? l10n("err.misc")
+      let errorString = error?.takeUnretainedValue().localizedDescription ?? "Something went wrong.".localized
     error?.release()
-    guard
-      let key = keyReference
-    else {
-      print(errorString)
-      return nil
+    guard let key = keyReference else {
+        print(errorString)
+        return nil
     }
 
     return key
