@@ -66,8 +66,8 @@ public struct VerificationMethod : Codable {
   public let id           : String
   public let controller   : String
   public let type         : String
-  public var publicKeyJwk : PublicKeyJWK?
-  public var verificationMethods : [String]?
+  public let publicKeyJwk : PublicKeyJWK?
+  public let verificationMethods : [String]?
 }
 
 public struct ValidationService : Codable {
