@@ -29,13 +29,13 @@
 import Foundation
 
 public struct CheckInQR : Codable {
-  public var protocolName    : String
-  public var protocolVersion : String
-  public var serviceIdentity : String
-  public var token           : String
-  public var consent         : String
-  public var subject         : String
-  public var serviceProvider : String
+  public let protocolName    : String
+  public let protocolVersion : String
+  public let serviceIdentity : String
+  public let token           : String
+  public let consent         : String
+  public let subject         : String
+  public let serviceProvider : String
   
   private enum CodingKeys: String, CodingKey {
     case protocolName = "protocol"
@@ -49,31 +49,31 @@ public struct CheckInQR : Codable {
 }
 
 public struct ServerListResponse : Codable {
-  public var id                  : String?
-  public var service             : [ValidationService]?
-  public var verificationMethod  : [VerificationMethod]?
+  public let id                  : String?
+  public let service             : [ValidationService]?
+  public let verificationMethod  : [VerificationMethod]?
 }
 
 
 public struct PublicKeyJWK : Codable {
-  public var kid : String
-  public var alg : String
-  public var x5c : [String]
-  public var use : String
+  public let kid : String
+  public let alg : String
+  public let x5c : [String]
+  public let use : String
 }
 
 public struct VerificationMethod : Codable {
-  public var id           : String
-  public var controller   : String
-  public var type         : String
+  public let id           : String
+  public let controller   : String
+  public let type         : String
   public var publicKeyJwk : PublicKeyJWK?
   public var verificationMethods : [String]?
 }
 
 public struct ValidationService : Codable {
-  public var id               : String
-  public var type             : String
-  public var name             : String
-  public var serviceEndpoint  : String
+  public let id               : String
+  public let type             : String
+  public let name             : String
+  public let serviceEndpoint  : String
   public var isSelected       : Bool? = false
 }
