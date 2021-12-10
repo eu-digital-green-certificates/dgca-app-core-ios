@@ -26,12 +26,12 @@
 
 import Foundation
 
-enum ClaimKey: String {
+public enum ClaimKey: String {
   case hCert = "-260"
   case euDgcV1 = "1"
 }
 
-enum AttributeKey: String {
+public enum AttributeKey: String {
   case firstName
   case lastName
   case firstNameStandardized
@@ -61,7 +61,7 @@ public enum HCertValidity {
   case ruleInvalid
 }
 
-let attributeKeys: [AttributeKey: [String]] = [
+public let attributeKeys: [AttributeKey: [String]] = [
   .firstName: ["nam", "gn"],
   .lastName: ["nam", "fn"],
   .firstNameStandardized: ["nam", "gnt"],
