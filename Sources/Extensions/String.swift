@@ -28,14 +28,44 @@ import Foundation
 
 public extension String {
     subscript(num: Int) -> String {
-    return String(self[index(startIndex, offsetBy: num)])
-  }
+        return String(self[index(startIndex, offsetBy: num)])
+    }
 
-  static var zeroWidthSpace: String {
-    "\u{200B}"
-  }
+    static var zeroWidthSpace: String {
+        "\u{200B}"
+    }
   
-  var localized: String {
-    return l10n(self)
-  }
+    var localized: String {
+        return l10n(self)
+    }
+
+    private func generatePadString(length maxLength: Int, pad: String = " ") -> String? {
+        if pad.isEmpty || count <= 0 { return nil }
+        if maxLength <= utf8.count { return nil }
+        
+        let fillLength = maxLength - utf8.count
+        
+        let repeatCount = ceil(
+            Double(fillLength) / Double(pad.utf8.count)
+        )
+        
+        let repeatString = String(repeating: pad, count: Int(repeatCount))
+        
+        let cutIndex = repeatString.index(
+            repeatString.startIndex,
+            offsetBy: fillLength
+        )
+        
+        let padString = repeatString[..<cutIndex]
+        return String(padString)
+    }
+    
+    public func padEnd(length maxLength: Int, pad: String = " ") -> String {
+        return generatePadString(length: maxLength, pad: pad).map { self + $0 } ?? self
+    }
+    
+    public func padStart(length maxLength: Int, pad: String = " ") -> String {
+        return generatePadString(length: maxLength, pad: pad).map { $0 + self } ?? self
+    }
+
 }

@@ -24,11 +24,21 @@
 //  Created by Igor Khomiak on 21.10.2021.
 //
 
+#if os(iOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 public class CoreManager {
     public static var shared = CoreManager()
+    
+#if os(iOS)
     public static var cachedQrCodes = [String: UIImage]()
+#else
+    public static var cachedQrCodes = [String: NSImage]()
+#endif
+
     public static var publicKeyEncoder: PublicKeyStorageDelegate?
 
     lazy public var config = HCertConfig.default

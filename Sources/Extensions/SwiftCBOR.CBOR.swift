@@ -27,7 +27,7 @@
 import Foundation
 import SwiftCBOR
 
-public extension SwiftCBOR.CBOR {
+extension SwiftCBOR.CBOR {
   
     public func sanitize(value: String) -> String {
       return value.replacingOccurrences(of: "\"", with: "\\\"")

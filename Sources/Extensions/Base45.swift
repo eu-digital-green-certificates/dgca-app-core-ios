@@ -18,14 +18,40 @@
  * ---license-end
  */
 //
-//  Base45.swift
+//  File.swift
+//  
 //
-//  Created by Dirk-Willem van Gulik on 01/04/2021.
+//  Created by Igor Khomiak on 15.12.2021.
 //
 
 import Foundation
-
 let b45Charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
+
+extension Data {
+  public func toBase45() -> String {
+    var out = String()
+    for num in stride(from: 0, to: count, by: 2) {
+      if self.count - num > 1 {
+        let numX: Int = (Int(self[num]) << 8) + Int(self[num + 1])
+        let numE: Int = numX / (45 * 45)
+        let numY: Int = numX % (45 * 45)
+        let numD: Int = numY / 45
+        let numC: Int = numY % 45
+        out.append(b45Charset[numC])
+        out.append(b45Charset[numD])
+        out.append(b45Charset[numE])
+      } else {
+        let numY: Int = Int(self[num])
+        let numD: Int = numY / 45
+        let numC: Int = numY % 45
+        out.append(b45Charset[numC])
+        out.append(b45Charset[numD])
+      }
+    }
+    return out
+  }
+}
+
 
 extension String {
   enum Base45Error: Error {

@@ -41,7 +41,7 @@ class Signature {
     } else {
       return false
     }
-
+    
     var error: Unmanaged<CFError>?
     let result = SecKeyVerifySignature(
       publicKey,

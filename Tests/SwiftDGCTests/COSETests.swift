@@ -41,17 +41,17 @@ final class COSETests: XCTestCase {
     
     extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
     
-    var jsonHeader = header.asJSONDict;
+      let jsonHeader = header.asJSONDict;
  
     if(jsonHeader["1"] == nil){ XCTAssert(false)}
     else {XCTAssert(jsonHeader["1"] as! Int8 == -7);};
     if(jsonHeader["4"] == nil){ XCTAssert(false)}
-    else {XCTAssert(Data(bytes:(jsonHeader["4"] as! [UInt8])).hexString == Data(bytes:kid).hexString);}
-    XCTAssert( Data(bytes:kid).base64EncodedString() == "mRxapyixSJ0=");
+    else {XCTAssert(Data(jsonHeader["4"] as! [UInt8]).hexString == Data(kid).hexString);}
+    XCTAssert( Data(kid).base64EncodedString() == "mRxapyixSJ0=");
     
     if (jsonHeader["4"] == nil){ XCTAssert(false)}
     else
-    {XCTAssert( Data(bytes:(jsonHeader["4"] as! [UInt8])).base64EncodedString() == "mRxapyixSJ0=")}
+    {XCTAssert( Data(jsonHeader["4"] as! [UInt8]).base64EncodedString() == "mRxapyixSJ0=")}
     
     let jsonPayload = body.asJSONDict;
     XCTAssert(jsonPayload["-260"] != nil);
@@ -97,15 +97,15 @@ final class COSETests: XCTestCase {
     var body = "";
     
     extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
-    var jsonHeader = header.asJSONDict;
+     let jsonHeader = header.asJSONDict;
     XCTAssert(jsonHeader["1"] as! Int8 == -7);
-    XCTAssert(Data(bytes:(jsonHeader["4"] as! [UInt8])).hexString == Data(bytes:kid).hexString);
-    XCTAssert( Data(bytes:kid).base64EncodedString() == "2Rk3X8HntrI=");
-    XCTAssert( Data(bytes:(jsonHeader["4"] as! [UInt8])).base64EncodedString() == "2Rk3X8HntrI=")
+    XCTAssert(Data(jsonHeader["4"] as! [UInt8]).hexString == Data(kid).hexString);
+    XCTAssert(Data(kid).base64EncodedString() == "2Rk3X8HntrI=");
+    XCTAssert(Data(jsonHeader["4"] as! [UInt8]).base64EncodedString() == "2Rk3X8HntrI=")
  
     let jsonPayload = body.asJSONDict;
     
-    XCTAssert(jsonPayload["4"] as! ULONG == 1635876000);
+    XCTAssert(jsonPayload["4"] as! UInt32 == 1635876000);
     XCTAssert(jsonPayload["-260"] != nil);
     
     let hCertMap = jsonPayload["-260"] as! Dictionary<String,AnyObject?>;
