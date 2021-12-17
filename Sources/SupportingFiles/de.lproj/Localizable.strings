@@ -38,7 +38,7 @@
 "Standardised Given Name" = "Standardisierter Vorname";
 "Unique Certificate Identifier" = "Eindeutige Zertifikatskennung";
 "Reason for Invalidity" = "Grund der Invalidität";
-"Targeted Disease" = "Krankheit";
+"Targeted Disease" = "Gezielte Krankheit";
 "Valid from" = "Gültig ab";
 "Valid Until" = "Gültig bis";
 "Country of Issuance" = "Ausgabeland";
@@ -47,14 +47,12 @@
 "Test Result" = "Testergebnis";
 "Not Detected" = "Negativ-Test";
 "Detected ⚠️" = "Positiv-Test ⚠️";
-"Targeted Disease" = "Gezielte Krankheit";
 "Test Center" = "Testzentrum";
 "Country of Test" = "Land der Prüfung";
 "Test Issuer" = "Test-Emittent";
 "%d of %d" = "%d von %d";
 "Date of Vaccination" = "Datum der Impfung";
-"Targeted Disease" = "Gezielte Krankheit";
-"Authorization Holder / Manufacturer" = "Zulassungsinhaber / Hersteller";
+"Authorization Holder / Manufacturer" = "Zulassungsinhaber / Ersteller";
 "Medical Product" = "Medizinprodukt";
 "Vaccine or Prophylaxis" = "Impfstoff oder Prophylaxe";
 "Country of Vaccination" = "Impfland";
