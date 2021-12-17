@@ -60,11 +60,11 @@ public extension String {
         return String(padString)
     }
     
-    public func padEnd(length maxLength: Int, pad: String = " ") -> String {
+    func padEnd(length maxLength: Int, pad: String = " ") -> String {
         return generatePadString(length: maxLength, pad: pad).map { self + $0 } ?? self
     }
     
-    public func padStart(length maxLength: Int, pad: String = " ") -> String {
+    func padStart(length maxLength: Int, pad: String = " ") -> String {
         return generatePadString(length: maxLength, pad: pad).map { $0 + self } ?? self
     }
 
