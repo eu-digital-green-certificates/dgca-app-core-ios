@@ -18,13 +18,11 @@ let package = Package(
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.1"),
     .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
     .package(url: "https://github.com/filom/ASN1Decoder", from: "1.7.1"),
-    .package(
-      name: "JSONSchema",
+    .package( name: "JSONSchema",
       url: "https://github.com/eu-digital-green-certificates/JSONSchema.swift",
       .branch("master")
     ),
-    .package(
-      name: "SwiftCBOR",
+    .package( name: "SwiftCBOR",
       url: "https://github.com/eu-digital-green-certificates/SwiftCBOR",
       .branch("master")
     ),

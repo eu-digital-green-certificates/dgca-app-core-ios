@@ -160,7 +160,7 @@ public class HCert: Codable {
     }
     
     var parsingErrors = [ParseError]()
-    cborData = decompress(compressed)
+      cborData = ZLib.decompress(compressed)
     if cborData.isEmpty {
       parsingErrors.append(ParseError.zlib)
     }

@@ -18,35 +18,35 @@
  * ---license-end
  */
 //
-//  Data+Base45.swift
+//  Data+hexString.swift
 //
 //
-//  Created by Yannick Spreen on 4/21/21.
+//  Created by Yannick Spreen on 4/14/21.
 //
 
 import Foundation
 
 extension Data {
-  public func toBase45() -> String {
-    var out = String()
-    for num in stride(from: 0, to: count, by: 2) {
-      if self.count - num > 1 {
-        let numX: Int = (Int(self[num]) << 8) + Int(self[num + 1])
-        let numE: Int = numX / (45 * 45)
-        let numY: Int = numX % (45 * 45)
-        let numD: Int = numY / 45
-        let numC: Int = numY % 45
-        out.append(b45Charset[numC])
-        out.append(b45Charset[numD])
-        out.append(b45Charset[numE])
-      } else {
-        let numY: Int = Int(self[num])
-        let numD: Int = numY / 45
-        let numC: Int = numY % 45
-        out.append(b45Charset[numC])
-        out.append(b45Charset[numD])
-      }
+    public init?(hexString: String) {
+        let len = hexString.count / 2
+        var data = Data(capacity: len)
+        var numX = hexString.startIndex
+        for _ in 0..<len {
+          let numY = hexString.index(numX, offsetBy: 2)
+          let bytes = hexString[numX..<numY]
+          if var num = UInt8(bytes, radix: 16) {
+            data.append(&num, count: 1)
+          } else {
+            return nil
+          }
+          numX = numY
+        }
+        self = data
     }
-    return out
-  }
+
+    public var uint: [UInt8] { [UInt8](self) }
+    public var hexString: String {
+      let format = "%02hhx"
+      return self.map { String(format: format, $0) }.joined()
+    }
 }
