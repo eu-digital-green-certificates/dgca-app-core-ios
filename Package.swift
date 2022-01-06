@@ -19,12 +19,18 @@ let package = Package(
     .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
     .package(url: "https://github.com/filom/ASN1Decoder", from: "1.7.1"),
     .package( name: "JSONSchema",
-      url: "https://github.com/eu-digital-green-certificates/JSONSchema.swift",
-      .branch("master")
+        url: "https://github.com/eu-digital-green-certificates/JSONSchema.swift",
+        .branch("master")
     ),
+    .package(url: "https://github.com/auth0/JWTDecode.swift.git", from: "2.0.0"),
     .package( name: "SwiftCBOR",
       url: "https://github.com/eu-digital-green-certificates/SwiftCBOR",
       .branch("master")
+    ),
+    .package(
+      name: "CertLogic",
+      url: "https://github.com/eu-digital-green-certificates/dgc-certlogic-ios.git",
+      .branch("main")
     ),
   ],
   targets: [
@@ -37,7 +43,9 @@ let package = Package(
         "SwiftyJSON",
         "JSONSchema",
         "Alamofire",
-        "ASN1Decoder"
+        "ASN1Decoder",
+        "CertLogic",
+        .product(name: "JWTDecode", package: "JWTDecode.swift"),
       ],
       path: "Sources"),
     .testTarget(
