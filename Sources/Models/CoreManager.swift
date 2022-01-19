@@ -34,9 +34,9 @@ public class CoreManager {
     public static var shared = CoreManager()
     
 #if os(iOS)
-    public static var cachedQrCodes = [String: UIImage]()
+    public static var cachedQrCodes = SyncDict<UIImage>()
 #else
-    public static var cachedQrCodes = [String: NSImage]()
+    public static var cachedQrCodes = SyncDict<NSImage>()
 #endif
 
     public static var publicKeyEncoder: PublicKeyStorageDelegate?

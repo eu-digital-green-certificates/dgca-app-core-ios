@@ -191,11 +191,6 @@ public class HCert: Codable {
       parsingErrors.append(.version(error: "Wrong EU_DGC Version!"))
       throw CertificateParsingError.parsing(errors: parsingErrors)
     }
-    #if os(iOS)
-    if CoreManager.shared.config.prefetchAllCodes {
-      prefetchCode()
-    }
-    #endif
   }
 
   private func get(_ attribute: AttributeKey) -> JSON {

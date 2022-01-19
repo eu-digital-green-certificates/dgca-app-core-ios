@@ -73,7 +73,7 @@ public struct ValidityState {
     public var isValid: Bool {
       return validityFailures.isEmpty
     }
-
+    
     public var issuerInvalidation: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch issuerValidity {

@@ -28,50 +28,25 @@
 import UIKit
 
 extension HCert {
-  var qrCodeRendered: UIImage? {
-      CoreManager.cachedQrCodes[uvci]
-  }
 
-  public var qrCode: UIImage? {
-    return qrCodeRendered ?? renderQrCode()
-  }
-
-  @discardableResult
-  func renderQrCode() -> UIImage? {
-    if let rendered = qrCodeRendered {
-      return rendered
+    public var qrCode: UIImage? {
+        let codeRemdered = CoreManager.cachedQrCodes.value(forKey: uvci)
+        return codeRemdered ?? makeQrCode()
     }
-    let code = makeQrCode()
-    let lock = NSLock()
-    if let value = code {
-      lock.lock()
-        CoreManager.cachedQrCodes[uvci] = value
-      lock.unlock()
-    }
-    return code
-  }
 
-  func makeQrCode() -> UIImage? {
-    let data = fullPayloadString.data(using: String.Encoding.ascii)
+    private func makeQrCode() -> UIImage? {
+      let data = fullPayloadString.data(using: String.Encoding.ascii)
+      if let filter = CIFilter(name: "CIQRCodeGenerator") {
+          filter.setValue(data, forKey: "inputMessage")
+          let transform = CGAffineTransform(scaleX: 3, y: 3)
 
-    if let filter = CIFilter(name: "CIQRCodeGenerator") {
-      filter.setValue(data, forKey: "inputMessage")
-      let transform = CGAffineTransform(scaleX: 3, y: 3)
-
-      if let output = filter.outputImage?.transformed(by: transform) {
-        return UIImage(ciImage: output)
+          if let output = filter.outputImage?.transformed(by: transform) {
+              let codeImage = UIImage(ciImage: output)
+              CoreManager.cachedQrCodes.update(value: codeImage, forKey: uvci)
+              return codeImage
+          }
       }
+      return nil
     }
-
-    return nil
-  }
-
-  func prefetchCode() {
-    guard qrCodeRendered == nil else { return }
-    DispatchQueue.global(qos: .background).async {
-        self.renderQrCode()
-    }
-  }
 }
-
 #endif
