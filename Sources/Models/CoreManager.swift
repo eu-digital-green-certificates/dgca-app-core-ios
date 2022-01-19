@@ -32,14 +32,12 @@ import AppKit
 
 public class CoreManager {
     public static var shared = CoreManager()
-    
+    lazy public var config = HCertConfig.default
+    public static var publicKeyEncoder: PublicKeyStorageDelegate?
+
 #if os(iOS)
     public static var cachedQrCodes = SyncDict<UIImage>()
 #else
     public static var cachedQrCodes = SyncDict<NSImage>()
 #endif
-
-    public static var publicKeyEncoder: PublicKeyStorageDelegate?
-
-    lazy public var config = HCertConfig.default
 }
