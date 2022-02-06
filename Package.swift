@@ -18,6 +18,7 @@ let package = Package(
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.1"),
     .package(url: "https://github.com/Alamofire/Alamofire", from: "5.4.3"),
     .package(url: "https://github.com/filom/ASN1Decoder", from: "1.7.1"),
+    .package(url: "https://github.com/leif-ibsen/BigInt", from: "1.2.6"),
     .package( name: "JSONSchema",
       url: "https://github.com/eu-digital-green-certificates/JSONSchema.swift",
       .branch("master")
@@ -37,6 +38,7 @@ let package = Package(
         "SwiftyJSON",
         "JSONSchema",
         "Alamofire",
+        "BigInt",
         "ASN1Decoder"
       ],
       path: "Sources"),

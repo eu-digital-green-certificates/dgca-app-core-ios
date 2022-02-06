@@ -71,12 +71,12 @@ final class COSETests: XCTestCase {
     var body = "";
     
     extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
-    var jsonHeader = header.asJSONDict;
+     let jsonHeader = header.asJSONDict;
   
     XCTAssert(jsonHeader["1"] as! Int8 == -7);
-    XCTAssert(Data(bytes:(jsonHeader["4"] as! [UInt8])).hexString == Data(bytes:kid).hexString);
-    XCTAssert( Data(bytes:kid).base64EncodedString() == "X3SRAZXFzss=");
-    XCTAssert( Data(bytes:(jsonHeader["4"] as! [UInt8])).base64EncodedString() == "X3SRAZXFzss=")
+    XCTAssert(Data(jsonHeader["4"] as! [UInt8]).hexString == Data(kid).hexString);
+    XCTAssert( Data(kid).base64EncodedString() == "X3SRAZXFzss=");
+    XCTAssert( Data(jsonHeader["4"] as! [UInt8]).base64EncodedString() == "X3SRAZXFzss=")
     
     let jsonPayload = body.asJSONDict;
     
@@ -124,10 +124,10 @@ final class COSETests: XCTestCase {
         var body = "";
         
         extractParameter(hex: hexCOSE, header: &header, kid: &kid, body: &body)
-        var jsonHeader = header.asJSONDict;
+        let jsonHeader = header.asJSONDict;
         XCTAssert(jsonHeader["1"] as! Int8 == -7);
         XCTAssert(jsonHeader.count==1);
-        XCTAssert( Data(bytes:kid).base64EncodedString() == "DEsVUSvpFAE=");
+        XCTAssert( Data(kid).base64EncodedString() == "DEsVUSvpFAE=");
         XCTAssert(jsonHeader.index(forKey: "4") == nil)
         
         let jsonPayload = body.asJSONDict;
