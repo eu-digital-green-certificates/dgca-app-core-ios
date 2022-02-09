@@ -15,11 +15,10 @@ extension BloomFilter {
     public class func hash(data: Data, seed: UInt8) -> Data {
 
         let seedBytes = Data(withUnsafeBytes(of: seed, Array.init))
-        
-        let hashData = NSMutableData(data:data)
+        var hashData = Data(data)
         hashData.append(seedBytes)
         
-        return SHA256.digest(input: hashData)
-	}
+        return SHA256.sha256(data: hashData)
+    }
 }
 
