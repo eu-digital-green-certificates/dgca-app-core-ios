@@ -22,15 +22,19 @@ public typealias HashDataCompletion = (Data?, String?, RevocationError?) -> Void
 internal typealias DataTaskCompletion<T: Codable> = (T?, String?, RevocationError?) -> Void
 
 public final class RevocationService {
-
-    static let shared = RevocationService()
+    
+    var baseServiceURLPath: String
+    
+    public init(baseServicePath path: String) {
+        self.baseServiceURLPath = path
+    }
     
     lazy var session: URLSession = {
         return URLSession(configuration: .default)
     }()
     
     public func loadAllRevocations(completion: @escaping RevocationListCompletion) {
-        let path = ServiceConfig.baseServerPath + ServiceConfig.allRevocations.rawValue
+        let path = baseServiceURLPath + ServiceConfig.allRevocations.rawValue
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
             return
@@ -41,7 +45,7 @@ public final class RevocationService {
     
     public func loadPartitions(forKid kidValue: String, completion: @escaping PartitionListCompletion) {
         let partitionComponent = String(format: ServiceConfig.kidPartitions.rawValue, kidValue)
-        let path = ServiceConfig.baseServerPath + partitionComponent
+        let path = baseServiceURLPath + partitionComponent
         
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
@@ -53,7 +57,7 @@ public final class RevocationService {
     
     public func loadPartitions(forKid kidValue: String, pid pidValue: String, completion: @escaping PartitionListCompletion) {
         let partitionComponent = String(format: ServiceConfig.partitionsWithID.rawValue, kidValue, pidValue)
-        let path = ServiceConfig.baseServerPath + partitionComponent
+        let path = baseServiceURLPath + partitionComponent
         
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
@@ -65,7 +69,7 @@ public final class RevocationService {
     
     public func loadChunks(forKid kidValue: String, pid pidValue: String, cids: [String], completion: @escaping HashDataCompletion) {
         let partitionComponent = String(format: ServiceConfig.partitionChanks.rawValue, kidValue, pidValue)
-        let path = ServiceConfig.baseServerPath + partitionComponent
+        let path = baseServiceURLPath + partitionComponent
         
         let postData = try? JSONEncoder().encode(cids)
         guard let request = RequestFactory.servicePostRequest(path: path, body: postData) else {
@@ -78,7 +82,7 @@ public final class RevocationService {
     
     public func loadChunk(forKid kidValue: String, pid pidValue: String, cid cidValue: String, completion: @escaping HashDataCompletion) {
         let partitionComponent = String(format: ServiceConfig.chunkIDPath.rawValue, kidValue, pidValue, cidValue)
-        let path = ServiceConfig.baseServerPath + partitionComponent
+        let path = baseServiceURLPath + partitionComponent
         
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
@@ -91,7 +95,7 @@ public final class RevocationService {
     public func loadSlices(forKid kidValue: String, pid pidValue: String, cid cidValue: String, slices: [String],
             completion: @escaping HashDataCompletion) {
         let partitionComponent = String(format: ServiceConfig.slicesPath.rawValue, kidValue, pidValue, cidValue)
-        let path = ServiceConfig.baseServerPath + partitionComponent
+        let path = baseServiceURLPath + partitionComponent
         
         let postData = try? JSONEncoder().encode(slices)
         guard let request = RequestFactory.servicePostRequest(path: path, body: postData) else {
@@ -105,7 +109,7 @@ public final class RevocationService {
     public func loadSlice(forKid kidValue: String, pid pidValue: String, cid cidValue: String, slice sidValue: [String],
             completion: @escaping HashDataCompletion) {
         let partitionComponent = String(format: ServiceConfig.sliceWithIDPath.rawValue, kidValue, pidValue, cidValue, sidValue)
-        let path = ServiceConfig.baseServerPath + partitionComponent
+        let path = baseServiceURLPath + partitionComponent
         
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))

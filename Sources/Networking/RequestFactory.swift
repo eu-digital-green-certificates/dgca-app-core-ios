@@ -8,7 +8,6 @@
 import UIKit
 
 internal enum ServiceConfig: String {
-    static let baseServerPath = "fsdfsdf"
     case test = "/"
     case allRevocations = "/lists"
     case kidPartitions = "/%@/partitions"
