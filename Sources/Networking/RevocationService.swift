@@ -122,13 +122,14 @@ public final class RevocationService {
     // private methods
     fileprivate func startDataTask<T: Codable>(for request: URLRequest, completion: @escaping DataTaskCompletion<T>) {
         let dataTask = session.dataTask(with: request) {[unowned self] (data, response, error) in
-            guard error == nil,
-                let httpResponse = response as? HTTPURLResponse,
-                  self.defaultResponseValidation(statusCode: httpResponse.statusCode) == nil,
-
-                let data = data else {
-                    completion(nil, nil, RevocationError.network(reason: error!.localizedDescription))
-                    return
+            guard error == nil else {
+                completion(nil, nil, RevocationError.network(reason: error!.localizedDescription))
+                return
+            }
+            guard let data = data, let httpResponse = response as? HTTPURLResponse,
+                self.defaultResponseValidation(statusCode: httpResponse.statusCode) == nil else {
+                completion(nil, nil, RevocationError.network(reason: "Response failed validation"))
+                return
             }
             do {
                 var eTag: String = ""
