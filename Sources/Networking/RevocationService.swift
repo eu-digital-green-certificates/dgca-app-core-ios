@@ -24,6 +24,7 @@ internal typealias DataTaskCompletion<T: Codable> = (T?, String?, RevocationErro
 public final class RevocationService {
     
     var baseServiceURLPath: String
+    var allChunks = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
     
     public init(baseServicePath path: String) {
         self.baseServiceURLPath = path
@@ -33,8 +34,12 @@ public final class RevocationService {
         return URLSession(configuration: .default)
     }()
     
-    public func loadAllRevocations(completion: @escaping RevocationListCompletion) {
-        let path = baseServiceURLPath + ServiceConfig.allRevocations.rawValue
+    // MARK: - Revocation Lists
+    // summary: Returns an overview about all available revocation lists.
+    // description: This method returns an over about available revocation lists for each KID. The response contains for all available KIDs the last modification date, the used hash types etc.
+
+    public func getRevocationLists(completion: @escaping RevocationListCompletion) {
+        let path = baseServiceURLPath + ServiceConfig.linkForAllRevocations.rawValue
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
             return
@@ -42,83 +47,74 @@ public final class RevocationService {
         self.startDataTask(for: request, completion: completion)
     }
     
+    // MARK: - Partitions Lists
+    // summary: Returns for the selected kid all Partitions
+    // description: Returns a list of all available partitions.
     
-    public func loadPartitions(forKid kidValue: String, completion: @escaping PartitionListCompletion) {
-        let partitionComponent = String(format: ServiceConfig.kidPartitions.rawValue, kidValue)
+    public func getRevocationPartitions(for kid: String, completion: @escaping PartitionListCompletion) {
+        let partitionComponent = String(format: ServiceConfig.linkForPartitions.rawValue, kid)
         let path = baseServiceURLPath + partitionComponent
-        
-        guard let request = RequestFactory.serviceGetRequest(path: path) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
-            return
-        }
-        self.startDataTask(for: request, completion: completion)
-    }
-    
-    
-    public func loadPartitions(forKid kidValue: String, pid pidValue: String, completion: @escaping PartitionListCompletion) {
-        let partitionComponent = String(format: ServiceConfig.partitionsWithID.rawValue, kidValue, pidValue)
-        let path = baseServiceURLPath + partitionComponent
-        
-        guard let request = RequestFactory.serviceGetRequest(path: path) else {
+        guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
+        let eTag = String(decoding: etagData, as: UTF8.self)
+        guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
             return
         }
         self.startDataTask(for: request, completion: completion)
     }
 
+    // MARK: - Partitions Lists with ID
+    // summary: Returns for the selected kid a Partition
+    // description: Returns a Partition by Id
     
-    public func loadChunks(forKid kidValue: String, pid pidValue: String, cids: [String], completion: @escaping HashDataCompletion) {
-        let partitionComponent = String(format: ServiceConfig.partitionChanks.rawValue, kidValue, pidValue)
-        let path = baseServiceURLPath + partitionComponent
+    public func getRevocationPartitions(for kid: String, id: String, completion: @escaping PartitionListCompletion) {
+        let partitionIDComponent = String(format: ServiceConfig.linkForPartitionsWithID.rawValue, kid, id)
+        let path = baseServiceURLPath + partitionIDComponent
+        guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
+        let eTag = String(decoding: etagData, as: UTF8.self)
+        guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
+            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            return
+        }
+        self.startDataTask(for: request, completion: completion)
+    }
+    
+    // MARK: - All chunks Lists
+    // summary: Returns for the selected partition all chunks.
+    // description: Returns a Partition by Id
+    
+    public func getRevocationPartitionChunks(for kid: String, id: String, cids: [String]? = nil, completion: @escaping HashDataCompletion) {
+        let partitionIDComponent = String(format: ServiceConfig.linkForPartitionChanks.rawValue, kid, id)
+        let path = baseServiceURLPath + partitionIDComponent
+        guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
+        let eTag = String(decoding: etagData, as: UTF8.self)
+
+        let encoder = JSONEncoder()
+        let postData = cids == nil ? try? encoder.encode(allChunks) : try? encoder.encode(cids!)
         
-        let postData = try? JSONEncoder().encode(cids)
-        guard let request = RequestFactory.servicePostRequest(path: path, body: postData) else {
+        guard let request = RequestFactory.servicePostRequest(path: path, body: postData, etag: eTag) else {
+            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            return
+        }
+        self.startDataTask(for: request, completion: completion)
+    }
+    
+    // MARK: - Chunk all content Lists
+    //summary: Returns for the selected chunk all content.
+    //description: Returns a Partition by Id
+    
+    public func getRevocationPartitionChunk(for kid: String, id: String, cid: String, completion: @escaping HashDataCompletion) {
+        let partitionIDComponent = String(format: ServiceConfig.linkForChankWithID.rawValue, kid, id, cid)
+        let path = baseServiceURLPath + partitionIDComponent
+        guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
+        let eTag = String(decoding: etagData, as: UTF8.self)
+        guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
             completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
             return
         }
         self.startDataTask(for: request, completion: completion)
     }
 
-    
-    public func loadChunk(forKid kidValue: String, pid pidValue: String, cid cidValue: String, completion: @escaping HashDataCompletion) {
-        let partitionComponent = String(format: ServiceConfig.chunkIDPath.rawValue, kidValue, pidValue, cidValue)
-        let path = baseServiceURLPath + partitionComponent
-        
-        guard let request = RequestFactory.serviceGetRequest(path: path) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
-            return
-        }
-        self.startDataTask(for: request, completion: completion)
-    }
-    
-    
-    public func loadSlices(forKid kidValue: String, pid pidValue: String, cid cidValue: String, slices: [String],
-            completion: @escaping HashDataCompletion) {
-        let partitionComponent = String(format: ServiceConfig.slicesPath.rawValue, kidValue, pidValue, cidValue)
-        let path = baseServiceURLPath + partitionComponent
-        
-        let postData = try? JSONEncoder().encode(slices)
-        guard let request = RequestFactory.servicePostRequest(path: path, body: postData) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
-            return
-        }
-        self.startDataTask(for: request, completion: completion)
-    }
-
-    
-    public func loadSlice(forKid kidValue: String, pid pidValue: String, cid cidValue: String, slice sidValue: [String],
-            completion: @escaping HashDataCompletion) {
-        let partitionComponent = String(format: ServiceConfig.sliceWithIDPath.rawValue, kidValue, pidValue, cidValue, sidValue)
-        let path = baseServiceURLPath + partitionComponent
-        
-        guard let request = RequestFactory.serviceGetRequest(path: path) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
-            return
-        }
-        self.startDataTask(for: request, completion: completion)
-    }
-    
-    
     // private methods
     fileprivate func startDataTask<T: Codable>(for request: URLRequest, completion: @escaping DataTaskCompletion<T>) {
         let dataTask = session.dataTask(with: request) {[unowned self] (data, response, error) in
@@ -134,8 +130,9 @@ public final class RevocationService {
             do {
                 var eTag: String = ""
                 let decodedData: T = try JSONDecoder().decode(T.self, from: data)
-                 if let eTagValue = httpResponse.allHeaderFields["eTag"] as? String {
-                     eTag = eTagValue
+                 if let eTagString = httpResponse.allHeaderFields["Etag"] as? String {
+                     let str = eTagString.replacingOccurrences(of: "\"", with: "")
+                     eTag = str
                  }
                 completion(decodedData, eTag, nil)
 

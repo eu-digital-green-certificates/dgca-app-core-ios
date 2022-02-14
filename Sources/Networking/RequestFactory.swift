@@ -9,13 +9,13 @@ import UIKit
 
 internal enum ServiceConfig: String {
     case test = "/"
-    case allRevocations = "/lists"
-    case kidPartitions = "/%@/partitions"
-    case partitionsWithID =  "/%@/partitions/%@"
-    case partitionChanks = "/%@/partitions/%@/chunks"
-    case chunkIDPath = "/%@/partitions/%@/chunks/%@"
-    case slicesPath = "/%@/partitions/%@/chunks/%@/slice"
-    case sliceWithIDPath = " /%@/partitions/%@/chunks/%@/slice/%@"
+    case linkForAllRevocations = "/lists"
+    case linkForPartitions = "/lists/%@/partitions"
+    case linkForPartitionsWithID =  "/lists/%@/partitions/%@"
+    case linkForPartitionChanks = "/lists/%@/partitions/%@/chunks"
+    case linkForChankWithID = "/lists/%@/partitions/%@/chunks/%@"
+    case slicesPath = "/lists/%@/partitions/%@/chunks/%@/slice"
+    case sliceWithIDPath = "/lists/%@/partitions/%@/chunks/%@/slice/%@"
 }
 
 internal class RequestFactory {
@@ -54,17 +54,24 @@ internal class RequestFactory {
 // TODO add protocol
 extension RequestFactory {
     
-    static func serviceGetRequest(path: String) -> URLRequest? {
+    static func serviceGetRequest(path: String, etag: String? = nil) -> URLRequest? {
         guard let url = URL(string: path) else { return nil }
         
-        let result = request(url: url, query: nil, headerFields: ["Content-Type" : "application/json"])
+        let headers = etag == nil ? ["If-None-Match" : "", "Content-Type" : "application/json"] :
+            ["If-Match" : etag!, "Content-Type" : "application/json"]
+        
+        let result = request(url: url, query: nil, headerFields: headers)
         return result
     }
 
-    static func servicePostRequest(path: String, body: Data?) -> URLRequest? {
+
+    static func servicePostRequest(path: String, body: Data?, etag: String? = nil) -> URLRequest? {
         guard let url = URL(string: path) else { return nil }
-        
-        let result = postRequest(url: url, HTTPBody: body, headerFields: ["Content-Type" : "application/json"])
+ 
+        let headers = etag == nil ? ["If-None-Match" : "", "Content-Type" : "application/json"] :
+            ["If-Match" : etag!, "Content-Type" : "application/json"]
+
+        let result = postRequest(url: url, HTTPBody: body, headerFields: headers)
         return result
     }
 }
