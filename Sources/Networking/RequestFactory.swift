@@ -12,10 +12,10 @@ internal enum ServiceConfig: String {
     case linkForAllRevocations = "/lists"
     case linkForPartitions = "/lists/%@/partitions"
     case linkForPartitionsWithID =  "/lists/%@/partitions/%@"
-    case linkForPartitionChanks = "/lists/%@/partitions/%@/chunks"
+    case linkForPartitionChunks = "/lists/%@/partitions/%@/chunks"
     case linkForChankWithID = "/lists/%@/partitions/%@/chunks/%@"
-    case slicesPath = "/lists/%@/partitions/%@/chunks/%@/slice"
-    case sliceWithIDPath = "/lists/%@/partitions/%@/chunks/%@/slice/%@"
+    case linkForChunkSlices = "/lists/%@/partitions/%@/chunks/%@/slice"
+    case linkForSingleSlice = "/lists/%@/partitions/%@/chunks/%@/slice/%@"
 }
 
 internal class RequestFactory {

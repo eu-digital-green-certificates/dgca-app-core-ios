@@ -37,7 +37,7 @@ public final class RevocationService {
     // MARK: - Revocation Lists
     // summary: Returns an overview about all available revocation lists.
     // description: This method returns an over about available revocation lists for each KID. The response contains for all available KIDs the last modification date, the used hash types etc.
-
+    // paths:  /lists:   (get)
     public func getRevocationLists(completion: @escaping RevocationListCompletion) {
         let path = baseServiceURLPath + ServiceConfig.linkForAllRevocations.rawValue
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
@@ -50,8 +50,9 @@ public final class RevocationService {
     // MARK: - Partitions Lists
     // summary: Returns for the selected kid all Partitions
     // description: Returns a list of all available partitions.
+    // paths:  /lists/{kid}/partitions (get)
     
-    public func getRevocationPartitions(for kid: String, completion: @escaping PartitionListCompletion) {
+    public func getRevocationPartitions(forKID kid: String, completion: @escaping PartitionListCompletion) {
         let partitionComponent = String(format: ServiceConfig.linkForPartitions.rawValue, kid)
         let path = baseServiceURLPath + partitionComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
@@ -66,8 +67,9 @@ public final class RevocationService {
     // MARK: - Partitions Lists with ID
     // summary: Returns for the selected kid a Partition
     // description: Returns a Partition by Id
+    // paths:  /lists/{kid}/partitions/{id}: (get)
     
-    public func getRevocationPartitions(for kid: String, id: String, completion: @escaping PartitionListCompletion) {
+    public func getRevocationPartitions(forKID kid: String, id: String, completion: @escaping PartitionListCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForPartitionsWithID.rawValue, kid, id)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
@@ -82,13 +84,14 @@ public final class RevocationService {
     // MARK: - All chunks Lists
     // summary: Returns for the selected partition all chunks.
     // description: Returns a Partition by Id
-    
-    public func getRevocationPartitionChunks(for kid: String, id: String, cids: [String]? = nil, completion: @escaping HashDataCompletion) {
-        let partitionIDComponent = String(format: ServiceConfig.linkForPartitionChanks.rawValue, kid, id)
+    // paths:  /lists/{kid}/partitions/{id}/chunks   (post)
+
+    public func getRevocationPartitionChunks(forKID kid: String, id: String, cids: [String]? = nil, completion: @escaping HashDataCompletion) {
+        let partitionIDComponent = String(format: ServiceConfig.linkForPartitionChunks.rawValue, kid, id)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
-
+        
         let encoder = JSONEncoder()
         let postData = cids == nil ? try? encoder.encode(allChunks) : try? encoder.encode(cids!)
         
@@ -99,12 +102,53 @@ public final class RevocationService {
         self.startDataTask(for: request, completion: completion)
     }
     
-    // MARK: - Chunk all content Lists
+    // MARK: - Chunk all content
     //summary: Returns for the selected chunk all content.
     //description: Returns a Partition by Id
+    // paths:  /lists/{kid}/partitions/{id}/chunks/{cid} (get)
     
-    public func getRevocationPartitionChunk(for kid: String, id: String, cid: String, completion: @escaping HashDataCompletion) {
+    public func getRevocationPartitionChunk(forKID kid: String, id: String, cid: String, completion: @escaping HashDataCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForChankWithID.rawValue, kid, id, cid)
+        let path = baseServiceURLPath + partitionIDComponent
+        guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
+        let eTag = String(decoding: etagData, as: UTF8.self)
+        guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
+            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            return
+        }
+        self.startDataTask(for: request, completion: completion)
+    }
+    
+    // MARK: - Chunk's all slices Lists
+    // summary: Returns for the selected partition all chunks.
+    // description: Returns a Partition by Id
+    // paths:  /lists/{kid}/partitions/{id}/chunks/{cid}/slice   (post)
+
+    public func getRevocationPartitionChunkSlice(forKID kid: String, id: String, cid: String, sids: [String]?,
+            completion: @escaping HashDataCompletion) {
+        let partitionIDComponent = String(format: ServiceConfig.linkForChunkSlices.rawValue, kid, id, cid)
+        let path = baseServiceURLPath + partitionIDComponent
+        guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
+        let eTag = String(decoding: etagData, as: UTF8.self)
+        
+        let encoder = JSONEncoder()
+        let postData = try? encoder.encode(sids)
+        
+        guard let request = RequestFactory.servicePostRequest(path: path, body: postData, etag: eTag) else {
+            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            return
+        }
+        self.startDataTask(for: request, completion: completion)
+    }
+    
+    // MARK: - Single Slice content
+    //summary: Returns for the selected chunk all content.
+    //description: Returns a Partition by Id
+    // paths:  /lists/{kid}/partitions/{id}/chunks/{cid}/slice/{sid} (get)
+    
+    public func getRevocationPartitionChunkSliceSingle(forKID kid: String, id: String, cid: String, sid: String,
+            completion: @escaping HashDataCompletion) {
+        let partitionIDComponent = String(format: ServiceConfig.linkForSingleSlice.rawValue, kid, id, cid, sid)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
