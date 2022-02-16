@@ -12,14 +12,15 @@ public enum RevocationError: Error {
     case unauthorized // TODO - add  unauthorized(error: NSError?)
     case invalidID
     case failedLoading(reason: String)
+    case failedValidation
     case network(reason: String)
 }
 
 public typealias RevocationListCompletion = ([RevocationModel]?, String?, RevocationError?) -> Void
 public typealias PartitionListCompletion = ([PartitionModel]?, String?, RevocationError?) -> Void
-public typealias HashDataCompletion = (Data?, String?, RevocationError?) -> Void
 
-internal typealias DataTaskCompletion<T: Codable> = (T?, String?, RevocationError?) -> Void
+public typealias JSONDataTaskCompletion<T: Codable> = (T?, String?, RevocationError?) -> Void
+public typealias ZIPDataTaskCompletion = (Data?, RevocationError?) -> Void
 
 public final class RevocationService {
     
@@ -41,10 +42,10 @@ public final class RevocationService {
     public func getRevocationLists(completion: @escaping RevocationListCompletion) {
         let path = baseServiceURLPath + ServiceConfig.linkForAllRevocations.rawValue
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startJSONDataTask(for: request, completion: completion)
     }
     
     // MARK: - Partitions Lists
@@ -52,16 +53,16 @@ public final class RevocationService {
     // description: Returns a list of all available partitions.
     // paths:  /lists/{kid}/partitions (get)
     
-    public func getRevocationPartitions(forKID kid: String, completion: @escaping PartitionListCompletion) {
+    public func getRevocationPartitions(for kid: String, completion: @escaping PartitionListCompletion) {
         let partitionComponent = String(format: ServiceConfig.linkForPartitions.rawValue, kid)
         let path = baseServiceURLPath + partitionComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startJSONDataTask(for: request, completion: completion)
     }
 
     // MARK: - Partitions Lists with ID
@@ -69,16 +70,16 @@ public final class RevocationService {
     // description: Returns a Partition by Id
     // paths:  /lists/{kid}/partitions/{id}: (get)
     
-    public func getRevocationPartitions(forKID kid: String, id: String, completion: @escaping PartitionListCompletion) {
+    public func getRevocationPartitions(for kid: String, id: String, completion: @escaping PartitionListCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForPartitionsWithID.rawValue, kid, id)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startJSONDataTask(for: request, completion: completion)
     }
     
     // MARK: - All chunks Lists
@@ -86,7 +87,7 @@ public final class RevocationService {
     // description: Returns a Partition by Id
     // paths:  /lists/{kid}/partitions/{id}/chunks   (post)
 
-    public func getRevocationPartitionChunks(forKID kid: String, id: String, cids: [String]? = nil, completion: @escaping HashDataCompletion) {
+    public func getRevocationPartitionChunks(for kid: String, id: String, cids: [String]? = nil, completion: @escaping ZIPDataTaskCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForPartitionChunks.rawValue, kid, id)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
@@ -96,10 +97,10 @@ public final class RevocationService {
         let postData = cids == nil ? try? encoder.encode(allChunks) : try? encoder.encode(cids!)
         
         guard let request = RequestFactory.servicePostRequest(path: path, body: postData, etag: eTag) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startZIPDataTask(for: request, completion: completion)
     }
     
     // MARK: - Chunk all content
@@ -107,16 +108,16 @@ public final class RevocationService {
     //description: Returns a Partition by Id
     // paths:  /lists/{kid}/partitions/{id}/chunks/{cid} (get)
     
-    public func getRevocationPartitionChunk(forKID kid: String, id: String, cid: String, completion: @escaping HashDataCompletion) {
+    public func getRevocationPartitionChunk(for kid: String, id: String, cid: String, completion: @escaping ZIPDataTaskCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForChankWithID.rawValue, kid, id, cid)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startZIPDataTask(for: request, completion: completion)
     }
     
     // MARK: - Chunk's all slices Lists
@@ -124,8 +125,8 @@ public final class RevocationService {
     // description: Returns a Partition by Id
     // paths:  /lists/{kid}/partitions/{id}/chunks/{cid}/slice   (post)
 
-    public func getRevocationPartitionChunkSlice(forKID kid: String, id: String, cid: String, sids: [String]?,
-            completion: @escaping HashDataCompletion) {
+    public func getRevocationPartitionChunkSlice(for kid: String, id: String, cid: String, sids: [String]?,
+            completion: @escaping ZIPDataTaskCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForChunkSlices.rawValue, kid, id, cid)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
@@ -135,10 +136,10 @@ public final class RevocationService {
         let postData = try? encoder.encode(sids)
         
         guard let request = RequestFactory.servicePostRequest(path: path, body: postData, etag: eTag) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startZIPDataTask(for: request, completion: completion)
     }
     
     // MARK: - Single Slice content
@@ -146,21 +147,21 @@ public final class RevocationService {
     //description: Returns a Partition by Id
     // paths:  /lists/{kid}/partitions/{id}/chunks/{cid}/slice/{sid} (get)
     
-    public func getRevocationPartitionChunkSliceSingle(forKID kid: String, id: String, cid: String, sid: String,
-            completion: @escaping HashDataCompletion) {
+    public func getRevocationPartitionChunkSliceSingle(for kid: String, id: String, cid: String, sid: String,
+            completion: @escaping ZIPDataTaskCompletion) {
         let partitionIDComponent = String(format: ServiceConfig.linkForSingleSlice.rawValue, kid, id, cid, sid)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, nil, RevocationError.failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
             return
         }
-        self.startDataTask(for: request, completion: completion)
+        self.startZIPDataTask(for: request, completion: completion)
     }
 
     // private methods
-    fileprivate func startDataTask<T: Codable>(for request: URLRequest, completion: @escaping DataTaskCompletion<T>) {
+    fileprivate func startJSONDataTask<T: Codable>(for request: URLRequest, completion: @escaping JSONDataTaskCompletion<T>) {
         let dataTask = session.dataTask(with: request) {[unowned self] (data, response, error) in
             guard error == nil else {
                 completion(nil, nil, RevocationError.network(reason: error!.localizedDescription))
@@ -168,7 +169,7 @@ public final class RevocationService {
             }
             guard let data = data, let httpResponse = response as? HTTPURLResponse,
                 self.defaultResponseValidation(statusCode: httpResponse.statusCode) == nil else {
-                completion(nil, nil, RevocationError.network(reason: "Response failed validation"))
+                completion(nil, nil, RevocationError.failedValidation)
                 return
             }
             do {
@@ -187,6 +188,22 @@ public final class RevocationService {
         dataTask.resume()
     }
     
+    fileprivate func startZIPDataTask(for request: URLRequest, completion: @escaping ZIPDataTaskCompletion) {
+        let dataTask = session.dataTask(with: request) {[unowned self] (zipData, response, error) in
+            guard error == nil else {
+                completion(nil, RevocationError.network(reason: error!.localizedDescription))
+                return
+            }
+            guard let zipData = zipData, let httpResponse = response as? HTTPURLResponse,
+                self.defaultResponseValidation(statusCode: httpResponse.statusCode) == nil else {
+                completion(nil, RevocationError.failedValidation)
+                return
+            }
+            completion(zipData, nil)
+        }
+        dataTask.resume()
+    }
+
     
     fileprivate func defaultResponseValidation(statusCode: Int) -> RevocationError? {
         switch statusCode {
