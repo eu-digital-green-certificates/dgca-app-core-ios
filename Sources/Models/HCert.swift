@@ -251,7 +251,7 @@ extension HCert {
       return nil
     }
       
-      
+#error("Not correct public key")
     if SecKeyIsAlgorithmSupported(publicKey, .verify, .ecdsaSignatureMessageX962SHA256) {
         signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
     }
