@@ -224,3 +224,25 @@ extension HCert {
      }
   }
 }
+
+// MARK: - Hashes for revocation search
+extension HCert {
+  public var uvciHash: String? {
+    if statement?.uvci != nil,
+      let uvciData = uvci.data(using: .utf8) {
+        return SHA256.sha256(data: uvciData).hexString
+    } else {
+      return nil
+    }
+  }
+    
+  public var countryCodeUvciHash: String? {
+    if statement?.uvci != nil,
+       let countryCodeUvciData = (issCode + uvci).data(using: .utf8) {
+        return SHA256.sha256(data: countryCodeUvciData).hexString
+    } else {
+      return nil
+    }
+  }
+ 
+}
