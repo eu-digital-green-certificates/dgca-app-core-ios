@@ -245,4 +245,17 @@ extension HCert {
     }
   }
  
+  public var signatureHash: String? {
+    guard var signatureBytesToHash = CBOR.unwrap(data: cborData)?.signatureBytes,
+      let publicKey = SecKeyCopyPublicKey(keyPair) else {
+      return nil
+    }
+      
+      
+    if SecKeyIsAlgorithmSupported(publicKey, .verify, .ecdsaSignatureMessageX962SHA256) {
+        signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
+    }
+      
+    return SHA256.sha256(data: Data(signatureBytesToHash)).hexString
+  }
 }
