@@ -11,14 +11,15 @@ import UIKit
 public enum RevocationError: Error {
     case unauthorized // TODO - add  unauthorized(error: NSError?)
     case invalidID
+    case badRequest(path: String)
+    case nodata
     case failedLoading(reason: String)
-    case failedValidation
+    case failedValidation(status: Int)
     case network(reason: String)
 }
 
 public typealias RevocationListCompletion = ([RevocationModel]?, String?, RevocationError?) -> Void
 public typealias PartitionListCompletion = ([PartitionModel]?, String?, RevocationError?) -> Void
-
 public typealias JSONDataTaskCompletion<T: Codable> = (T?, String?, RevocationError?) -> Void
 public typealias ZIPDataTaskCompletion = (Data?, RevocationError?) -> Void
 
@@ -42,7 +43,7 @@ public final class RevocationService {
     public func getRevocationLists(completion: @escaping RevocationListCompletion) {
         let path = baseServiceURLPath + ServiceConfig.linkForAllRevocations.rawValue
         guard let request = RequestFactory.serviceGetRequest(path: path) else {
-            completion(nil, nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, nil, .badRequest(path: path))
             return
         }
         self.startJSONDataTask(for: request, completion: completion)
@@ -59,7 +60,7 @@ public final class RevocationService {
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, nil, .badRequest(path: path))
             return
         }
         self.startJSONDataTask(for: request, completion: completion)
@@ -76,7 +77,7 @@ public final class RevocationService {
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, nil, .badRequest(path: path))
             return
         }
         self.startJSONDataTask(for: request, completion: completion)
@@ -97,7 +98,7 @@ public final class RevocationService {
         let postData = cids == nil ? try? encoder.encode(allChunks) : try? encoder.encode(cids!)
         
         guard let request = RequestFactory.servicePostRequest(path: path, body: postData, etag: eTag) else {
-            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .badRequest(path: path))
             return
         }
         self.startZIPDataTask(for: request, completion: completion)
@@ -114,7 +115,7 @@ public final class RevocationService {
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .badRequest(path: path))
             return
         }
         self.startZIPDataTask(for: request, completion: completion)
@@ -136,7 +137,7 @@ public final class RevocationService {
         let postData = try? encoder.encode(sids)
         
         guard let request = RequestFactory.servicePostRequest(path: path, body: postData, etag: eTag) else {
-            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .badRequest(path: path))
             return
         }
         self.startZIPDataTask(for: request, completion: completion)
@@ -154,7 +155,7 @@ public final class RevocationService {
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
         guard let request = RequestFactory.serviceGetRequest(path: path, etag: eTag) else {
-            completion(nil, .failedLoading(reason: "Bad request for path \(path)"))
+            completion(nil, .badRequest(path: path))
             return
         }
         self.startZIPDataTask(for: request, completion: completion)
@@ -163,15 +164,20 @@ public final class RevocationService {
     // private methods
     fileprivate func startJSONDataTask<T: Codable>(for request: URLRequest, completion: @escaping JSONDataTaskCompletion<T>) {
         let dataTask = session.dataTask(with: request) {[unowned self] (data, response, error) in
+            let httpResponse = response as! HTTPURLResponse
+            guard defaultResponseValidation(statusCode: httpResponse.statusCode) else {
+                completion(nil, nil, .failedValidation(status: httpResponse.statusCode))
+                return
+            }
             guard error == nil else {
-                completion(nil, nil, RevocationError.network(reason: error!.localizedDescription))
+                completion(nil, nil, .network(reason: error!.localizedDescription))
                 return
             }
-            guard let data = data, let httpResponse = response as? HTTPURLResponse,
-                self.defaultResponseValidation(statusCode: httpResponse.statusCode) == nil else {
-                completion(nil, nil, RevocationError.failedValidation)
+            guard let data = data else {
+                completion(nil, nil, .nodata)
                 return
             }
+            
             do {
                 var eTag: String = ""
                 let decodedData: T = try JSONDecoder().decode(T.self, from: data)
@@ -190,13 +196,17 @@ public final class RevocationService {
     
     fileprivate func startZIPDataTask(for request: URLRequest, completion: @escaping ZIPDataTaskCompletion) {
         let dataTask = session.dataTask(with: request) {[unowned self] (zipData, response, error) in
+            let httpResponse = response as! HTTPURLResponse
+            guard self.defaultResponseValidation(statusCode: httpResponse.statusCode) else {
+                completion(nil, .failedValidation(status: httpResponse.statusCode))
+                return
+            }
             guard error == nil else {
                 completion(nil, RevocationError.network(reason: error!.localizedDescription))
                 return
             }
-            guard let zipData = zipData, let httpResponse = response as? HTTPURLResponse,
-                self.defaultResponseValidation(statusCode: httpResponse.statusCode) == nil else {
-                completion(nil, RevocationError.failedValidation)
+            guard let zipData = zipData else {
+                completion(nil, .nodata)
                 return
             }
             completion(zipData, nil)
@@ -204,21 +214,20 @@ public final class RevocationService {
         dataTask.resume()
     }
 
-    
-    fileprivate func defaultResponseValidation(statusCode: Int) -> RevocationError? {
+    fileprivate func defaultResponseValidation(statusCode: Int) -> Bool {
         switch statusCode {
         case 200:
-            return nil
+            return true
         case 304:
-            return RevocationError.network(reason: "Not-Modified.")
+            return false //.network(reason: "Not-Modified.")
         case 400, 404:
-            return RevocationError.invalidID
+            return false //RevocationError.invalidID
         case 401:
-            return RevocationError.unauthorized
+            return false //RevocationError.unauthorized
         case 412:
-            return RevocationError.network(reason: "Pre-Condition Failed.")
+            return false //RevocationError.network(reason: "Pre-Condition Failed.")
         default:
-            return RevocationError.network(reason: "Failed with statusCode \(statusCode)")
+            return false //RevocationError.network(reason: "Failed with statusCode \(statusCode)")
         }
     }
 }
