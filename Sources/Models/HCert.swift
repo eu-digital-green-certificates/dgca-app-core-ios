@@ -27,6 +27,7 @@
 import Foundation
 import SwiftyJSON
 import JSONSchema
+import SwiftCBOR
 
 public class HCert: Codable {
   public let fullPayloadString: String
@@ -246,16 +247,25 @@ extension HCert {
   }
  
   public var signatureHash: String? {
-    guard var signatureBytesToHash = CBOR.unwrap(data: cborData)?.signatureBytes,
-      let publicKey = SecKeyCopyPublicKey(keyPair) else {
+    guard var signatureBytesToHash = CBOR.unwrap(data: cborData)?.signatureBytes else {
       return nil
     }
       
-#error("Not correct public key")
-    if SecKeyIsAlgorithmSupported(publicKey, .verify, .ecdsaSignatureMessageX962SHA256) {
-        signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
+    if isECDSASigned {
+      signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
     }
       
     return SHA256.sha256(data: Data(signatureBytesToHash)).hexString
+  }
+
+  private var isECDSASigned: Bool {  
+    guard let cborHeader = CBOR.header(from: cborData),
+          let algorithmField = cborHeader[1] else {
+        return false
+    }
+    
+    let coseES256Algorithm = -7
+
+    return algorithmField == SwiftCBOR.CBOR(integerLiteral: coseES256Algorithm)
   }
 }
