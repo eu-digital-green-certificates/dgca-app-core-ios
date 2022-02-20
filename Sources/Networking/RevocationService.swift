@@ -5,7 +5,7 @@
 //  Created by Igor Khomiak on 21.01.2022.
 //
 
-import UIKit
+import Foundation
 
 
 public enum RevocationError: Error {

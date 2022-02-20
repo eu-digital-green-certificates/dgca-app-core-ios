@@ -5,7 +5,7 @@
 //  Created by Igor Khomiak on 20.01.2022.
 //
 
-import UIKit
+import Foundation
 
 internal enum ServiceConfig: String {
     case test = "/"

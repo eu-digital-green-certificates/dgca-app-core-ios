@@ -26,7 +26,7 @@
 //  
         
 
-import UIKit
+import Foundation
 
 /// A thread-safe array.
 public class SyncArray<Element> {

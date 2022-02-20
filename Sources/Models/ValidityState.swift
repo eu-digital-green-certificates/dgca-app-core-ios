@@ -30,14 +30,22 @@ import Foundation
 
 public struct ValidityState {
     public static var invalid = ValidityState()
-    
+    public static var revocated = ValidityState(isRevocated: true)
+
     public let technicalValidity: HCertValidity
     public let issuerValidity: HCertValidity
     public let destinationValidity: HCertValidity
     public let travalerValidity: HCertValidity
     public let allRulesValidity: HCertValidity
+    public let revocationValidity: HCertValidity
+
     public let validityFailures: [String]
     public var infoRulesSection: InfoSection?
+
+    public var isNotPassed: Bool {
+        return technicalValidity != .valid ||
+            issuerInvalidation != .passed || destinationAcceptence != .passed || travalerAcceptence != .passed
+    }
     
     public init() {
         self.technicalValidity = .invalid
@@ -45,22 +53,36 @@ public struct ValidityState {
         self.destinationValidity = .invalid
         self.travalerValidity = .invalid
         self.allRulesValidity = .invalid
+        self.revocationValidity = .invalid
         self.validityFailures = []
         self.infoRulesSection = nil
     }
-    
+ 
+    public init(isRevocated: Bool) {
+        self.technicalValidity = .invalid
+        self.issuerValidity = .invalid
+        self.destinationValidity = .invalid
+        self.travalerValidity = .invalid
+        self.allRulesValidity = .invalid
+        self.revocationValidity = .revocated
+        self.validityFailures = []
+        self.infoRulesSection = nil
+    }
+
     public init(
         technicalValidity: HCertValidity,
         issuerValidity: HCertValidity,
         destinationValidity: HCertValidity,
         travalerValidity: HCertValidity,
         allRulesValidity: HCertValidity,
+        revocationValidity: HCertValidity,
         validityFailures: [String],
         infoRulesSection: InfoSection?) {
             self.technicalValidity = technicalValidity
             self.issuerValidity = issuerValidity
             self.destinationValidity = destinationValidity
             self.travalerValidity = travalerValidity
+            self.revocationValidity = revocationValidity
             self.allRulesValidity = allRulesValidity
             self.validityFailures = validityFailures
             self.infoRulesSection = infoRulesSection
@@ -77,25 +99,31 @@ public struct ValidityState {
     public var issuerInvalidation: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch issuerValidity {
-          case .valid:
-            ruleResult = .passed
-          case .invalid:
-            ruleResult = .error
-          case .ruleInvalid:
-            ruleResult = .open
-        }
+            case .valid:
+                ruleResult = .passed
+            case .invalid:
+                ruleResult = .failed
+            case .ruleInvalid:
+                ruleResult = .open
+            case .revocated:
+                ruleResult = .failed
+
+         }
         return ruleResult
     }
     
     public var destinationAcceptence: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch destinationValidity {
-          case .valid:
-            ruleResult = .passed
-          case .invalid:
-            ruleResult = .error
-          case .ruleInvalid:
-            ruleResult = .open
+            case .valid:
+                ruleResult = .passed
+            case .invalid:
+                ruleResult = .failed
+            case .ruleInvalid:
+                ruleResult = .open
+            case .revocated:
+                ruleResult = .failed
+
         }
         return ruleResult
     }
@@ -103,12 +131,15 @@ public struct ValidityState {
     public var travalerAcceptence: RuleValidationResult {
         let ruleResult: RuleValidationResult
         switch travalerValidity {
-          case .valid:
-            ruleResult = .passed
-          case .invalid:
-            ruleResult = .error
-          case .ruleInvalid:
-            ruleResult = .open
+            case .valid:
+                ruleResult = .passed
+            case .invalid:
+                ruleResult = .failed
+            case .ruleInvalid:
+                ruleResult = .open
+            case .revocated:
+                ruleResult = .failed
+
         }
         return ruleResult
     }

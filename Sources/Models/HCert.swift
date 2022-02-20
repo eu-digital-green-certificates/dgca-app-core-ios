@@ -212,7 +212,7 @@ extension HCert {
        var bodyErrors = [ParseError]()
        let validation = try validate(bodyDict, schema: schema)
        validation.errors?.forEach { bodyErrors.append(.json(error: $0.description)) }
-
+        
       #if DEBUG
         if CoreManager.shared.config.debugPrintJsonErrors {
           validation.errors?.forEach { print($0.description) }
@@ -228,44 +228,67 @@ extension HCert {
 
 // MARK: - Hashes for revocation search
 extension HCert {
-  public var uvciHash: String? {
-    if statement?.uvci != nil,
-      let uvciData = uvci.data(using: .utf8) {
-        return SHA256.sha256(data: uvciData).hexString
-    } else {
-      return nil
-    }
+  public var uvciHash: Data? {
+      if statement?.uvci != nil,
+        let uvciData = uvci.data(using: .utf8) {
+          return SHA256.sha256(data: uvciData) //.hexString
+      } else {
+        return nil
+      }
   }
     
-  public var countryCodeUvciHash: String? {
-    if statement?.uvci != nil,
-       let countryCodeUvciData = (issCode + uvci).data(using: .utf8) {
-        return SHA256.sha256(data: countryCodeUvciData).hexString
-    } else {
-      return nil
-    }
+  public var countryCodeUvciHash: Data? {
+      if statement?.uvci != nil,
+         let countryCodeUvciData = (issCode + uvci).data(using: .utf8) {
+          return SHA256.sha256(data: countryCodeUvciData)  //.hexString
+      } else {
+        return nil
+      }
   }
  
-  public var signatureHash: String? {
-    guard var signatureBytesToHash = CBOR.unwrap(data: cborData)?.signatureBytes else {
-      return nil
-    }
-      
-    if isECDSASigned {
-      signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
-    }
-      
-    return SHA256.sha256(data: Data(signatureBytesToHash)).hexString
+  public var signatureHash: Data? {
+      guard var signatureBytesToHash = CBOR.unwrap(data: cborData)?.signatureBytes else { return nil }
+        
+      if isECDSASigned {
+        signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
+      }
+        
+      return SHA256.sha256(data: Data(signatureBytesToHash))  //.hexString
   }
 
   private var isECDSASigned: Bool {  
-    guard let cborHeader = CBOR.header(from: cborData),
-          let algorithmField = cborHeader[1] else {
-        return false
+      guard let cborHeader = CBOR.header(from: cborData),
+            let algorithmField = cborHeader[1] else {
+          return false
+      }
+      
+      let coseES256Algorithm = -7
+
+      return algorithmField == SwiftCBOR.CBOR(integerLiteral: coseES256Algorithm)
+    }
+}
+
+public extension HCert {
+    func lookUp(mode: RevocationMode) -> CertLookUp {
+        switch mode {
+        case .point:
+            return CertLookUp(kid: kidStr, section: payloadString[0], x: nil, y: nil)
+        case .vector:
+            return CertLookUp(kid: kidStr, section: payloadString[1], x: payloadString[0], y: nil)
+        case .coordinate:
+            return CertLookUp(kid: kidStr, section: payloadString[2], x: payloadString[0], y: payloadString[1])
+        }
     }
     
-    let coseES256Algorithm = -7
+    func numberOfHashes(mode: RevocationMode) -> Int {
+        switch mode {
+        case .point:
+            return 625_000
+        case .vector:
+            return 39_062
+        case .coordinate:
+            return 2441
+        }
+    }
 
-    return algorithmField == SwiftCBOR.CBOR(integerLiteral: coseES256Algorithm)
-  }
 }
