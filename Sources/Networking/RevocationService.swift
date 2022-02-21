@@ -110,7 +110,7 @@ public final class RevocationService {
     // paths:  /lists/{kid}/partitions/{id}/chunks/{cid} (get)
     
     public func getRevocationPartitionChunk(for kid: String, id: String, cid: String, completion: @escaping ZIPDataTaskCompletion) {
-        let partitionIDComponent = String(format: ServiceConfig.linkForChankWithID.rawValue, kid, id, cid)
+        let partitionIDComponent = String(format: ServiceConfig.linkForChunkSlices.rawValue, kid, id, cid)
         let path = baseServiceURLPath + partitionIDComponent
         guard let etagData = SecureKeyChain.load(key: "verifierETag") else { return }
         let eTag = String(decoding: etagData, as: UTF8.self)
@@ -196,9 +196,8 @@ public final class RevocationService {
     
     fileprivate func startZIPDataTask(for request: URLRequest, completion: @escaping ZIPDataTaskCompletion) {
         let dataTask = session.dataTask(with: request) {[unowned self] (zipData, response, error) in
-            let httpResponse = response as! HTTPURLResponse
-            guard self.defaultResponseValidation(statusCode: httpResponse.statusCode) else {
-                completion(nil, .failedValidation(status: httpResponse.statusCode))
+            guard let httpResponse = response as? HTTPURLResponse, self.defaultResponseValidation(statusCode: httpResponse.statusCode) else {
+                completion(nil, .failedValidation(status: (response as? HTTPURLResponse)?.statusCode ?? 0))
                 return
             }
             guard error == nil else {

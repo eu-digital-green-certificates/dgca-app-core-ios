@@ -279,16 +279,4 @@ public extension HCert {
             return CertLookUp(kid: kidStr, section: payloadString[2], x: payloadString[0], y: payloadString[1])
         }
     }
-    
-    func numberOfHashes(mode: RevocationMode) -> Int {
-        switch mode {
-        case .point:
-            return 625_000
-        case .vector:
-            return 39_062
-        case .coordinate:
-            return 2441
-        }
-    }
-
 }

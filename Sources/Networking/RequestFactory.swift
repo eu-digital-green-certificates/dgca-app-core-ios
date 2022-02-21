@@ -13,9 +13,8 @@ internal enum ServiceConfig: String {
     case linkForPartitions = "/lists/%@/partitions"
     case linkForPartitionsWithID =  "/lists/%@/partitions/%@"
     case linkForPartitionChunks = "/lists/%@/partitions/%@/slices"
-    case linkForChankWithID = "/lists/%@/partitions/%@/chunks/%@"
-    case linkForChunkSlices = "/lists/%@/partitions/%@/chunks/%@/slice"
-    case linkForSingleSlice = "/lists/%@/partitions/%@/chunks/%@/slice/%@"
+    case linkForChunkSlices = "/lists/%@/partitions/%@/chunks/%@/slices"
+    case linkForSingleSlice = "/lists/%@/partitions/%@/chunks/%@/slices/%@"
 }
 
 internal class RequestFactory {
