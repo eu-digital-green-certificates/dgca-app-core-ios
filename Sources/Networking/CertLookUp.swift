@@ -10,6 +10,6 @@ import Foundation
 public struct CertLookUp {
     public let kid: String
     public let section: String
-    public let x: String?
-    public let y: String?
+    public let x: String
+    public let y: String
 }

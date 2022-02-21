@@ -272,9 +272,9 @@ public extension HCert {
     func lookUp(mode: RevocationMode) -> CertLookUp {
         switch mode {
         case .point:
-            return CertLookUp(kid: kidStr, section: payloadString[0], x: nil, y: nil)
+            return CertLookUp(kid: kidStr, section: payloadString[0], x: "null", y: "null")
         case .vector:
-            return CertLookUp(kid: kidStr, section: payloadString[1], x: payloadString[0], y: nil)
+            return CertLookUp(kid: kidStr, section: payloadString[1], x: payloadString[0], y: "null")
         case .coordinate:
             return CertLookUp(kid: kidStr, section: payloadString[2], x: payloadString[0], y: payloadString[1])
         }
