@@ -18,12 +18,12 @@
  * limitations under the License.
  * ---license-end
  */
-//  
+//
 //  SectionBuilder.swift
 //  DGCAVerifier
-//  
+//
 //  Created by Igor Khomiak on 18.10.2021.
-//  
+//
         
 
 import Foundation
