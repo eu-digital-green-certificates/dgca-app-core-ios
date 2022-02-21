@@ -29,15 +29,16 @@
 import Foundation
 
 public struct ValidityState {
-    public static var invalid = ValidityState()
-    public static var revocated = ValidityState(isRevocated: true)
+    public static var validState = ValidityState()
+    public static var invalidState = ValidityState(isValid: false)
+    public static var revocatedState = ValidityState(isRevocated: true)
 
     public let technicalValidity: HCertValidity
     public let issuerValidity: HCertValidity
     public let destinationValidity: HCertValidity
     public let travalerValidity: HCertValidity
     public let allRulesValidity: HCertValidity
-    public let revocationValidity: HCertValidity
+    public var revocationValidity: HCertValidity
 
     public let validityFailures: [String]
     public var infoRulesSection: InfoSection?
@@ -47,23 +48,23 @@ public struct ValidityState {
             issuerInvalidation != .passed || destinationAcceptence != .passed || travalerAcceptence != .passed
     }
     
-    public init() {
-        self.technicalValidity = .invalid
-        self.issuerValidity = .invalid
-        self.destinationValidity = .invalid
-        self.travalerValidity = .invalid
-        self.allRulesValidity = .invalid
-        self.revocationValidity = .invalid
+    public init(isValid: Bool = true) {
+        self.technicalValidity = isValid ? .valid : .invalid
+        self.issuerValidity = isValid ? .valid : .invalid
+        self.destinationValidity = isValid ? .valid : .invalid
+        self.travalerValidity = isValid ? .valid : .invalid
+        self.allRulesValidity = isValid ? .valid : .invalid
+        self.revocationValidity = isValid ? .valid : .invalid
         self.validityFailures = []
         self.infoRulesSection = nil
     }
  
     public init(isRevocated: Bool) {
-        self.technicalValidity = .invalid
-        self.issuerValidity = .invalid
-        self.destinationValidity = .invalid
-        self.travalerValidity = .invalid
-        self.allRulesValidity = .invalid
+        self.technicalValidity = .revocated
+        self.issuerValidity = .revocated
+        self.destinationValidity = .revocated
+        self.travalerValidity = .revocated
+        self.allRulesValidity = .revocated
         self.revocationValidity = .revocated
         self.validityFailures = []
         self.infoRulesSection = nil
@@ -89,11 +90,11 @@ public struct ValidityState {
     }
     
     private var validity: HCertValidity {
-      return validityFailures.isEmpty ? .valid : .invalid
+        return validityFailures.isEmpty ? .valid : .invalid
     }
     
     public var isValid: Bool {
-      return validityFailures.isEmpty
+        return validityFailures.isEmpty
     }
     
     public var issuerInvalidation: RuleValidationResult {
@@ -107,7 +108,6 @@ public struct ValidityState {
                 ruleResult = .open
             case .revocated:
                 ruleResult = .failed
-
          }
         return ruleResult
     }
@@ -123,7 +123,6 @@ public struct ValidityState {
                 ruleResult = .open
             case .revocated:
                 ruleResult = .failed
-
         }
         return ruleResult
     }
@@ -139,7 +138,6 @@ public struct ValidityState {
                 ruleResult = .open
             case .revocated:
                 ruleResult = .failed
-
         }
         return ruleResult
     }
