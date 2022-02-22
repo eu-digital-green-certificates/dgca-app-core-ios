@@ -34,10 +34,10 @@ public struct ValidityState {
     public static var revocatedState = ValidityState(isRevocated: true)
 
     public let technicalValidity: HCertValidity
-    public let issuerValidity: HCertValidity
-    public let destinationValidity: HCertValidity
-    public let travalerValidity: HCertValidity
-    public let allRulesValidity: HCertValidity
+    public var issuerValidity: HCertValidity
+    public var destinationValidity: HCertValidity
+    public var travalerValidity: HCertValidity
+    public var allRulesValidity: HCertValidity
     public var revocationValidity: HCertValidity
 
     public let validityFailures: [String]
