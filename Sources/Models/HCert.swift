@@ -40,7 +40,8 @@ public class HCert: Codable {
   public let iat: Date
   public let exp: Date
   public var ruleCountryCode: String?
-
+  public var isRevoked: Bool?
+	
   public var dateOfBirth: String {
     return get(.dateOfBirth).string ?? ""
   }
