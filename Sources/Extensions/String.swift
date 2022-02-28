@@ -67,5 +67,4 @@ public extension String {
     func padStart(length maxLength: Int, pad: String = " ") -> String {
         return generatePadString(length: maxLength, pad: pad).map { $0 + self } ?? self
     }
-
 }

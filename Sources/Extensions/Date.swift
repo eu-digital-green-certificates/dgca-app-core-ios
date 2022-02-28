@@ -62,31 +62,29 @@ extension Date {
     Date.dateTimeFormatter.string(from: self)
   }
 
-  init?(isoString: String) {
-    guard let date = Date.isoFormatter.date(from: isoString) else {
-      return nil
-    }
-    self = date
-  }
-  
-  init?(dateString: String) {
-    if let date = Date.dateFormatter.date(from: dateString) {
-      self = date
-    } else if let date = Date.dateFormatterYM.date(from: dateString) {
-      self = date
-    } else if let date = Date.dateFormatterY.date(from: dateString) {
-      self = date
-    } else if let date = Date.dateFormatterFull.date(from: dateString) {
-      self = date
-    } else if let date = Date.dateFormatterOffset.date(from: dateString) {
-      self = date
-    } else if let date = Date.dateFormatterFractional.date(from: dateString) {
+    public init?(isoString: String) {
+        guard let date = Date.isoFormatter.date(from: isoString) else { return nil }
         self = date
-    } else {
-      return nil
     }
-  }
   
+    public init?(dateString: String) {
+        if let date = Date.dateFormatter.date(from: dateString) {
+            self = date
+        } else if let date = Date.dateFormatterYM.date(from: dateString) {
+            self = date
+        } else if let date = Date.dateFormatterY.date(from: dateString) {
+            self = date
+        } else if let date = Date.dateFormatterFull.date(from: dateString) {
+            self = date
+        } else if let date = Date.dateFormatterOffset.date(from: dateString) {
+            self = date
+        } else if let date = Date.dateFormatterFractional.date(from: dateString) {
+            self = date
+        } else {
+            return nil
+        }
+  }
+
   public init?(rfc3339DateTimeString str: String) {
     var str = str
     let rfc3339DateTimeFormatter = DateFormatter()

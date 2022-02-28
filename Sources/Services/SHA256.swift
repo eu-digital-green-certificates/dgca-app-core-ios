@@ -31,13 +31,20 @@ import Foundation
 import CommonCrypto
 
 public class SHA256 {
-  public static func digest(input: NSData) -> Data {
-    if #available(iOS 13.0, *) {
-      return iOS13Digest(input: input)
+    public static func digest(input: NSData) -> Data {
+      if #available(iOS 13.0, *) {
+        return iOS13Digest(input: input)
+      }
+      return iOS12Digest(input: input)
     }
-    return iOS12Digest(input: input)
-  }
 
+    public static func sha256(data : Data) -> Data {
+        var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
+        }
+        return Data(hash)
+    }
   public static func iOS12Digest(input: NSData) -> Data {
     let input = input as Data
     var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))

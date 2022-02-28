@@ -27,6 +27,7 @@
 import Foundation
 import SwiftyJSON
 import JSONSchema
+import SwiftCBOR
 
 public class HCert: Codable {
   public let fullPayloadString: String
@@ -191,11 +192,6 @@ public class HCert: Codable {
       parsingErrors.append(.version(error: "Wrong EU_DGC Version!"))
       throw CertificateParsingError.parsing(errors: parsingErrors)
     }
-    #if os(iOS)
-    if CoreManager.shared.config.prefetchAllCodes {
-      prefetchCode()
-    }
-    #endif
   }
 
   private func get(_ attribute: AttributeKey) -> JSON {
@@ -216,7 +212,7 @@ extension HCert {
        var bodyErrors = [ParseError]()
        let validation = try validate(bodyDict, schema: schema)
        validation.errors?.forEach { bodyErrors.append(.json(error: $0.description)) }
-
+        
       #if DEBUG
         if CoreManager.shared.config.debugPrintJsonErrors {
           validation.errors?.forEach { print($0.description) }
@@ -228,4 +224,59 @@ extension HCert {
        return  [.json(error: "Body Validation failed")]
      }
   }
+}
+
+// MARK: - Hashes for revocation search
+extension HCert {
+  public var uvciHash: Data? {
+      if statement?.uvci != nil,
+        let uvciData = uvci.data(using: .utf8) {
+          return SHA256.sha256(data: uvciData) //.hexString
+      } else {
+        return nil
+      }
+  }
+    
+  public var countryCodeUvciHash: Data? {
+      if statement?.uvci != nil,
+         let countryCodeUvciData = (issCode + uvci).data(using: .utf8) {
+          return SHA256.sha256(data: countryCodeUvciData)  //.hexString
+      } else {
+        return nil
+      }
+  }
+ 
+  public var signatureHash: Data? {
+      guard var signatureBytesToHash = CBOR.unwrap(data: cborData)?.signatureBytes else { return nil }
+        
+      if isECDSASigned {
+        signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
+      }
+        
+      return SHA256.sha256(data: Data(signatureBytesToHash))  //.hexString
+  }
+
+  private var isECDSASigned: Bool {  
+      guard let cborHeader = CBOR.header(from: cborData),
+            let algorithmField = cborHeader[1] else {
+          return false
+      }
+      
+      let coseES256Algorithm = -7
+
+      return algorithmField == SwiftCBOR.CBOR(integerLiteral: coseES256Algorithm)
+    }
+}
+
+public extension HCert {
+    func lookUp(mode: RevocationMode) -> CertLookUp {
+        switch mode {
+        case .point:
+            return CertLookUp(kid: kidStr, section: payloadString[0], x: "null", y: "null")
+        case .vector:
+            return CertLookUp(kid: kidStr, section: payloadString[1], x: payloadString[0], y: "null")
+        case .coordinate:
+            return CertLookUp(kid: kidStr, section: payloadString[2], x: payloadString[0], y: payloadString[1])
+        }
+    }
 }

@@ -43,8 +43,7 @@ public extension ContextConnection {
     encoding: ParameterEncoding = URLEncoding.default,
     headers: HTTPHeaders? = nil,
     interceptor: RequestInterceptor? = nil,
-    requestModifier: Alamofire.Session.RequestModifier? = nil
-  ) -> DataRequest {
+    requestModifier: Alamofire.Session.RequestModifier? = nil) -> DataRequest {
     var json = config
     for key in path {
       json = json[key]

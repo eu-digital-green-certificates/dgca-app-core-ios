@@ -56,9 +56,10 @@ public enum HCertType: String {
 }
 
 public enum HCertValidity {
-  case valid
-  case invalid
-  case ruleInvalid
+    case valid
+    case invalid
+    case ruleInvalid
+    case revocated
 }
 
 public let attributeKeys: [AttributeKey: [String]] = [
@@ -78,7 +79,7 @@ public enum InfoSectionStyle {
 }
 
 public enum RuleValidationResult: Int {
-  case error = 0
+  case failed = 0
   case passed
   case open
 }
@@ -86,7 +87,7 @@ public enum RuleValidationResult: Int {
 public class ParseErrors {
   var errors: [ParseError] = []
 }
-  
+
 public enum ParseError {
   case base45
   case prefix
@@ -99,4 +100,10 @@ public enum ParseError {
 public enum CertificateParsingError: Error {
     case unknown
     case parsing(errors: [ParseError])
+}
+
+public enum RevocationMode: String {
+    case point = "POINT"
+    case vector = "VECTOR"
+    case coordinate = "COORDINATE"
 }
