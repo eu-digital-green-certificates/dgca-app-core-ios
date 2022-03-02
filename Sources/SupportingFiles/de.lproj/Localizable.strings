@@ -31,6 +31,7 @@
 "Valid" = "Genesung";
 "Invalid" = "Ungültig";
 "Limited validity" = "Begrenzte Gültigkeit";
+"Revoked" = "Revoked";
 
 "Certificate Type" = "Zertifikatstyp";
 "Date of birth" = "Geburtsdatum";
