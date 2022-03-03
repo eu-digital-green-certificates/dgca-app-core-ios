@@ -231,7 +231,8 @@ extension HCert {
   public var uvciHash: Data? {
       if statement?.uvci != nil,
         let uvciData = uvci.data(using: .utf8) {
-          return SHA256.sha256(data: uvciData) //.hexString
+          let data = SHA256.sha256(data: uvciData)
+          return data.dropLast(16)
       } else {
         return nil
       }
@@ -240,7 +241,8 @@ extension HCert {
   public var countryCodeUvciHash: Data? {
       if statement?.uvci != nil,
          let countryCodeUvciData = (issCode + uvci).data(using: .utf8) {
-          return SHA256.sha256(data: countryCodeUvciData)  //.hexString
+          let data = SHA256.sha256(data: countryCodeUvciData)
+          return data.dropLast(16)
       } else {
         return nil
       }
@@ -252,31 +254,29 @@ extension HCert {
       if isECDSASigned {
         signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
       }
-        
-      return SHA256.sha256(data: Data(signatureBytesToHash))  //.hexString
+      let data = SHA256.sha256(data: Data(signatureBytesToHash))
+      return data.dropLast(16)
   }
 
   private var isECDSASigned: Bool {  
-      guard let cborHeader = CBOR.header(from: cborData),
-            let algorithmField = cborHeader[1] else {
+      guard let cborHeader = CBOR.header(from: cborData), let algorithmField = cborHeader[1] else {
           return false
       }
       
       let coseES256Algorithm = -7
-
       return algorithmField == SwiftCBOR.CBOR(integerLiteral: coseES256Algorithm)
     }
 }
 
 public extension HCert {
-    func lookUp(mode: RevocationMode) -> CertLookUp {
+    func lookUp(mode: RevocationMode, hash: Data) -> CertLookUp {
         switch mode {
         case .point:
-            return CertLookUp(kid: kidStr, section: payloadString[0], x: "null", y: "null")
+            return CertLookUp(kid: kidStr, section: hash.hexString[0], x: "null", y: "null")
         case .vector:
-            return CertLookUp(kid: kidStr, section: payloadString[1], x: payloadString[0], y: "null")
+            return CertLookUp(kid: kidStr, section: hash.hexString[1], x: payloadString[0], y: "null")
         case .coordinate:
-            return CertLookUp(kid: kidStr, section: payloadString[2], x: payloadString[0], y: payloadString[1])
+            return CertLookUp(kid: kidStr, section: hash.hexString[2], x: payloadString[0], y: payloadString[1])
         }
     }
 }
