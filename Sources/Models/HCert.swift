@@ -147,13 +147,21 @@ public class HCert: Codable {
   public static var clockOverride: Date?
   
   public init(from payload: String, ruleCountryCode: String? = nil) throws {
-    if HCertConfig.checkCH1PreffixExist(payload) {
-      fullPayloadString = payload
-      payloadString = HCertConfig.parsePrefix(payload)
-    } else {
-      let supportedPrefix = HCertConfig.supportedPrefixes.first ?? ""
-      fullPayloadString = supportedPrefix + payload
-      payloadString = payload
+	var copyPayload = payload
+	self.isRevoked = false
+	if let firstChar = payload.first {
+	  if firstChar == "x" {
+		self.isRevoked = true
+		  copyPayload.removeFirst()
+		}
+	}
+	if HCertConfig.checkCH1PreffixExist(copyPayload) {
+		fullPayloadString = copyPayload
+		payloadString = HCertConfig.parsePrefix(copyPayload)
+	} else {
+	  let supportedPrefix = HCertConfig.supportedPrefixes.first ?? ""
+	  fullPayloadString = supportedPrefix + copyPayload
+      payloadString = copyPayload
     }
         
     self.ruleCountryCode = ruleCountryCode
