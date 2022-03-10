@@ -23,7 +23,7 @@ public typealias PartitionListCompletion = ([PartitionModel]?, String?, Revocati
 public typealias JSONDataTaskCompletion<T: Codable> = (T?, String?, RevocationError?) -> Void
 public typealias ZIPDataTaskCompletion = (Data?, RevocationError?) -> Void
 
-public final class RevocationService {
+public final class RevocationService: RevocationServiceProtocol {
     
     var baseServiceURLPath: String
     var allChunks = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
