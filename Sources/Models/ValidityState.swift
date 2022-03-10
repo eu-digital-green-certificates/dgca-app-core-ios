@@ -39,7 +39,7 @@ public struct ValidityState {
     public var travalerValidity: HCertValidity
     public var allRulesValidity: HCertValidity
     public var revocationValidity: HCertValidity
-
+    
     public let validityFailures: [String]
     public var infoRulesSection: InfoSection?
 
