@@ -106,4 +106,15 @@ public enum RevocationMode: String {
     case point = "POINT"
     case vector = "VECTOR"
     case coordinate = "COORDINATE"
+    
+    public func partitionOffset() -> UInt8 {
+        switch self {
+        case .point:
+            return 0
+        case .vector:
+            return 8
+        case .coordinate:
+            return 16
+       }
+    }
 }
