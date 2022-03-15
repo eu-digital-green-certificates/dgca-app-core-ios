@@ -119,7 +119,7 @@ public enum RevocationMode: String {
     }
 }
 
-public var sliceType: SliceType = .BLOOMFILTER
+public var sliceType: SliceType = .VARHASHLIST
 
 public enum SliceType: String {
    case BLOOMFILTER, VARHASHLIST
