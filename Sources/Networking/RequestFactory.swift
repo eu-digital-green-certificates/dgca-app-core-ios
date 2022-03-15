@@ -19,7 +19,7 @@ internal enum ServiceConfig: String {
 
 internal class RequestFactory {
     typealias StringDictionary = [String : String]
-
+    
     // MARK: - Private methods
     fileprivate static func postRequest(url: URL, HTTPBody body: Data?, headerFields: StringDictionary?) -> URLRequest {
         var request = URLRequest(url: url)
@@ -50,26 +50,24 @@ internal class RequestFactory {
     }
 }
 
-// TODO add protocol
 extension RequestFactory {
     
     static func serviceGetRequest(path: String, etag: String? = nil) -> URLRequest? {
         guard let url = URL(string: path) else { return nil }
         
         let headers = etag == nil ? ["If-None-Match" : "", "Content-Type" : "application/json"] :
-            ["If-Match" : etag!, "Content-Type" : "application/json"]
+            ["If-Match" : etag!, "Content-Type" : "application/json", "X-SLICE-FILTER-TYPE" : sliceType.rawValue]
         
         let result = request(url: url, query: nil, headerFields: headers)
         return result
     }
-
-
+    
     static func servicePostRequest(path: String, body: Data?, etag: String? = nil) -> URLRequest? {
         guard let url = URL(string: path) else { return nil }
- 
+        
         let headers = etag == nil ? ["If-None-Match" : "", "Content-Type" : "application/json"] :
-            ["If-Match" : etag!, "Content-Type" : "application/json"]
-
+            ["If-Match" : etag!, "Content-Type" : "application/json", "X-SLICE-FILTER-TYPE" : sliceType.rawValue]
+        
         let result = postRequest(url: url, HTTPBody: body, headerFields: headers)
         return result
     }
