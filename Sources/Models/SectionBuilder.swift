@@ -34,17 +34,27 @@ public class SectionBuilder {
     private let validityState: ValidityState
     private let certificate: HCert
     
-    public init(with cert: HCert, validity: ValidityState) {
+    public init(with cert: HCert, validity: ValidityState, for appType: AppType) {
         self.certificate = cert
         self.validityState = validity
+        
+        if validity.revocationValidity == .revoked {
+            self.makeRevocationSections()
+        } else {
+            self.makeSections(for: .verifier)
+            if let section = validityState.infoRulesSection {
+                self.makeSectionForRuleError(ruleSection: section, for: appType)
+            }
+        }
     }
-    
-    public func makeRevocationSections() {
+
+    // MARK: private section
+    private func makeRevocationSections() {
         infoSection.removeAll()
         
         let hSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString)
         infoSection += [hSection]
-
+        
         let rSection = InfoSection(header: "Reason for Invalidity".localized, content: "Certificate has been revoked".localized)
         infoSection += [rSection]
         
@@ -52,7 +62,7 @@ public class SectionBuilder {
           content: certificate.lastNameStandardized.replacingOccurrences( of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace), style: .fixedWidthFont)
         infoSection += [famSection]
-      
+        
         infoSection += [InfoSection( header: "Standardised Given Name".localized,
             content: certificate.firstNameStandardized.replacingOccurrences( of: "<",
             with: String.zeroWidthSpace + "<" + String.zeroWidthSpace), style: .fixedWidthFont)]
@@ -68,7 +78,7 @@ public class SectionBuilder {
         }
     }
     
-    public func makeSections(for appType: AppType) {
+    private func makeSections(for appType: AppType) {
         infoSection.removeAll()
         switch appType {
         case .verifier:
@@ -88,11 +98,11 @@ public class SectionBuilder {
         }
     }
     
-    public func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
+    private func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
         let hSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString )
         infoSection += [hSection]
 
-        guard validityState.revocationValidity != .revocated else {
+        guard validityState.revocationValidity != .revoked else {
             let rSection = InfoSection(header: "Reason for Invalidity".localized, content: "Certificate has been revoked".localized)
             infoSection += [rSection]
             return
@@ -123,12 +133,11 @@ public class SectionBuilder {
         }
     }
 
-  // MARK: private section
-    private func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
+     private func makeSectionsForVerifier(includeInvalidSection: Bool = true) {
         if includeInvalidSection {
             let hSection = InfoSection( header: "Certificate Type".localized, content: certificate.certTypeString )
             infoSection += [hSection]
-            if validityState.revocationValidity == .revocated  {
+            if validityState.revocationValidity == .revoked  {
                 let rSection = InfoSection(header: "Reason for Invalidity".localized, content: "Certificate has been revoked".localized)
                 infoSection += [rSection]
                 return
@@ -166,7 +175,7 @@ public class SectionBuilder {
             let cSection = InfoSection( header: "Certificate Type".localized, content: certificate.certTypeString)
             infoSection += [cSection]
             
-            if validityState.revocationValidity == .revocated  {
+            if validityState.revocationValidity == .revoked  {
                 let rSection = InfoSection(header: "Reason for Invalidity".localized, content: "Certificate has been revoked".localized)
                 infoSection += [rSection]
             } else if !validityState.isValid {
@@ -192,7 +201,7 @@ public class SectionBuilder {
       if includeInvalidSection {
           let cSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString)
           infoSection += [cSection]
-          if validityState.revocationValidity == .revocated  {
+          if validityState.revocationValidity == .revoked  {
               let rSection = InfoSection(header: "Reason for Invalidity".localized, content: "Certificate has been revoked".localized)
               infoSection += [rSection]
           } else if !validityState.isValid {
@@ -217,7 +226,7 @@ public class SectionBuilder {
       if includeInvalidSection {
           let hSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString)
           infoSection += [hSection]
-          if validityState.revocationValidity == .revocated  {
+          if validityState.revocationValidity == .revoked  {
               let rSection = InfoSection(header: "Reason for Invalidity".localized, content: "Certificate has been revoked".localized)
               infoSection += [rSection]
           } else if !validityState.isValid {

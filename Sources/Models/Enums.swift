@@ -59,7 +59,7 @@ public enum HCertValidity {
     case valid
     case invalid
     case ruleInvalid
-    case revocated
+    case revoked
 }
 
 public let attributeKeys: [AttributeKey: [String]] = [
@@ -119,7 +119,7 @@ public enum RevocationMode: String {
     }
 }
 
-public var sliceType: SliceType = .VARHASHLIST
+public var sliceType: SliceType = .BLOOMFILTER
 
 public enum SliceType: String {
    case BLOOMFILTER, VARHASHLIST

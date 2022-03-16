@@ -26,12 +26,7 @@
 //  
         
 
-import Foundation
-
 public struct ValidityState {
-    public static var validState = ValidityState()
-    public static var invalidState = ValidityState(isValid: false)
-    public static var revocatedState = ValidityState(isRevocated: true)
 
     public let technicalValidity: HCertValidity
     public var issuerValidity: HCertValidity
@@ -39,7 +34,7 @@ public struct ValidityState {
     public var travalerValidity: HCertValidity
     public var allRulesValidity: HCertValidity
     public var revocationValidity: HCertValidity
-    
+
     public let validityFailures: [String]
     public var infoRulesSection: InfoSection?
 
@@ -59,17 +54,6 @@ public struct ValidityState {
         self.infoRulesSection = nil
     }
  
-    public init(isRevocated: Bool) {
-        self.technicalValidity = .revocated
-        self.issuerValidity = .revocated
-        self.destinationValidity = .revocated
-        self.travalerValidity = .revocated
-        self.allRulesValidity = .revocated
-        self.revocationValidity = .revocated
-        self.validityFailures = []
-        self.infoRulesSection = nil
-    }
-
     public init(
         technicalValidity: HCertValidity,
         issuerValidity: HCertValidity,
@@ -106,7 +90,7 @@ public struct ValidityState {
                 ruleResult = .failed
             case .ruleInvalid:
                 ruleResult = .open
-            case .revocated:
+            case .revoked:
                 ruleResult = .failed
          }
         return ruleResult
@@ -121,7 +105,7 @@ public struct ValidityState {
                 ruleResult = .failed
             case .ruleInvalid:
                 ruleResult = .open
-            case .revocated:
+            case .revoked:
                 ruleResult = .failed
         }
         return ruleResult
@@ -136,7 +120,7 @@ public struct ValidityState {
                 ruleResult = .failed
             case .ruleInvalid:
                 ruleResult = .open
-            case .revocated:
+            case .revoked:
                 ruleResult = .failed
         }
         return ruleResult
