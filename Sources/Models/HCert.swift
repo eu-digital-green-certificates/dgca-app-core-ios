@@ -40,6 +40,7 @@ public class HCert: Codable {
     public let iat: Date
     public let exp: Date
     public var ruleCountryCode: String?
+    public var isRevoked: Bool?
 
     public var dateOfBirth: String {
         return get(.dateOfBirth).string ?? ""
@@ -146,13 +147,21 @@ public class HCert: Codable {
     public static var clockOverride: Date?
 
     public init(from payload: String, ruleCountryCode: String? = nil) throws {
-        if HCertConfig.checkCH1PreffixExist(payload) {
-            fullPayloadString = payload
-            payloadString = HCertConfig.parsePrefix(payload)
+        var copyPayload = payload
+        self.isRevoked = false
+        if let firstChar = payload.first {
+          if firstChar == "x" {
+            self.isRevoked = true
+              copyPayload.removeFirst()
+            }
+        }
+        if HCertConfig.checkCH1PreffixExist(copyPayload) {
+            fullPayloadString = copyPayload
+            payloadString = HCertConfig.parsePrefix(copyPayload)
         } else {
-            let supportedPrefix = HCertConfig.supportedPrefixes.first ?? ""
-            fullPayloadString = supportedPrefix + payload
-            payloadString = payload
+          let supportedPrefix = HCertConfig.supportedPrefixes.first ?? ""
+          fullPayloadString = supportedPrefix + copyPayload
+          payloadString = copyPayload
         }
             
         self.ruleCountryCode = ruleCountryCode
@@ -233,7 +242,8 @@ extension HCert {
         if statement?.uvci != nil,
            let uvciData = uvci.data(using: .utf8) {
            let data = SHA256.sha256(data: uvciData)
-           return data.dropLast(16)
+           //return data.dropLast(16)
+            return data
         } else {
             return nil
         }
@@ -242,7 +252,7 @@ extension HCert {
     public var countryCodeUvciHash: Data? {
         if statement?.uvci != nil, let countryCodeUvciData = (issCode + uvci).data(using: .utf8) {
             let data = SHA256.sha256(data: countryCodeUvciData)
-            return data.dropLast(16)
+            return data
         } else {
             return nil
         }
@@ -255,7 +265,7 @@ extension HCert {
             signatureBytesToHash = Array(signatureBytesToHash.prefix(32))
         }
         let data = SHA256.sha256(data: Data(signatureBytesToHash))
-        return data.dropLast(16)
+        return data
     }
 
     private var isECDSASigned: Bool {

@@ -98,7 +98,7 @@ public class SectionBuilder {
         }
     }
     
-    private func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
+    public func makeSectionForRuleError(ruleSection: InfoSection, for appType: AppType) {
         let hSection = InfoSection(header: "Certificate Type".localized, content: certificate.certTypeString )
         infoSection += [hSection]
 
