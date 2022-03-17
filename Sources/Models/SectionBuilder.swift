@@ -41,7 +41,7 @@ public class SectionBuilder {
         if validity.revocationValidity == .revoked {
             self.makeRevocationSections()
         } else {
-            self.makeSections(for: .verifier)
+            self.makeSections(for: appType)
             if let section = validityState.infoRulesSection {
                 self.makeSectionForRuleError(ruleSection: section, for: appType)
             }
