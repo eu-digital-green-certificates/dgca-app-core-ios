@@ -78,12 +78,6 @@ public enum InfoSectionStyle {
   case fixedWidthFont
 }
 
-public enum RuleValidationResult: Int {
-  case failed = 0
-  case passed
-  case open
-}
-
 public class ParseErrors {
   var errors: [ParseError] = []
 }
@@ -119,7 +113,7 @@ public enum RevocationMode: String {
     }
 }
 
-public var sliceType: SliceType = .BLOOMFILTER
+public var sliceType: SliceType = .VARHASHLIST
 
 public enum SliceType: String {
    case BLOOMFILTER, VARHASHLIST
