@@ -29,13 +29,13 @@
 public struct ValidityState {
 
     public let technicalValidity: HCertValidity
-    public var issuerValidity: HCertValidity
-    public var destinationValidity: HCertValidity
-    public var travalerValidity: HCertValidity
-    public var allRulesValidity: HCertValidity
-    public var revocationValidity: HCertValidity
+    public let issuerValidity: HCertValidity
+    public let destinationValidity: HCertValidity
+    public let travalerValidity: HCertValidity
+    public let allRulesValidity: HCertValidity
+    public let revocationValidity: HCertValidity
     public let validityFailures: [String]
-    public var infoRulesSection: InfoSection?
+    public let infoRulesSection: InfoSection?
 
     public var isNotPassed: Bool {
         return technicalValidity != .valid ||
