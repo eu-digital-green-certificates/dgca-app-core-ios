@@ -85,4 +85,22 @@ public extension UIViewController {
     self.present(alertController, animated: true)
   }
 }
+
+public extension UIApplication {
+    
+    class func topMostViewController(_ viewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let nav = viewController as? UINavigationController {
+            return topMostViewController(nav.visibleViewController)
+        }
+        if let tab = viewController as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topMostViewController(selected)
+            }
+        }
+        if let presented = viewController?.presentedViewController {
+            return topMostViewController(presented)
+        }
+        return viewController
+    }
+}
 #endif

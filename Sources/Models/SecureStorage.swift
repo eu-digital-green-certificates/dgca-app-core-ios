@@ -34,6 +34,7 @@ public enum DataOperationError: Error {
   case signingFailure
   case dataError(description: String)
 }
+
 public enum DataOperationResult {
   case success(Bool)
   case failure(Error)

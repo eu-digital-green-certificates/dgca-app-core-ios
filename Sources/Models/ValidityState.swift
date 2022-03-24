@@ -44,7 +44,7 @@ public struct ValidityState {
             revocationValidity != .valid ||
             travalerValidity != .valid
     }
-     
+    
     public init(
         technicalValidity: HCertValidity,
         issuerValidity: HCertValidity,
