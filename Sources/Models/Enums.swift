@@ -78,12 +78,6 @@ public enum InfoSectionStyle {
   case fixedWidthFont
 }
 
-public enum RuleValidationResult: Int {
-  case failed = 0
-  case passed
-  case open
-}
-
 public class ParseErrors {
   var errors: [ParseError] = []
 }

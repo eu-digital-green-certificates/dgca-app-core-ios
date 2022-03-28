@@ -164,15 +164,21 @@ public final class RevocationService: RevocationServiceProtocol {
     // private methods
     fileprivate func startJSONDataTask<T: Codable>(for request: URLRequest, completion: @escaping JSONDataTaskCompletion<T>) {
         let dataTask = session.dataTask(with: request) {[unowned self] (data, response, error) in
-            let httpResponse = response as! HTTPURLResponse
-            guard defaultResponseValidation(statusCode: httpResponse.statusCode) else {
-                completion(nil, nil, .failedValidation(status: httpResponse.statusCode))
-                return
-            }
             guard error == nil else {
                 completion(nil, nil, .network(reason: error!.localizedDescription))
                 return
             }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(nil, nil, .network(reason: "No HTTPURLResponse"))
+                return
+            }
+            
+            guard defaultResponseValidation(statusCode: httpResponse.statusCode) else {
+                completion(nil, nil, .failedValidation(status: httpResponse.statusCode))
+                return
+            }
+            
             guard let data = data else {
                 completion(nil, nil, .nodata)
                 return

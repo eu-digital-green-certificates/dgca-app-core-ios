@@ -29,31 +29,22 @@
 public struct ValidityState {
 
     public let technicalValidity: HCertValidity
-    public var issuerValidity: HCertValidity
-    public var destinationValidity: HCertValidity
-    public var travalerValidity: HCertValidity
-    public var allRulesValidity: HCertValidity
-    public var revocationValidity: HCertValidity
-
+    public let issuerValidity: HCertValidity
+    public let destinationValidity: HCertValidity
+    public let travalerValidity: HCertValidity
+    public let allRulesValidity: HCertValidity
+    public let revocationValidity: HCertValidity
     public let validityFailures: [String]
-    public var infoRulesSection: InfoSection?
+    public let infoRulesSection: InfoSection?
 
     public var isNotPassed: Bool {
         return technicalValidity != .valid ||
-            issuerInvalidation != .passed || destinationAcceptence != .passed || travalerAcceptence != .passed
+            issuerValidity != .valid ||
+            destinationValidity != .valid ||
+            revocationValidity != .valid ||
+            travalerValidity != .valid
     }
     
-    public init(isValid: Bool = true) {
-        self.technicalValidity = isValid ? .valid : .invalid
-        self.issuerValidity = isValid ? .valid : .invalid
-        self.destinationValidity = isValid ? .valid : .invalid
-        self.travalerValidity = isValid ? .valid : .invalid
-        self.allRulesValidity = isValid ? .valid : .invalid
-        self.revocationValidity = isValid ? .valid : .invalid
-        self.validityFailures = []
-        self.infoRulesSection = nil
-    }
- 
     public init(
         technicalValidity: HCertValidity,
         issuerValidity: HCertValidity,
@@ -71,58 +62,5 @@ public struct ValidityState {
             self.allRulesValidity = allRulesValidity
             self.validityFailures = validityFailures
             self.infoRulesSection = infoRulesSection
-    }
-    
-    private var validity: HCertValidity {
-        return validityFailures.isEmpty ? .valid : .invalid
-    }
-    
-    public var isValid: Bool {
-        return validityFailures.isEmpty
-    }
-    
-    public var issuerInvalidation: RuleValidationResult {
-        let ruleResult: RuleValidationResult
-        switch issuerValidity {
-            case .valid:
-                ruleResult = .passed
-            case .invalid:
-                ruleResult = .failed
-            case .ruleInvalid:
-                ruleResult = .open
-            case .revoked:
-                ruleResult = .failed
-         }
-        return ruleResult
-    }
-    
-    public var destinationAcceptence: RuleValidationResult {
-        let ruleResult: RuleValidationResult
-        switch destinationValidity {
-            case .valid:
-                ruleResult = .passed
-            case .invalid:
-                ruleResult = .failed
-            case .ruleInvalid:
-                ruleResult = .open
-            case .revoked:
-                ruleResult = .failed
-        }
-        return ruleResult
-    }
-    
-    public var travalerAcceptence: RuleValidationResult {
-        let ruleResult: RuleValidationResult
-        switch travalerValidity {
-            case .valid:
-                ruleResult = .passed
-            case .invalid:
-                ruleResult = .failed
-            case .ruleInvalid:
-                ruleResult = .open
-            case .revoked:
-                ruleResult = .failed
-        }
-        return ruleResult
     }
 }
