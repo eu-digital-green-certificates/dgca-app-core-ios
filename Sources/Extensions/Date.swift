@@ -49,18 +49,23 @@ extension Date {
   static let dateTimeFormatter = formatter(for: "yyyy-MM-dd HH:mm", utcPosix: false)
   static let dateFormatterOffset = formatter(for: "yyyy-MM-dd'T'HH:mm:ssZZZZZ")
   static let dateFormatterFractional = formatter(for: "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX")
+
+    // 2022-03-30T15:23:39Z
+    public var isoString: String {
+      Date.isoFormatter.string(from: self)
+    }
     
-  public var isoString: String {
-    Date.isoFormatter.string(from: self)
-  }
-  
-  public var dateString: String {
-    Date.dateFormatter.string(from: self)
-  }
-  
-  public var dateTimeString: String {
-    Date.dateTimeFormatter.string(from: self)
-  }
+    public var dateString: String {
+      Date.dateFormatter.string(from: self)
+    }
+
+    public var dateOffsetString: String {
+      Date.dateFormatterOffset.string(from: self)
+    }
+
+    public var dateTimeString: String {
+      Date.dateTimeFormatter.string(from: self)
+    }
 
     public init?(isoString: String) {
         guard let date = Date.isoFormatter.date(from: isoString) else { return nil }
@@ -83,7 +88,7 @@ extension Date {
         } else {
             return nil
         }
-  }
+    }
 
   public init?(rfc3339DateTimeString str: String) {
     var str = str

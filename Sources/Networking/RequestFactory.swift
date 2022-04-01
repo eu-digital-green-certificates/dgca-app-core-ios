@@ -52,23 +52,38 @@ internal class RequestFactory {
 
 extension RequestFactory {
     
-    static func serviceGetRequest(path: String, etag: String? = nil) -> URLRequest? {
+    static func serviceGetRequest(path: String, etag: String? = nil, dateStr: String? = nil) -> URLRequest? {
         guard let url = URL(string: path) else { return nil }
+        var headerDict: [String : String] = ["Content-Type" : "application/json"]
+        if etag == nil {
+            headerDict["If-None-Match"] = ""
+        } else {
+            headerDict["If-Match"] = etag!
+            headerDict["X-SLICE-FILTER-TYPE"] = sliceType.rawValue
+        }
+        if dateStr  != nil {
+            headerDict["If-Modified-Since"] = dateStr!
+        }
         
-        let headers = etag == nil ? ["If-None-Match" : "", "Content-Type" : "application/json"] :
-            ["If-Match" : etag!, "Content-Type" : "application/json", "X-SLICE-FILTER-TYPE" : sliceType.rawValue]
-        
-        let result = request(url: url, query: nil, headerFields: headers)
+        let result = request(url: url, query: nil, headerFields: headerDict)
         return result
     }
     
-    static func servicePostRequest(path: String, body: Data?, etag: String? = nil) -> URLRequest? {
+    static func servicePostRequest(path: String, body: Data?, etag: String? = nil, dateStr: String? = nil) -> URLRequest? {
         guard let url = URL(string: path) else { return nil }
         
-        let headers = etag == nil ? ["If-None-Match" : "", "Content-Type" : "application/json"] :
-            ["If-Match" : etag!, "Content-Type" : "application/json", "X-SLICE-FILTER-TYPE" : sliceType.rawValue]
-        
-        let result = postRequest(url: url, HTTPBody: body, headerFields: headers)
+        var headerDict: [String : String] = ["Content-Type" : "application/json"]
+        if etag == nil {
+            headerDict["If-None-Match"] = ""
+        } else {
+            headerDict["If-Match"] = etag!
+            headerDict["X-SLICE-FILTER-TYPE"] = sliceType.rawValue
+        }
+        if dateStr  != nil {
+            headerDict["If-Modified-Since"] = dateStr!
+        }
+
+        let result = postRequest(url: url, HTTPBody: body, headerFields: headerDict)
         return result
     }
 }
