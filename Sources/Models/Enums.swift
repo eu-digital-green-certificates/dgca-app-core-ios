@@ -59,7 +59,7 @@ public enum HCertValidity {
     case valid
     case invalid
     case ruleInvalid
-    case revocated
+    case revoked
 }
 
 public let attributeKeys: [AttributeKey: [String]] = [
@@ -76,12 +76,6 @@ public let attributeKeys: [AttributeKey: [String]] = [
 public enum InfoSectionStyle {
   case normal
   case fixedWidthFont
-}
-
-public enum RuleValidationResult: Int {
-  case failed = 0
-  case passed
-  case open
 }
 
 public class ParseErrors {
@@ -106,4 +100,21 @@ public enum RevocationMode: String {
     case point = "POINT"
     case vector = "VECTOR"
     case coordinate = "COORDINATE"
+    
+    public func partitionOffset() -> UInt8 {
+        switch self {
+        case .point:
+            return 0
+        case .vector:
+            return 8
+        case .coordinate:
+            return 16
+       }
+    }
+}
+
+public var sliceType: SliceType = .VARHASHLIST
+
+public enum SliceType: String {
+   case BLOOMFILTER, VARHASHLIST
 }
