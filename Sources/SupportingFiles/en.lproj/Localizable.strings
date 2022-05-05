@@ -31,6 +31,7 @@
 "Valid" = "Valid";
 "Invalid" = "Invalid";
 "Limited validity" = "Limited validity";
+"Revoked" = "Revoked";
 
 "Certificate Type" = "Certificate Type";
 "Date of birth" = "Date of birth";

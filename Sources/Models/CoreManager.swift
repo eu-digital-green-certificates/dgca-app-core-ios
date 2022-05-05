@@ -32,7 +32,7 @@ import AppKit
 
 public class CoreManager {
     public static var shared = CoreManager()
-    lazy public var config = HCertConfig.default
+    public static var config = HCertConfig.default
     public static var publicKeyEncoder: PublicKeyStorageDelegate?
 
 #if os(iOS)

@@ -34,10 +34,10 @@ public class InfoSection {
   public var sectionItems: [InfoSection] = []
   public var isExpanded: Bool = false
   public var countryName: String?
-  public let ruleValidationResult: RuleValidationResult
+  public let ruleValidationResult: HCertValidity
   
   public init(header: String, content: String, style: InfoSectionStyle = .normal,
-        isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: RuleValidationResult = .open) {
+        isPrivate: Bool = false,  countryName: String? = nil, ruleValidationResult: HCertValidity = .ruleInvalid) {
     self.header = header
     self.content = content
     self.countryName = countryName
