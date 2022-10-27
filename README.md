@@ -50,10 +50,6 @@ This project uses the [testdata repo](https://github.com/eu-digital-green-certif
 
 The second option is good for debugging single test case failures. Run the test script (1.) once, so that the data repo is checked out. Then, open Xcode and run the tests. You can [add automatic test failure breakpoints](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/06-debugging_tests.html#:~:text=Test%20Failure%20Breakpoint,-In%20the%20breakpoint&text=This%20breakpoint%20stops%20the%20test,failure%20in%20the%20test%20code.) for easy debugging.
 
-## Documentation  
-
-- [ ] TODO: Link to documentation
-
 ## Support and feedback
 
 The following channels are available for discussions, feedback, and support requests:
