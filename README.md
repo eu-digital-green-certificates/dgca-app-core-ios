@@ -52,7 +52,7 @@ The second option is good for debugging single test case failures. Run the test 
 
 ## Documentation  
 
-- [ ] TODO: Link to documentation
+[Documentation](https://github.com/eu-digital-green-certificates/dgca-verifier-app-ios#documentation)
 
 ## Support and feedback
 
